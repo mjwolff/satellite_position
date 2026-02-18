@@ -7,7 +7,7 @@
   - **Acceptance**: Function returns structure with μ, r_eq, r_pol, f, e2, omega_mars, ref_epoch; unit test verifies all values
 
 ### 2. Core Mathematical Solvers
-- [ ] **2.1** Create `kepler_solver.pro` with Newton-Raphson solver and unit test
+- [~] **2.1** Create `kepler_solver.pro` with Newton-Raphson solver and unit test
   - **Acceptance**: Solves M = Ecc - e·sin(Ecc) for e=[0, 0.5, 0.9, 0.99]; unit test verifies convergence within 50 iterations and error < 1e-10
 
 - [ ] **2.2** Create `anomaly_conversions.pro` with Ecc ↔ ν conversion functions and unit test
@@ -62,8 +62,8 @@
 ## Progress Summary
 - Total tasks: 14
 - Completed: 1
-- In progress: 0
-- Not started: 13
+- In progress: 1
+- Not started: 12
 
 ## Notes
 - All angle inputs/outputs should be documented with units (radians vs degrees)
