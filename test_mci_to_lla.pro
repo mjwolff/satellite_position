@@ -348,6 +348,127 @@ PRO test_mci_to_lla
     print, '  Expected h: ', h_test, ' Got: ', result.h
   endelse
 
+  print, ''
+  print, '--- Testing Full MCI ↔ LLA Conversion ---'
+  print, ''
+
+  ; TEST 16: Round-trip MCI → LLA → MCI
+  n_tests++
+  test_name = 'Round-trip: MCI → LLA → MCI (< 0.1 m error)'
+  r_mci_original = [10000.0d0, 5000.0d0, 3000.0d0]
+  t = 3600.0d0
+
+  ; Forward conversion
+  lla_result = mci_to_lla(r_mci_original, t, mars)
+
+  ; Backward conversion
+  r_mci_final = lla_to_mci(lla_result.lon, lla_result.lat, lla_result.alt, t, mars)
+
+  error = MAX(ABS(r_mci_final - r_mci_original))
+
+  if (error lt 0.0001d0) then begin  ; 0.1 meters = 0.0001 km
+    print, 'TEST: ' + test_name + ' ... PASS'
+    print, '  Error: ', error * 1000.0d0, ' meters'
+    n_passed++
+  endif else begin
+    print, 'TEST: ' + test_name + ' ... FAIL'
+    print, '  Original: ', r_mci_original
+    print, '  Final:    ', r_mci_final
+    print, '  Error:    ', error * 1000.0d0, ' meters'
+  endelse
+
+  ; TEST 17: LLA values are reasonable
+  n_tests++
+  test_name = 'LLA values in valid ranges'
+  r_mci = [8000.0d0, 6000.0d0, 4000.0d0]
+  t = 0.0d0
+
+  lla_result = mci_to_lla(r_mci, t, mars)
+
+  valid_lon = (lla_result.lon ge -180.0d0 AND lla_result.lon le 180.0d0)
+  valid_lat = (lla_result.lat ge -90.0d0 AND lla_result.lat le 90.0d0)
+  valid_alt = (lla_result.alt gt -10000.0d0 AND lla_result.alt lt 100000.0d0)
+
+  if (valid_lon AND valid_lat AND valid_alt) then begin
+    print, 'TEST: ' + test_name + ' ... PASS'
+    print, '  Lon: ', lla_result.lon, ' deg'
+    print, '  Lat: ', lla_result.lat, ' deg'
+    print, '  Alt: ', lla_result.alt, ' km'
+    n_passed++
+  endif else begin
+    print, 'TEST: ' + test_name + ' ... FAIL'
+    print, '  Lon: ', lla_result.lon, ' (valid: ', valid_lon, ')'
+    print, '  Lat: ', lla_result.lat, ' (valid: ', valid_lat, ')'
+    print, '  Alt: ', lla_result.alt, ' (valid: ', valid_alt, ')'
+  endelse
+
+  ; TEST 18: Equatorial position (lat ≈ 0)
+  n_tests++
+  test_name = 'Equatorial position: lat ≈ 0°'
+  r_mci = [10000.0d0, 0.0d0, 0.0d0]
+  t = 0.0d0
+
+  lla_result = mci_to_lla(r_mci, t, mars)
+
+  if (ABS(lla_result.lat) lt 1.0d0) then begin  ; Within 1 degree
+    print, 'TEST: ' + test_name + ' ... PASS'
+    print, '  Latitude: ', lla_result.lat, ' degrees'
+    n_passed++
+  endif else begin
+    print, 'TEST: ' + test_name + ' ... FAIL'
+    print, '  Latitude: ', lla_result.lat, ' degrees (expected ≈ 0)'
+  endelse
+
+  ; TEST 19: Multiple round-trips at different times
+  n_tests++
+  test_name = 'Multiple round-trips at different times'
+  r_mci_test = [9000.0d0, 7000.0d0, 5000.0d0]
+  times = [0.0d0, 3600.0d0, 7200.0d0, 10800.0d0]
+  max_error = 0.0d0
+  all_passed = 1b
+
+  foreach t_val, times do begin
+    lla = mci_to_lla(r_mci_test, t_val, mars)
+    r_mci_check = lla_to_mci(lla.lon, lla.lat, lla.alt, t_val, mars)
+    error = MAX(ABS(r_mci_check - r_mci_test))
+    if (error gt max_error) then max_error = error
+    if (error gt 0.0001d0) then all_passed = 0b
+  endforeach
+
+  if (all_passed) then begin
+    print, 'TEST: ' + test_name + ' ... PASS'
+    print, '  Max error: ', max_error * 1000.0d0, ' meters'
+    n_passed++
+  endif else begin
+    print, 'TEST: ' + test_name + ' ... FAIL'
+    print, '  Max error: ', max_error * 1000.0d0, ' meters'
+  endelse
+
+  ; TEST 20: High altitude position
+  n_tests++
+  test_name = 'High altitude (10000 km) round-trip'
+  lon_test = 45.0d0
+  lat_test = 30.0d0
+  alt_test = 10000.0d0
+  t = 0.0d0
+
+  r_mci = lla_to_mci(lon_test, lat_test, alt_test, t, mars)
+  lla = mci_to_lla(r_mci, t, mars)
+
+  error_lon = ABS(lla.lon - lon_test)
+  error_lat = ABS(lla.lat - lat_test)
+  error_alt = ABS(lla.alt - alt_test)
+
+  if (error_lon lt 1e-6 AND error_lat lt 1e-6 AND error_alt lt 0.001d0) then begin
+    print, 'TEST: ' + test_name + ' ... PASS'
+    n_passed++
+  endif else begin
+    print, 'TEST: ' + test_name + ' ... FAIL'
+    print, '  Lon error: ', error_lon, ' deg'
+    print, '  Lat error: ', error_lat, ' deg'
+    print, '  Alt error: ', error_alt, ' km'
+  endelse
+
   ; Print summary
   print, ''
   print, '========================================='
