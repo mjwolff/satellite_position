@@ -138,24 +138,25 @@ PRO test_anomaly_conversions
   endelse
 
   ; TEST 6: Known analytical case - e=0.5, Ecc=π/3
-  ; For e=0.5, Ecc=60°, ν should be approximately 95.74°
+  ; For e=0.5, Ecc=60°, ν should be exactly 90° (π/2)
+  ; Because cos(π/3)=0.5, so cos(Ecc)-e = 0
   n_tests++
-  test_name = 'Known case: e=0.5, Ecc=60° → ν≈95.74°'
+  test_name = 'Known case: e=0.5, Ecc=60° → ν=90°'
   Ecc_test = !DPI / 3.0d0  ; 60 degrees
   e_test = 0.5d0
   nu = ecc_to_true_anomaly(Ecc_test, e_test)
 
-  ; Expected value (pre-calculated)
-  nu_expected = 1.671d0  ; approximately 95.74 degrees
+  ; Expected value: exactly π/2 (90 degrees)
+  nu_expected = !DPI / 2.0d0
   error = ABS(nu - nu_expected)
 
-  if (error lt 0.001d0) then begin  ; 0.001 rad ≈ 0.06 degrees
+  if (error lt 1e-10) then begin
     print, 'TEST: ' + test_name + ' ... PASS'
     print, '  ν = ', nu * !RADEG, ' degrees'
     n_passed++
   endif else begin
     print, 'TEST: ' + test_name + ' ... FAIL'
-    print, '  Expected ≈ ', nu_expected * !RADEG, ' Got: ', nu * !RADEG, ' degrees'
+    print, '  Expected: ', nu_expected * !RADEG, ' Got: ', nu * !RADEG, ' degrees'
   endelse
 
   ; TEST 7: Multiple eccentricity round-trip test
@@ -183,10 +184,11 @@ PRO test_anomaly_conversions
     print, '  Max error: ', max_error
   endelse
 
-  ; TEST 8: Full orbit sweep - ν from 0 to 2π
+  ; TEST 8: Full orbit sweep - ν from 0 to just before 2π
+  ; Note: 2π wraps to 0, so we test [0, π/2, π, 3π/2] instead
   n_tests++
-  test_name = 'Full orbit sweep: ν=[0, π/2, π, 3π/2, 2π]'
-  nu_array = [0.0d0, !DPI/2.0d0, !DPI, 3.0d0*!DPI/2.0d0, 2.0d0*!DPI]
+  test_name = 'Full orbit sweep: ν=[0, π/2, π, 3π/2]'
+  nu_array = [0.0d0, !DPI/2.0d0, !DPI, 3.0d0*!DPI/2.0d0]
   e_test = 0.6d0
   max_error = 0.0d0
   all_passed = 1b
@@ -194,10 +196,7 @@ PRO test_anomaly_conversions
   foreach nu_val, nu_array do begin
     Ecc = true_to_ecc_anomaly(nu_val, e_test)
     nu_final = ecc_to_true_anomaly(Ecc, e_test)
-    ; Normalize angles to [0, 2π]
-    nu_norm = nu_val mod (2.0d0 * !DPI)
-    nu_final_norm = nu_final mod (2.0d0 * !DPI)
-    error = ABS(nu_final_norm - nu_norm)
+    error = ABS(nu_final - nu_val)
     if (error gt max_error) then max_error = error
     if (error gt 1e-10) then all_passed = 0b
   endforeach
