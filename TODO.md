@@ -31,7 +31,7 @@
   - **Acceptance**: Unit test verifies round-trip MCI → LLA → MCI returns original position within 0.1 meters
 
 ### 5. Main Propagator
-- [ ] **5.1** Create `orbital_propagator.pro` integrating all modules with unit test
+- [~] **5.1** Create `orbital_propagator.pro` integrating all modules with unit test
   - **Acceptance**: Unit test verifies propagation for simple circular orbit returns expected position; all output fields present
 
 ### 6. Validation & Testing
@@ -62,8 +62,8 @@
 ## Progress Summary
 - Total tasks: 14
 - Completed: 8
-- In progress: 0
-- Not started: 6
+- In progress: 1
+- Not started: 5
 
 ## Notes
 - All angle inputs/outputs should be documented with units (radians vs degrees)
