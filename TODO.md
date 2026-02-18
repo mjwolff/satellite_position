@@ -17,7 +17,7 @@
 - [x] **3.1** Create `coordinate_transforms.pro` with perifocal position calculator and unit test (2026-02-18)
   - **Acceptance**: Unit test verifies correct r_pqw and v_pqw for known test cases (circular, eccentric orbits)
 
-- [ ] **3.2** Add perifocal to MCI transformation to `coordinate_transforms.pro` with unit test
+- [~] **3.2** Add perifocal to MCI transformation to `coordinate_transforms.pro` with unit test
   - **Acceptance**: Unit test verifies rotation matrix is orthogonal (R·R^T = I) and known vectors transform correctly
 
 ### 4. Geodetic Conversion Module
@@ -62,8 +62,8 @@
 ## Progress Summary
 - Total tasks: 14
 - Completed: 4
-- In progress: 0
-- Not started: 10
+- In progress: 1
+- Not started: 9
 
 ## Notes
 - All angle inputs/outputs should be documented with units (radians vs degrees)
