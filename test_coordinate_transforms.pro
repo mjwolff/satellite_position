@@ -255,6 +255,129 @@ PRO test_coordinate_transforms
     print, '  r_pqw[2]:', result.r_pqw[2], ' v_pqw[2]:', result.v_pqw[2]
   endelse
 
+  print, ''
+  print, '--- Testing Rotation Transformations ---'
+  print, ''
+
+  ; TEST 11: Identity transformation (all angles = 0)
+  n_tests++
+  test_name = 'Identity: Omega=0, omega=0, i=0'
+  r_pqw_test = [10000.0d0, 5000.0d0, 0.0d0]
+  v_pqw_test = [0.0d0, 3.0d0, 0.0d0]
+
+  result_mci = perifocal_to_mci(r_pqw_test, v_pqw_test, 0.0d0, 0.0d0, 0.0d0)
+  error = MAX(ABS(result_mci.r_mci - r_pqw_test))
+
+  if (error lt 1e-10) then begin
+    print, 'TEST: ' + test_name + ' ... PASS'
+    n_passed++
+  endif else begin
+    print, 'TEST: ' + test_name + ' ... FAIL'
+    print, '  Input:  ', r_pqw_test
+    print, '  Output: ', result_mci.r_mci
+  endelse
+
+  ; TEST 12: Rotation matrix orthogonality (R * R^T = I)
+  n_tests++
+  test_name = 'Rotation matrix is orthogonal: R·R^T = I'
+  Omega_test = !DPI / 6.0d0
+  omega_test = !DPI / 4.0d0
+  i_test = !DPI / 3.0d0
+
+  ; Create arbitrary test vectors
+  r_pqw_test = [10000.0d0, 5000.0d0, 0.0d0]
+  v_pqw_test = [1.0d0, 2.0d0, 0.0d0]
+
+  ; Transform forward and back
+  result_mci = perifocal_to_mci(r_pqw_test, v_pqw_test, Omega_test, omega_test, i_test)
+  result_pqw = mci_to_perifocal(result_mci.r_mci, result_mci.v_mci, Omega_test, omega_test, i_test)
+
+  error_r = MAX(ABS(result_pqw.r_pqw - r_pqw_test))
+  error_v = MAX(ABS(result_pqw.v_pqw - v_pqw_test))
+
+  if (error_r lt 1e-10 AND error_v lt 1e-10) then begin
+    print, 'TEST: ' + test_name + ' ... PASS'
+    print, '  Position error: ', error_r
+    print, '  Velocity error: ', error_v
+    n_passed++
+  endif else begin
+    print, 'TEST: ' + test_name + ' ... FAIL'
+    print, '  Position error: ', error_r
+    print, '  Velocity error: ', error_v
+  endelse
+
+  ; TEST 13: Magnitude preservation
+  n_tests++
+  test_name = 'Rotation preserves vector magnitude'
+  r_pqw_test = [10000.0d0, 5000.0d0, 0.0d0]
+  v_pqw_test = [1.5d0, 2.5d0, 0.0d0]
+  Omega_test = !DPI / 5.0d0
+  omega_test = !DPI / 3.0d0
+  i_test = !DPI / 4.0d0
+
+  r_mag_pqw = SQRT(TOTAL(r_pqw_test^2))
+  v_mag_pqw = SQRT(TOTAL(v_pqw_test^2))
+
+  result_mci = perifocal_to_mci(r_pqw_test, v_pqw_test, Omega_test, omega_test, i_test)
+
+  r_mag_mci = SQRT(TOTAL(result_mci.r_mci^2))
+  v_mag_mci = SQRT(TOTAL(result_mci.v_mci^2))
+
+  error_r = ABS(r_mag_mci - r_mag_pqw)
+  error_v = ABS(v_mag_mci - v_mag_pqw)
+
+  if (error_r lt 1e-10 AND error_v lt 1e-10) then begin
+    print, 'TEST: ' + test_name + ' ... PASS'
+    n_passed++
+  endif else begin
+    print, 'TEST: ' + test_name + ' ... FAIL'
+    print, '  Position magnitude error: ', error_r
+    print, '  Velocity magnitude error: ', error_v
+  endelse
+
+  ; TEST 14: Pure RAAN rotation (i=0, omega=0)
+  ; Should rotate about Z-axis only
+  n_tests++
+  test_name = 'Pure RAAN rotation (rotation about Z-axis)'
+  r_pqw_test = [10000.0d0, 0.0d0, 0.0d0]
+  v_pqw_test = [0.0d0, 3.0d0, 0.0d0]
+  Omega_test = !DPI / 2.0d0  ; 90 degrees
+
+  result_mci = perifocal_to_mci(r_pqw_test, v_pqw_test, Omega_test, 0.0d0, 0.0d0)
+
+  ; After 90° rotation about Z, [10000, 0, 0] becomes [0, 10000, 0]
+  expected_r = [0.0d0, 10000.0d0, 0.0d0]
+  error = MAX(ABS(result_mci.r_mci - expected_r))
+
+  if (error lt 1.0d0) then begin  ; 1 km tolerance
+    print, 'TEST: ' + test_name + ' ... PASS'
+    n_passed++
+  endif else begin
+    print, 'TEST: ' + test_name + ' ... FAIL'
+    print, '  Expected: ', expected_r
+    print, '  Got:      ', result_mci.r_mci
+  endelse
+
+  ; TEST 15: Inclination = 90° (polar orbit)
+  n_tests++
+  test_name = 'Polar orbit transformation (i=90°)'
+  r_pqw_test = [10000.0d0, 0.0d0, 0.0d0]
+  v_pqw_test = [0.0d0, 3.0d0, 0.0d0]
+  i_test = !DPI / 2.0d0  ; 90 degrees
+
+  result_mci = perifocal_to_mci(r_pqw_test, v_pqw_test, 0.0d0, 0.0d0, i_test)
+
+  ; Z-component should be zero for r (in P-axis initially)
+  ; But v (in Q-axis) should have Z-component after rotation
+  if (ABS(result_mci.r_mci[2]) lt 1.0d0 AND ABS(result_mci.v_mci[2]) gt 1.0d0) then begin
+    print, 'TEST: ' + test_name + ' ... PASS'
+    n_passed++
+  endif else begin
+    print, 'TEST: ' + test_name + ' ... FAIL'
+    print, '  r_mci: ', result_mci.r_mci
+    print, '  v_mci: ', result_mci.v_mci
+  endelse
+
   ; Print summary
   print, ''
   print, '========================================='
