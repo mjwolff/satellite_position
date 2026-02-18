@@ -35,7 +35,7 @@
   - **Acceptance**: Unit test verifies propagation for simple circular orbit returns expected position; all output fields present
 
 ### 6. Validation & Testing
-- [ ] **6.1** Create `test_orbit_propagation.pro` with circular equatorial orbit test
+- [~] **6.1** Create `test_orbit_propagation.pro` with circular equatorial orbit test
   - **Acceptance**: Constant altitude ± 0.01 km, latitude ≈ 0° ± 0.01°, linear longitude change
 
 - [ ] **6.2** Add polar orbit test to `test_orbit_propagation.pro`
@@ -62,8 +62,8 @@
 ## Progress Summary
 - Total tasks: 14
 - Completed: 9
-- In progress: 0
-- Not started: 5
+- In progress: 1
+- Not started: 4
 
 ## Notes
 - All angle inputs/outputs should be documented with units (radians vs degrees)
