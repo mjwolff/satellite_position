@@ -24,7 +24,7 @@
 - [x] **4.1** Create `mci_to_lla.pro` with MCI to Mars-fixed rotation and unit test (2026-02-18)
   - **Acceptance**: Unit test verifies rotation by θ = ω_Mars·(t - t_ref) about Z-axis for known test vectors
 
-- [ ] **4.2** Add iterative geodetic latitude calculator to `mci_to_lla.pro` with unit test
+- [~] **4.2** Add iterative geodetic latitude calculator to `mci_to_lla.pro` with unit test
   - **Acceptance**: Unit test verifies convergence to geodetic latitude within 1e-8 degrees in < 10 iterations
 
 - [ ] **4.3** Add longitude and altitude calculations to `mci_to_lla.pro` with unit test
@@ -62,8 +62,8 @@
 ## Progress Summary
 - Total tasks: 14
 - Completed: 6
-- In progress: 0
-- Not started: 8
+- In progress: 1
+- Not started: 7
 
 ## Notes
 - All angle inputs/outputs should be documented with units (radians vs degrees)
