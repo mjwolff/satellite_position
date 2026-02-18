@@ -54,7 +54,7 @@
   - **Acceptance**: Solver converges for e = [0, 0.1, 0.5, 0.9, 0.99] with error < 1e-10
 
 ### 7. Documentation
-- [ ] **7.1** Create `README.md` with project overview and usage examples
+- [~] **7.1** Create `README.md` with project overview and usage examples
   - **Acceptance**: Includes installation, example usage code, and description of all modules
 
 ---
@@ -62,8 +62,8 @@
 ## Progress Summary
 - Total tasks: 14
 - Completed: 13
-- In progress: 0
-- Not started: 1
+- In progress: 1
+- Not started: 0
 
 ## Notes
 - All angle inputs/outputs should be documented with units (radians vs degrees)
