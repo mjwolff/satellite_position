@@ -184,8 +184,8 @@ PRO test_anomaly_conversions
     print, '  Max error: ', max_error
   endelse
 
-  ; TEST 8: Full orbit sweep - ν from 0 to just before 2π
-  ; Note: 2π wraps to 0, so we test [0, π/2, π, 3π/2] instead
+  ; TEST 8: Full orbit sweep - ν from 0 to 2π
+  ; Note: ATAN returns values in [-π, π], so we need to handle angle wrapping
   n_tests++
   test_name = 'Full orbit sweep: ν=[0, π/2, π, 3π/2]'
   nu_array = [0.0d0, !DPI/2.0d0, !DPI, 3.0d0*!DPI/2.0d0]
@@ -196,7 +196,12 @@ PRO test_anomaly_conversions
   foreach nu_val, nu_array do begin
     Ecc = true_to_ecc_anomaly(nu_val, e_test)
     nu_final = ecc_to_true_anomaly(Ecc, e_test)
-    error = ABS(nu_final - nu_val)
+
+    ; Normalize both angles to [-π, π] for comparison
+    nu_norm = ATAN(SIN(nu_val), COS(nu_val))
+    nu_final_norm = ATAN(SIN(nu_final), COS(nu_final))
+
+    error = ABS(nu_final_norm - nu_norm)
     if (error gt max_error) then max_error = error
     if (error gt 1e-10) then all_passed = 0b
   endforeach
