@@ -3,36 +3,36 @@
 ## Project Tasks
 
 ### 1. Foundation Module
-- [x] **1.1** Create `mars_constants.pro` with Mars physical constants (2026-02-18)
-  - **Acceptance**: Function returns structure with μ, r_eq, r_pol, f, e2, omega_mars, ref_epoch
+- [x] **1.1** Create `mars_constants.pro` with Mars physical constants and unit test (2026-02-18)
+  - **Acceptance**: Function returns structure with μ, r_eq, r_pol, f, e2, omega_mars, ref_epoch; unit test verifies all values
 
 ### 2. Core Mathematical Solvers
-- [ ] **2.1** Create `kepler_solver.pro` with Newton-Raphson solver for Kepler's equation
-  - **Acceptance**: Solves M = Ecc - e·sin(Ecc) and converges within 50 iterations for e=[0, 0.5, 0.9, 0.99]
+- [ ] **2.1** Create `kepler_solver.pro` with Newton-Raphson solver and unit test
+  - **Acceptance**: Solves M = Ecc - e·sin(Ecc) for e=[0, 0.5, 0.9, 0.99]; unit test verifies convergence within 50 iterations and error < 1e-10
 
-- [ ] **2.2** Create `anomaly_conversions.pro` with Ecc ↔ ν conversion functions
-  - **Acceptance**: Round-trip conversion (Ecc → ν → Ecc) returns original value within 1e-10 radians
+- [ ] **2.2** Create `anomaly_conversions.pro` with Ecc ↔ ν conversion functions and unit test
+  - **Acceptance**: Unit test verifies round-trip conversion (Ecc → ν → Ecc) returns original value within 1e-10 radians
 
 ### 3. Coordinate Transformation Module
-- [ ] **3.1** Create `coordinate_transforms.pro` with perifocal position calculator
-  - **Acceptance**: Function returns correct r_pqw and v_pqw for given (a, e, ν, μ)
+- [ ] **3.1** Create `coordinate_transforms.pro` with perifocal position calculator and unit test
+  - **Acceptance**: Unit test verifies correct r_pqw and v_pqw for known test cases (circular, eccentric orbits)
 
-- [ ] **3.2** Add perifocal to MCI transformation to `coordinate_transforms.pro`
-  - **Acceptance**: Rotation matrix is orthogonal (R·R^T = I) and transforms vectors correctly
+- [ ] **3.2** Add perifocal to MCI transformation to `coordinate_transforms.pro` with unit test
+  - **Acceptance**: Unit test verifies rotation matrix is orthogonal (R·R^T = I) and known vectors transform correctly
 
 ### 4. Geodetic Conversion Module
-- [ ] **4.1** Create `mci_to_lla.pro` with MCI to Mars-fixed rotation
-  - **Acceptance**: Correctly rotates MCI coordinates by θ = ω_Mars·(t - t_ref) about Z-axis
+- [ ] **4.1** Create `mci_to_lla.pro` with MCI to Mars-fixed rotation and unit test
+  - **Acceptance**: Unit test verifies rotation by θ = ω_Mars·(t - t_ref) about Z-axis for known test vectors
 
-- [ ] **4.2** Add iterative geodetic latitude calculator to `mci_to_lla.pro`
-  - **Acceptance**: Converges to geodetic latitude within 1e-8 degrees in < 10 iterations
+- [ ] **4.2** Add iterative geodetic latitude calculator to `mci_to_lla.pro` with unit test
+  - **Acceptance**: Unit test verifies convergence to geodetic latitude within 1e-8 degrees in < 10 iterations
 
-- [ ] **4.3** Add longitude and altitude calculations to `mci_to_lla.pro`
-  - **Acceptance**: Round-trip MCI → LLA → MCI returns original position within 0.1 meters
+- [ ] **4.3** Add longitude and altitude calculations to `mci_to_lla.pro` with unit test
+  - **Acceptance**: Unit test verifies round-trip MCI → LLA → MCI returns original position within 0.1 meters
 
 ### 5. Main Propagator
-- [ ] **5.1** Create `orbital_propagator.pro` integrating all modules
-  - **Acceptance**: Accepts Keplerian elements and time array, returns structure with r_mci, v_mci, lon, lat, alt, nu, Ecc
+- [ ] **5.1** Create `orbital_propagator.pro` integrating all modules with unit test
+  - **Acceptance**: Unit test verifies propagation for simple circular orbit returns expected position; all output fields present
 
 ### 6. Validation & Testing
 - [ ] **6.1** Create `test_orbit_propagation.pro` with circular equatorial orbit test
@@ -70,3 +70,5 @@
 - Use double precision throughout: `variable = 0.0d0`
 - Variable naming: Use "Ecc" for Eccentric Anomaly
 - Validate inputs: a > 0, 0 ≤ e < 1, 0 ≤ i ≤ π
+- Unit tests: Create `test_<module_name>.pro` for each module with test procedures that print PASS/FAIL results
+- Integration tests (6.1-6.6): End-to-end validation of complete orbital propagation system
