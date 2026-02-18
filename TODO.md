@@ -14,7 +14,7 @@
   - **Acceptance**: Unit test verifies round-trip conversion (Ecc → ν → Ecc) returns original value within 1e-10 radians
 
 ### 3. Coordinate Transformation Module
-- [~] **3.1** Create `coordinate_transforms.pro` with perifocal position calculator and unit test
+- [x] **3.1** Create `coordinate_transforms.pro` with perifocal position calculator and unit test (2026-02-18)
   - **Acceptance**: Unit test verifies correct r_pqw and v_pqw for known test cases (circular, eccentric orbits)
 
 - [ ] **3.2** Add perifocal to MCI transformation to `coordinate_transforms.pro` with unit test
@@ -61,8 +61,8 @@
 
 ## Progress Summary
 - Total tasks: 14
-- Completed: 3
-- In progress: 1
+- Completed: 4
+- In progress: 0
 - Not started: 10
 
 ## Notes
