@@ -21,7 +21,7 @@
   - **Acceptance**: Unit test verifies rotation matrix is orthogonal (R·R^T = I) and known vectors transform correctly
 
 ### 4. Geodetic Conversion Module
-- [ ] **4.1** Create `mci_to_lla.pro` with MCI to Mars-fixed rotation and unit test
+- [~] **4.1** Create `mci_to_lla.pro` with MCI to Mars-fixed rotation and unit test
   - **Acceptance**: Unit test verifies rotation by θ = ω_Mars·(t - t_ref) about Z-axis for known test vectors
 
 - [ ] **4.2** Add iterative geodetic latitude calculator to `mci_to_lla.pro` with unit test
@@ -62,8 +62,8 @@
 ## Progress Summary
 - Total tasks: 14
 - Completed: 5
-- In progress: 0
-- Not started: 9
+- In progress: 1
+- Not started: 8
 
 ## Notes
 - All angle inputs/outputs should be documented with units (radians vs degrees)
