@@ -43,7 +43,7 @@ PRO test_orbital_propagator
   n_tests++
   test_name = 'All output fields present'
 
-  elements = {a: 10000.0d0, e: 0.0d0, i: 0.0d0, Omega: 0.0d0, omega: 0.0d0, M0: 0.0d0}
+  elements = {a: 10000.0d0, e: 0.0d0, i: 0.0d0, raan: 0.0d0, omega: 0.0d0, M0: 0.0d0}
   t = 0.0d0
   t0 = 0.0d0
 
@@ -79,7 +79,7 @@ PRO test_orbital_propagator
   n_tests++
   test_name = 'Circular orbit: constant radius'
 
-  elements = {a: 10000.0d0, e: 0.0d0, i: 0.0d0, Omega: 0.0d0, omega: 0.0d0, M0: 0.0d0}
+  elements = {a: 10000.0d0, e: 0.0d0, i: 0.0d0, raan: 0.0d0, omega: 0.0d0, M0: 0.0d0}
   t0 = 0.0d0
   period = 2.0d0 * !DPI * SQRT(elements.a^3 / mars.mu)
   t = DINDGEN(10) * period / 9.0d0  ; 10 points over one orbit
@@ -108,7 +108,7 @@ PRO test_orbital_propagator
   n_tests++
   test_name = 'Circular equatorial: latitude ≈ 0°'
 
-  elements = {a: 10000.0d0, e: 0.0d0, i: 0.0d0, Omega: 0.0d0, omega: 0.0d0, M0: 0.0d0}
+  elements = {a: 10000.0d0, e: 0.0d0, i: 0.0d0, raan: 0.0d0, omega: 0.0d0, M0: 0.0d0}
   t = 0.0d0
   t0 = 0.0d0
 
@@ -127,7 +127,7 @@ PRO test_orbital_propagator
   n_tests++
   test_name = 'Mean anomaly increases linearly with time'
 
-  elements = {a: 10000.0d0, e: 0.3d0, i: 0.5d0, Omega: 0.0d0, omega: 0.0d0, M0: 0.0d0}
+  elements = {a: 10000.0d0, e: 0.3d0, i: 0.5d0, raan: 0.0d0, omega: 0.0d0, M0: 0.0d0}
   t0 = 0.0d0
   t = DINDGEN(5) * 3600.0d0  ; Every hour for 5 hours
 
@@ -152,7 +152,7 @@ PRO test_orbital_propagator
 
   a = 15000.0d0
   e = 0.5d0
-  elements = {a: a, e: e, i: 0.0d0, Omega: 0.0d0, omega: 0.0d0, M0: 0.0d0}
+  elements = {a: a, e: e, i: 0.0d0, raan: 0.0d0, omega: 0.0d0, M0: 0.0d0}
   t0 = 0.0d0
 
   ; At t=0, M=0, so at periapsis
@@ -184,7 +184,7 @@ PRO test_orbital_propagator
   n_tests++
   test_name = 'Energy conservation: E = -μ/(2a)'
 
-  elements = {a: 12000.0d0, e: 0.4d0, i: 0.3d0, Omega: 0.0d0, omega: 0.0d0, M0: 0.0d0}
+  elements = {a: 12000.0d0, e: 0.4d0, i: 0.3d0, raan: 0.0d0, omega: 0.0d0, M0: 0.0d0}
   t0 = 0.0d0
   t = DINDGEN(10) * 1000.0d0
 
@@ -214,7 +214,7 @@ PRO test_orbital_propagator
   n_tests++
   test_name = 'Single vs array input consistency'
 
-  elements = {a: 10000.0d0, e: 0.2d0, i: 0.0d0, Omega: 0.0d0, omega: 0.0d0, M0: 0.0d0}
+  elements = {a: 10000.0d0, e: 0.2d0, i: 0.0d0, raan: 0.0d0, omega: 0.0d0, M0: 0.0d0}
   t0 = 0.0d0
   t_test = 3600.0d0
 
@@ -241,7 +241,7 @@ PRO test_orbital_propagator
   n_tests++
   test_name = 'Altitude values are reasonable'
 
-  elements = {a: 9376.0d0, e: 0.0151d0, i: 0.0d0, Omega: 0.0d0, omega: 0.0d0, M0: 0.0d0}
+  elements = {a: 9376.0d0, e: 0.0151d0, i: 0.0d0, raan: 0.0d0, omega: 0.0d0, M0: 0.0d0}
   t = 0.0d0
   t0 = 0.0d0
 

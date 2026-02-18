@@ -52,7 +52,7 @@ elements = {$
   a:     9376.0d0,         ; Semi-major axis (km)
   e:     0.0151d0,         ; Eccentricity
   i:     1.093d0 * !DTOR,  ; Inclination (radians)
-  Omega: 0.0d0,            ; RAAN (radians)
+  raan:  0.0d0,            ; RAAN (radians)
   omega: 0.0d0,            ; Argument of periapsis (radians)
   M0:    0.0d0             ; Mean anomaly at epoch (radians)
 }
@@ -99,8 +99,8 @@ Converts between eccentric and true anomaly:
 #### `coordinate_transforms.pro`
 Coordinate frame transformations:
 - `calculate_perifocal_position(a, e, nu, mu)` - Calculate position/velocity in perifocal frame
-- `perifocal_to_mci(r_pqw, v_pqw, Omega, omega, i)` - Perifocal → MCI transformation
-- `mci_to_perifocal(r_mci, v_mci, Omega, omega, i)` - MCI → Perifocal transformation
+- `perifocal_to_mci(r_pqw, v_pqw, raan, omega, i)` - Perifocal → MCI transformation
+- `mci_to_perifocal(r_mci, v_mci, raan, omega, i)` - MCI → Perifocal transformation
 
 #### `mci_to_lla.pro`
 Geodetic coordinate conversions:
@@ -183,7 +183,7 @@ mars = mars_constants()
 
 ; Circular orbit at 500 km altitude
 a = mars.r_eq + 500.0d0
-elements = {a: a, e: 0.0d0, i: 0.0d0, Omega: 0.0d0, omega: 0.0d0, M0: 0.0d0}
+elements = {a: a, e: 0.0d0, i: 0.0d0, raan: 0.0d0, omega: 0.0d0, M0: 0.0d0}
 
 t = DINDGEN(10) * 3600.0d0  ; Every hour for 10 hours
 result = propagate_orbit(elements, t, 0.0d0, mars)
@@ -201,7 +201,7 @@ endfor
 mars = mars_constants()
 
 ; Highly eccentric orbit
-elements = {a: 15000.0d0, e: 0.7d0, i: 0.5d0, Omega: 0.0d0, omega: 0.0d0, M0: 0.0d0}
+elements = {a: 15000.0d0, e: 0.7d0, i: 0.5d0, raan: 0.0d0, omega: 0.0d0, M0: 0.0d0}
 
 period = 2.0d0 * !DPI * SQRT(elements.a^3 / mars.mu)
 t = DINDGEN(200) * period / 199.0d0
@@ -220,7 +220,7 @@ plot, result.t / 3600.0d0, result.r, $
 mars = mars_constants()
 
 ; Sun-synchronous-like polar orbit
-elements = {a: 10000.0d0, e: 0.01d0, i: !DPI/2.0d0, Omega: 0.0d0, omega: 0.0d0, M0: 0.0d0}
+elements = {a: 10000.0d0, e: 0.01d0, i: !DPI/2.0d0, raan: 0.0d0, omega: 0.0d0, M0: 0.0d0}
 
 period = 2.0d0 * !DPI * SQRT(elements.a^3 / mars.mu)
 t = DINDGEN(500) * period * 3.0d0 / 499.0d0  ; 3 orbits
@@ -242,7 +242,7 @@ plot, result.lon, result.lat, psym=3, $
 - **a**: Semi-major axis (km)
 - **e**: Eccentricity
 - **i**: Inclination (radians)
-- **Omega** (Ω): Right Ascension of Ascending Node - RAAN (radians)
+- **raan** (Ω): Right Ascension of Ascending Node - RAAN (radians)
 - **omega** (ω): Argument of periapsis (radians)
 - **M0**: Mean anomaly at epoch (radians)
 

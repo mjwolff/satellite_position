@@ -45,7 +45,7 @@ PRO test_orbit_propagation
   n_tests++
   test_name = 'Circular equatorial: constant altitude ± 0.01 km'
 
-  elements = {a: 10000.0d0, e: 0.0d0, i: 0.0d0, Omega: 0.0d0, omega: 0.0d0, M0: 0.0d0}
+  elements = {a: 10000.0d0, e: 0.0d0, i: 0.0d0, raan: 0.0d0, omega: 0.0d0, M0: 0.0d0}
   t0 = 0.0d0
   period = 2.0d0 * !DPI * SQRT(elements.a^3 / mars.mu)
   t = DINDGEN(100) * period / 99.0d0
@@ -131,7 +131,7 @@ PRO test_orbit_propagation
   n_tests++
   test_name = 'Polar orbit: latitude ranges -90° to +90°'
 
-  elements = {a: 10000.0d0, e: 0.0d0, i: !DPI/2.0d0, Omega: 0.0d0, omega: 0.0d0, M0: 0.0d0}
+  elements = {a: 10000.0d0, e: 0.0d0, i: !DPI/2.0d0, raan: 0.0d0, omega: 0.0d0, M0: 0.0d0}
   t0 = 0.0d0
   period = 2.0d0 * !DPI * SQRT(elements.a^3 / mars.mu)
   t = DINDGEN(100) * period / 99.0d0
@@ -162,7 +162,7 @@ PRO test_orbit_propagation
 
   a = 15000.0d0
   e = 0.5d0
-  elements = {a: a, e: e, i: 0.0d0, Omega: 0.0d0, omega: 0.0d0, M0: 0.0d0}
+  elements = {a: a, e: e, i: 0.0d0, raan: 0.0d0, omega: 0.0d0, M0: 0.0d0}
   t0 = 0.0d0
   period = 2.0d0 * !DPI * SQRT(elements.a^3 / mars.mu)
   t = DINDGEN(100) * period / 99.0d0
@@ -201,7 +201,7 @@ PRO test_orbit_propagation
   n_tests++
   test_name = 'Energy conservation: E = -μ/(2a) constant (ΔE/E < 1e-12)'
 
-  elements = {a: 12000.0d0, e: 0.4d0, i: 0.5d0, Omega: 0.1d0, omega: 0.2d0, M0: 0.0d0}
+  elements = {a: 12000.0d0, e: 0.4d0, i: 0.5d0, raan: 0.1d0, omega: 0.2d0, M0: 0.0d0}
   t0 = 0.0d0
   period = 2.0d0 * !DPI * SQRT(elements.a^3 / mars.mu)
   t = DINDGEN(50) * period / 49.0d0
@@ -268,7 +268,7 @@ PRO test_orbit_propagation
   max_error = 0.0d0
 
   foreach e_val, e_values do begin
-    elements_test = {a: 10000.0d0, e: e_val, i: 0.0d0, Omega: 0.0d0, omega: 0.0d0, M0: !DPI/4.0d0}
+    elements_test = {a: 10000.0d0, e: e_val, i: 0.0d0, raan: 0.0d0, omega: 0.0d0, M0: !DPI/4.0d0}
     result_test = propagate_orbit(elements_test, 0.0d0, 0.0d0, mars)
 
     ; Verify Kepler's equation: M = Ecc - e*sin(Ecc)

@@ -17,7 +17,7 @@
 ;               .a     - Semi-major axis (km)
 ;               .e     - Eccentricity (dimensionless), 0 <= e < 1
 ;               .i     - Inclination (radians)
-;               .Omega - Right ascension of ascending node (radians)
+;               .raan  - Right ascension of ascending node (radians)
 ;               .omega - Argument of periapsis (radians)
 ;               .M0    - Mean anomaly at epoch (radians)
 ;   t         - Time to propagate to (seconds since epoch), scalar or array
@@ -53,7 +53,7 @@
 ;   IDL> mars = mars_constants()
 ;   IDL> ; Phobos-like orbit
 ;   IDL> elements = {a: 9376.0d0, e: 0.0151d0, i: 1.093d0*!DTOR, $
-;                     Omega: 0.0d0, omega: 0.0d0, M0: 0.0d0}
+;                     raan: 0.0d0, omega: 0.0d0, M0: 0.0d0}
 ;   IDL> t0 = 0.0d0
 ;   IDL> period = 2*!DPI*sqrt(elements.a^3 / mars.mu)
 ;   IDL> t = dindgen(100) * period / 99.0d0
@@ -81,7 +81,7 @@ FUNCTION propagate_orbit, elements, t, t0, constants
   a = elements.a
   e = elements.e
   i = elements.i
-  Omega = elements.Omega
+  raan = elements.raan
   omega = elements.omega
   M0 = elements.M0
 
@@ -123,7 +123,7 @@ FUNCTION propagate_orbit, elements, t, t0, constants
     peri_result = calculate_perifocal_position(a, e, nu, constants.mu)
 
     ; Step 5: Transform to MCI frame
-    mci_result = perifocal_to_mci(peri_result.r_pqw, peri_result.v_pqw, Omega, omega, i)
+    mci_result = perifocal_to_mci(peri_result.r_pqw, peri_result.v_pqw, raan, omega, i)
 
     ; Step 6: Convert to LLA
     lla_result = mci_to_lla(mci_result.r_mci, t_val, constants)
@@ -168,7 +168,7 @@ FUNCTION propagate_orbit, elements, t, t0, constants
       peri_result = calculate_perifocal_position(a, e, nu, constants.mu)
 
       ; Step 5: Transform to MCI
-      mci_result = perifocal_to_mci(peri_result.r_pqw, peri_result.v_pqw, Omega, omega, i)
+      mci_result = perifocal_to_mci(peri_result.r_pqw, peri_result.v_pqw, raan, omega, i)
 
       ; Step 6: Convert to LLA
       lla_result = mci_to_lla(mci_result.r_mci, t_val, constants)

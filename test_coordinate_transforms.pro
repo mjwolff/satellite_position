@@ -261,7 +261,7 @@ PRO test_coordinate_transforms
 
   ; TEST 11: Identity transformation (all angles = 0)
   n_tests++
-  test_name = 'Identity: Omega=0, omega=0, i=0'
+  test_name = 'Identity: raan=0, omega=0, i=0'
   r_pqw_test = [10000.0d0, 5000.0d0, 0.0d0]
   v_pqw_test = [0.0d0, 3.0d0, 0.0d0]
 

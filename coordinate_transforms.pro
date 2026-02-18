@@ -117,12 +117,12 @@ END
 ;   Orbital Mechanics / Coordinate Transformations
 ;
 ; CALLING SEQUENCE:
-;   result = perifocal_to_mci(r_pqw, v_pqw, Omega, omega, i)
+;   result = perifocal_to_mci(r_pqw, v_pqw, raan, omega, i)
 ;
 ; INPUTS:
 ;   r_pqw - Position vector in perifocal frame [3] (km)
 ;   v_pqw - Velocity vector in perifocal frame [3] (km/s)
-;   Omega - Right ascension of ascending node (radians)
+;   raan  - Right ascension of ascending node (radians)
 ;   omega - Argument of periapsis (radians)
 ;   i     - Inclination (radians), 0 <= i <= π
 ;
@@ -150,10 +150,10 @@ END
 ; EXAMPLE:
 ;   IDL> r_pqw = [10000.0d0, 0.0d0, 0.0d0]
 ;   IDL> v_pqw = [0.0d0, 3.0d0, 0.0d0]
-;   IDL> Omega = 0.0d0
+;   IDL> raan = 0.0d0
 ;   IDL> omega = 0.0d0
 ;   IDL> i = 0.0d0
-;   IDL> result = perifocal_to_mci(r_pqw, v_pqw, Omega, omega, i)
+;   IDL> result = perifocal_to_mci(r_pqw, v_pqw, raan, omega, i)
 ;   IDL> print, result.r_mci
 ;        10000.0       0.0       0.0
 ;
@@ -164,7 +164,7 @@ END
 ;   2026-02-18: Initial implementation
 ;-
 
-FUNCTION perifocal_to_mci, r_pqw, v_pqw, Omega, omega, i
+FUNCTION perifocal_to_mci, r_pqw, v_pqw, raan, omega, i
 
   COMPILE_OPT IDL2, HIDDEN
 
@@ -182,31 +182,31 @@ FUNCTION perifocal_to_mci, r_pqw, v_pqw, Omega, omega, i
   endif
 
   ; Pre-compute trigonometric values
-  cos_Omega = COS(Omega)
-  sin_Omega = SIN(Omega)
+  cos_raan = COS(raan)
+  sin_raan = SIN(raan)
   cos_omega = COS(omega)
   sin_omega = SIN(omega)
   cos_i = COS(i)
   sin_i = SIN(i)
 
-  ; Build rotation matrix R = R3(-Omega) * R1(-i) * R3(-omega)
+  ; Build rotation matrix R = R3(-raan) * R1(-i) * R3(-omega)
   ; This is the combined transformation from perifocal to MCI
   ;
-  ; R3(-Omega) rotates about Z-axis by -Omega
+  ; R3(-raan) rotates about Z-axis by -raan
   ; R1(-i) rotates about X-axis by -i
   ; R3(-omega) rotates about Z-axis by -omega
 
   R = DBLARR(3, 3)
 
   ; First row
-  R[0,0] = cos_Omega * cos_omega - sin_Omega * sin_omega * cos_i
-  R[0,1] = -cos_Omega * sin_omega - sin_Omega * cos_omega * cos_i
-  R[0,2] = sin_Omega * sin_i
+  R[0,0] = cos_raan * cos_omega - sin_raan * sin_omega * cos_i
+  R[0,1] = -cos_raan * sin_omega - sin_raan * cos_omega * cos_i
+  R[0,2] = sin_raan * sin_i
 
   ; Second row
-  R[1,0] = sin_Omega * cos_omega + cos_Omega * sin_omega * cos_i
-  R[1,1] = -sin_Omega * sin_omega + cos_Omega * cos_omega * cos_i
-  R[1,2] = -cos_Omega * sin_i
+  R[1,0] = sin_raan * cos_omega + cos_raan * sin_omega * cos_i
+  R[1,1] = -sin_raan * sin_omega + cos_raan * cos_omega * cos_i
+  R[1,2] = -cos_raan * sin_i
 
   ; Third row
   R[2,0] = sin_omega * sin_i
@@ -240,12 +240,12 @@ END
 ;   Orbital Mechanics / Coordinate Transformations
 ;
 ; CALLING SEQUENCE:
-;   result = mci_to_perifocal(r_mci, v_mci, Omega, omega, i)
+;   result = mci_to_perifocal(r_mci, v_mci, raan, omega, i)
 ;
 ; INPUTS:
 ;   r_mci - Position vector in MCI frame [3] (km)
 ;   v_mci - Velocity vector in MCI frame [3] (km/s)
-;   Omega - Right ascension of ascending node (radians)
+;   raan  - Right ascension of ascending node (radians)
 ;   omega - Argument of periapsis (radians)
 ;   i     - Inclination (radians), 0 <= i <= π
 ;
@@ -261,10 +261,10 @@ END
 ; EXAMPLE:
 ;   IDL> r_mci = [10000.0d0, 0.0d0, 0.0d0]
 ;   IDL> v_mci = [0.0d0, 3.0d0, 0.0d0]
-;   IDL> Omega = 0.0d0
+;   IDL> raan = 0.0d0
 ;   IDL> omega = 0.0d0
 ;   IDL> i = 0.0d0
-;   IDL> result = mci_to_perifocal(r_mci, v_mci, Omega, omega, i)
+;   IDL> result = mci_to_perifocal(r_mci, v_mci, raan, omega, i)
 ;   IDL> print, result.r_pqw
 ;        10000.0       0.0       0.0
 ;
@@ -272,7 +272,7 @@ END
 ;   2026-02-18: Initial implementation
 ;-
 
-FUNCTION mci_to_perifocal, r_mci, v_mci, Omega, omega, i
+FUNCTION mci_to_perifocal, r_mci, v_mci, raan, omega, i
 
   COMPILE_OPT IDL2, HIDDEN
 
@@ -290,33 +290,33 @@ FUNCTION mci_to_perifocal, r_mci, v_mci, Omega, omega, i
   endif
 
   ; Pre-compute trigonometric values
-  cos_Omega = COS(Omega)
-  sin_Omega = SIN(Omega)
+  cos_raan = COS(raan)
+  sin_raan = SIN(raan)
   cos_omega = COS(omega)
   sin_omega = SIN(omega)
   cos_i = COS(i)
   sin_i = SIN(i)
 
   ; Build rotation matrix R^T (transpose = inverse for orthogonal matrices)
-  ; R^T = [R3(-omega)]^T * [R1(-i)]^T * [R3(-Omega)]^T
-  ;     = R3(omega) * R1(i) * R3(Omega)
+  ; R^T = [R3(-omega)]^T * [R1(-i)]^T * [R3(-raan)]^T
+  ;     = R3(omega) * R1(i) * R3(raan)
 
   R_T = DBLARR(3, 3)
 
   ; Transpose of the perifocal_to_mci matrix
   ; First row
-  R_T[0,0] = cos_Omega * cos_omega - sin_Omega * sin_omega * cos_i
-  R_T[0,1] = sin_Omega * cos_omega + cos_Omega * sin_omega * cos_i
+  R_T[0,0] = cos_raan * cos_omega - sin_raan * sin_omega * cos_i
+  R_T[0,1] = sin_raan * cos_omega + cos_raan * sin_omega * cos_i
   R_T[0,2] = sin_omega * sin_i
 
   ; Second row
-  R_T[1,0] = -cos_Omega * sin_omega - sin_Omega * cos_omega * cos_i
-  R_T[1,1] = -sin_Omega * sin_omega + cos_Omega * cos_omega * cos_i
+  R_T[1,0] = -cos_raan * sin_omega - sin_raan * cos_omega * cos_i
+  R_T[1,1] = -sin_raan * sin_omega + cos_raan * cos_omega * cos_i
   R_T[1,2] = cos_omega * sin_i
 
   ; Third row
-  R_T[2,0] = sin_Omega * sin_i
-  R_T[2,1] = -cos_Omega * sin_i
+  R_T[2,0] = sin_raan * sin_i
+  R_T[2,1] = -cos_raan * sin_i
   R_T[2,2] = cos_i
 
   ; Transform position and velocity vectors
