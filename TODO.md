@@ -38,19 +38,19 @@
 - [x] **6.1** Create `test_orbit_propagation.pro` with circular equatorial orbit test (2026-02-18)
   - **Acceptance**: Constant altitude ± 0.01 km, latitude ≈ 0° ± 0.01°, linear longitude change
 
-- [ ] **6.2** Add polar orbit test to `test_orbit_propagation.pro`
+- [~] **6.2** Add polar orbit test to `test_orbit_propagation.pro`
   - **Acceptance**: Latitude ranges from -90° to +90°
 
-- [ ] **6.3** Add eccentric orbit test to `test_orbit_propagation.pro`
+- [~] **6.3** Add eccentric orbit test to `test_orbit_propagation.pro`
   - **Acceptance**: Periapsis and apoapsis altitudes match theoretical values within 0.1 km
 
-- [ ] **6.4** Add energy conservation test to `test_orbit_propagation.pro`
+- [~] **6.4** Add energy conservation test to `test_orbit_propagation.pro`
   - **Acceptance**: Orbital energy E = -μ/(2a) remains constant (ΔE/E < 1e-12)
 
-- [ ] **6.5** Add angular momentum conservation test to `test_orbit_propagation.pro`
+- [~] **6.5** Add angular momentum conservation test to `test_orbit_propagation.pro`
   - **Acceptance**: |h| = |r × v| remains constant (Δh/h < 1e-12)
 
-- [ ] **6.6** Add Kepler solver edge cases test to `test_orbit_propagation.pro`
+- [~] **6.6** Add Kepler solver edge cases test to `test_orbit_propagation.pro`
   - **Acceptance**: Solver converges for e = [0, 0.1, 0.5, 0.9, 0.99] with error < 1e-10
 
 ### 7. Documentation
@@ -62,8 +62,8 @@
 ## Progress Summary
 - Total tasks: 14
 - Completed: 10
-- In progress: 0
-- Not started: 4
+- In progress: 4
+- Not started: 0
 
 ## Notes
 - All angle inputs/outputs should be documented with units (radians vs degrees)
