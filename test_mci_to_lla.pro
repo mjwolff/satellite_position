@@ -203,6 +203,151 @@ PRO test_mci_to_lla
     print, '  Error after full rotation: ', error
   endelse
 
+  print, ''
+  print, '--- Testing Geodetic Latitude Calculator ---'
+  print, ''
+
+  ; TEST 9: Equator (lat = 0)
+  n_tests++
+  test_name = 'Equator: lat=0°'
+  x_fixed = 10000.0d0
+  y_fixed = 0.0d0
+  z_fixed = 0.0d0
+
+  result = calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2)
+
+  if (result.converged AND ABS(result.lat) lt 1e-10) then begin
+    print, 'TEST: ' + test_name + ' ... PASS'
+    print, '  Iterations: ', result.n_iter
+    n_passed++
+  endif else begin
+    print, 'TEST: ' + test_name + ' ... FAIL'
+    print, '  Latitude: ', result.lat * !RADEG, ' degrees'
+    print, '  Converged: ', result.converged
+  endelse
+
+  ; TEST 10: North pole (lat = 90°)
+  n_tests++
+  test_name = 'North pole: lat=90°'
+  x_fixed = 0.0d0
+  y_fixed = 0.0d0
+  z_fixed = mars.r_pol + 1000.0d0  ; 1000 km above pole
+
+  result = calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2)
+  expected_lat = !DPI / 2.0d0
+
+  if (result.converged AND ABS(result.lat - expected_lat) lt 1e-10) then begin
+    print, 'TEST: ' + test_name + ' ... PASS'
+    n_passed++
+  endif else begin
+    print, 'TEST: ' + test_name + ' ... FAIL'
+    print, '  Expected: 90°, Got: ', result.lat * !RADEG, ' degrees'
+  endelse
+
+  ; TEST 11: South pole (lat = -90°)
+  n_tests++
+  test_name = 'South pole: lat=-90°'
+  x_fixed = 0.0d0
+  y_fixed = 0.0d0
+  z_fixed = -(mars.r_pol + 500.0d0)
+
+  result = calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2)
+  expected_lat = -!DPI / 2.0d0
+
+  if (result.converged AND ABS(result.lat - expected_lat) lt 1e-10) then begin
+    print, 'TEST: ' + test_name + ' ... PASS'
+    n_passed++
+  endif else begin
+    print, 'TEST: ' + test_name + ' ... FAIL'
+    print, '  Expected: -90°, Got: ', result.lat * !RADEG, ' degrees'
+  endelse
+
+  ; TEST 12: Convergence speed (should converge in < 10 iterations)
+  n_tests++
+  test_name = 'Convergence in < 10 iterations'
+  x_fixed = 8000.0d0
+  y_fixed = 5000.0d0
+  z_fixed = 3000.0d0
+
+  result = calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2)
+
+  if (result.converged AND result.n_iter lt 10) then begin
+    print, 'TEST: ' + test_name + ' ... PASS'
+    print, '  Iterations: ', result.n_iter
+    n_passed++
+  endif else begin
+    print, 'TEST: ' + test_name + ' ... FAIL'
+    print, '  Iterations: ', result.n_iter, ' Converged: ', result.converged
+  endelse
+
+  ; TEST 13: Accuracy (tolerance < 1e-8 degrees)
+  n_tests++
+  test_name = 'Accuracy < 1e-8 degrees'
+  x_fixed = 7500.0d0
+  y_fixed = 4000.0d0
+  z_fixed = 2500.0d0
+
+  result = calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2, tol=1e-14)
+
+  ; Test that it converges to high precision
+  if (result.converged) then begin
+    print, 'TEST: ' + test_name + ' ... PASS'
+    print, '  Latitude: ', result.lat * !RADEG, ' degrees'
+    print, '  Altitude: ', result.h, ' km'
+    n_passed++
+  endif else begin
+    print, 'TEST: ' + test_name + ' ... FAIL'
+  endelse
+
+  ; TEST 14: On surface (altitude ≈ 0)
+  n_tests++
+  test_name = 'On surface: altitude ≈ 0'
+  ; Point on equator at surface
+  x_fixed = mars.r_eq
+  y_fixed = 0.0d0
+  z_fixed = 0.0d0
+
+  result = calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2)
+
+  if (result.converged AND ABS(result.h) lt 1.0d0) then begin  ; 1 km tolerance
+    print, 'TEST: ' + test_name + ' ... PASS'
+    print, '  Altitude: ', result.h, ' km'
+    n_passed++
+  endif else begin
+    print, 'TEST: ' + test_name + ' ... FAIL'
+    print, '  Altitude: ', result.h, ' km (expected ≈ 0)'
+  endelse
+
+  ; TEST 15: 45° latitude
+  n_tests++
+  test_name = '45° latitude calculation'
+  lat_target = !DPI / 4.0d0  ; 45 degrees
+  h_test = 1000.0d0  ; 1000 km altitude
+
+  ; Calculate expected position for 45° latitude
+  sin_lat = SIN(lat_target)
+  cos_lat = COS(lat_target)
+  N = mars.r_eq / SQRT(1.0d0 - mars.e2 * sin_lat^2)
+
+  x_fixed = (N + h_test) * cos_lat
+  y_fixed = 0.0d0
+  z_fixed = (N * (1.0d0 - mars.e2) + h_test) * sin_lat
+
+  result = calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2)
+
+  error_lat = ABS(result.lat - lat_target)
+  error_h = ABS(result.h - h_test)
+
+  if (result.converged AND error_lat lt 1e-8 AND error_h lt 1.0d0) then begin
+    print, 'TEST: ' + test_name + ' ... PASS'
+    print, '  Lat error: ', error_lat * !RADEG, ' deg, Alt error: ', error_h, ' km'
+    n_passed++
+  endif else begin
+    print, 'TEST: ' + test_name + ' ... FAIL'
+    print, '  Expected lat: ', lat_target * !RADEG, ' Got: ', result.lat * !RADEG
+    print, '  Expected h: ', h_test, ' Got: ', result.h
+  endelse
+
   ; Print summary
   print, ''
   print, '========================================='
