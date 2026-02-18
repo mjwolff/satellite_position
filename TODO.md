@@ -27,7 +27,7 @@
 - [x] **4.2** Add iterative geodetic latitude calculator to `mci_to_lla.pro` with unit test (2026-02-18)
   - **Acceptance**: Unit test verifies convergence to geodetic latitude within 1e-8 degrees in < 10 iterations
 
-- [ ] **4.3** Add longitude and altitude calculations to `mci_to_lla.pro` with unit test
+- [~] **4.3** Add longitude and altitude calculations to `mci_to_lla.pro` with unit test
   - **Acceptance**: Unit test verifies round-trip MCI → LLA → MCI returns original position within 0.1 meters
 
 ### 5. Main Propagator
@@ -62,8 +62,8 @@
 ## Progress Summary
 - Total tasks: 14
 - Completed: 7
-- In progress: 0
-- Not started: 7
+- In progress: 1
+- Not started: 6
 
 ## Notes
 - All angle inputs/outputs should be documented with units (radians vs degrees)
