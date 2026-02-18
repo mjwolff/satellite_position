@@ -3,7 +3,7 @@
 ## Project Tasks
 
 ### 1. Foundation Module
-- [ ] **1.1** Create `mars_constants.pro` with Mars physical constants
+- [~] **1.1** Create `mars_constants.pro` with Mars physical constants
   - **Acceptance**: Function returns structure with μ, r_eq, r_pol, f, e2, omega_mars, ref_epoch
 
 ### 2. Core Mathematical Solvers
@@ -62,8 +62,8 @@
 ## Progress Summary
 - Total tasks: 14
 - Completed: 0
-- In progress: 0
-- Not started: 14
+- In progress: 1
+- Not started: 13
 
 ## Notes
 - All angle inputs/outputs should be documented with units (radians vs degrees)
