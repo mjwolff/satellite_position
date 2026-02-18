@@ -10,7 +10,7 @@
 - [x] **2.1** Create `kepler_solver.pro` with Newton-Raphson solver and unit test (2026-02-18)
   - **Acceptance**: Solves M = Ecc - e·sin(Ecc) for e=[0, 0.5, 0.9, 0.99]; unit test verifies convergence within 50 iterations and error < 1e-10
 
-- [~] **2.2** Create `anomaly_conversions.pro` with Ecc ↔ ν conversion functions and unit test
+- [x] **2.2** Create `anomaly_conversions.pro` with Ecc ↔ ν conversion functions and unit test (2026-02-18)
   - **Acceptance**: Unit test verifies round-trip conversion (Ecc → ν → Ecc) returns original value within 1e-10 radians
 
 ### 3. Coordinate Transformation Module
@@ -61,8 +61,8 @@
 
 ## Progress Summary
 - Total tasks: 14
-- Completed: 2
-- In progress: 1
+- Completed: 3
+- In progress: 0
 - Not started: 11
 
 ## Notes
