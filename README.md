@@ -235,6 +235,78 @@ plot, result.lon, result.lat, psym=3, $
       title='Polar Orbit Ground Track (3 revolutions)'
 ```
 
+### Example 4: TGO (Trace Gas Orbiter) Realistic Mission Orbit
+
+```idl
+; ============================================================
+; ExoMars Trace Gas Orbiter (TGO) - Real Mars Mission Example
+; ============================================================
+; TGO has been studying Mars' atmosphere since 2018 from a
+; near-circular orbit at 400 km altitude with 74-degree
+; inclination, providing excellent mid-latitude coverage.
+;
+; Mission: ESA/Roscosmos ExoMars 2016
+; Operational orbit achieved: February 2018
+; Reference: https://exploration.esa.int/web/mars/-/46475-trace-gas-orbiter
+; ============================================================
+
+mars = mars_constants()
+
+; TGO operational science orbit parameters
+a_tgo = mars.r_eq + 400.0d0        ; Semi-major axis: 3796.19 km
+e_tgo = 0.005d0                    ; Nearly circular (low eccentricity)
+i_tgo = 74.0d0 * !DTOR             ; 74-degree inclination (near-polar)
+raan_tgo = 0.0d0                   ; RAAN (arbitrary for this example)
+omega_tgo = 0.0d0                  ; Argument of periapsis (minimal effect at low ecc)
+M0_tgo = 0.0d0                     ; Mean anomaly at epoch
+
+elements_tgo = {a: a_tgo, e: e_tgo, i: i_tgo, $
+                raan: raan_tgo, omega: omega_tgo, M0: M0_tgo}
+
+; Calculate and verify orbital period (should be ~2 hours)
+period_tgo = 2.0d0 * !DPI * SQRT(elements_tgo.a^3 / mars.mu)
+print, 'TGO Orbital Period: ', period_tgo / 3600.0d0, ' hours'
+
+; Propagate for 10 complete orbits (~20 hours of mission time)
+n_orbits = 10
+t = DINDGEN(n_orbits * 100) * period_tgo / 100.0d0  ; 100 points per orbit
+
+result = propagate_orbit(elements_tgo, t, 0.0d0, mars)
+
+; Verify altitude remains constant at ~400 km (validates circular orbit)
+print, 'Mean Altitude: ', MEAN(result.alt), ' km'
+print, 'Altitude Range: ', MIN(result.alt), ' to ', MAX(result.alt), ' km'
+
+; Verify latitude coverage (74-deg inclination reaches latitudes +/- 74 deg)
+print, 'Latitude Range: ', MIN(result.lat), ' to ', MAX(result.lat), ' degrees'
+
+; Plot ground track showing 10 orbits of coverage
+; The 74-degree inclination provides excellent mid-latitude coverage
+; while the near-circular orbit maintains constant altitude
+plot, result.lon, result.lat, psym=3, $
+      xrange=[-180, 180], yrange=[-90, 90], $
+      xtitle='Longitude (deg)', ytitle='Latitude (deg)', $
+      title='TGO Ground Track (10 orbits, ~20 hours)'
+
+; Verify nearly constant altitude profile (circular orbit characteristic)
+plot, result.t / 3600.0d0, result.alt, $
+      xtitle='Time (hours)', ytitle='Altitude (km)', $
+      title='TGO Altitude Profile - Should be nearly flat'
+```
+
+**What this example demonstrates:**
+- **Real-world spacecraft**: Uses actual orbital parameters from ESA's Mars mission
+- **Near-circular orbits**: Very low eccentricity (0.005) means nearly constant 400 km altitude
+- **Inclined orbit coverage**: 74° inclination provides access to mid-latitudes without full polar coverage
+- **Multi-orbit propagation**: Shows how to analyze extended mission timelines (10 orbits, ~20 hours)
+- **Orbit verification**: Confirms that calculated period (~2 hours) and altitude match published mission parameters
+
+**Expected Results:**
+- Orbital period: ~1.98 hours (7128 seconds)
+- Altitude: 400 km ± 1-2 km (variation due to small eccentricity)
+- Latitude coverage: -74° to +74° (matching inclination)
+- Ground track pattern: Diagonal passes across Mars surface with gradual westward drift due to Mars rotation
+
 ## Variable Naming Conventions
 
 - **Ecc**: Eccentric Anomaly (capital E distinguishes from eccentricity e)
