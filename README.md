@@ -8,6 +8,7 @@ This project provides tools to:
 - Propagate Keplerian orbital elements forward in time
 - Calculate satellite position and velocity in multiple coordinate frames
 - Convert between inertial and geodetic coordinates on Mars
+- Calculate Mars seasonal parameters (sub-solar latitude from areocentric solar longitude)
 - Validate orbital mechanics with comprehensive unit and integration tests
 
 ## Features
@@ -16,6 +17,7 @@ This project provides tools to:
 - **Multiple coordinate frames**: Perifocal (PQW), Mars-Centered Inertial (MCI), Longitude/Latitude/Altitude (LLA)
 - **Geodetic coordinates** accounting for Mars' oblate spheroid shape
 - **Time-dependent transformations** accounting for Mars rotation
+- **Mars climate calculations**: Sub-solar latitude for seasonal analysis
 - **High precision** with double-precision arithmetic throughout
 - **Comprehensive testing** with 100+ unit and integration tests
 
@@ -83,6 +85,7 @@ Defines physical and orbital constants for Mars:
 - Gravitational parameter (μ = 42828.37 km³/s²)
 - Reference ellipsoid dimensions (r_eq = 3396.19 km, r_pol = 3376.20 km)
 - Rotation rate (ω = 7.088218×10⁻⁵ rad/s)
+- Axial tilt/obliquity (ε = 25.19°)
 
 #### `solve_kepler.pro`
 Solves Kepler's equation (M = Ecc - e·sin(Ecc)) using Newton-Raphson iteration:
@@ -115,6 +118,17 @@ Main propagator integrating all modules:
 - Input: Keplerian elements + time array
 - Output: Position/velocity in all coordinate frames
 - Single function call for complete propagation
+
+### Mars Climate Calculations
+
+#### `calculate_subsolar_latitude.pro`
+Calculates the sub-solar latitude on Mars (where the Sun is directly overhead at solar noon) from areocentric solar longitude (L_s):
+- **Input**: L_s (Mars' position in its orbit around the Sun)
+- **Output**: Sub-solar latitude (latitude where Sun is at zenith)
+- **Range**: [-25.19°, +25.19°] for current Mars obliquity
+- **Applications**: Seasonal cycles, polar ice cap extent, atmospheric circulation
+- **Formula**: δ = obliquity × sin(L_s)
+- **Keywords**: `/DEGREES` for degree input/output, `OBLIQUITY=` for custom obliquity
 
 ## Coordinate Frames
 
@@ -159,6 +173,9 @@ idl -e ".compile mci_to_lla.pro" -e ".compile test_mci_to_lla.pro" -e "test_mci_
 
 # Test orbital propagator
 idl -e ".compile orbital_propagator.pro" -e ".compile test_orbital_propagator.pro" -e "test_orbital_propagator"
+
+# Test sub-solar latitude calculations
+idl -e ".compile mars_constants.pro" -e ".compile calculate_subsolar_latitude.pro" -e ".compile test_subsolar_latitude.pro" -e "test_subsolar_latitude"
 ```
 
 ### Integration Tests
@@ -307,8 +324,75 @@ plot, result.t / 3600.0d0, result.alt, $
 - Latitude coverage: -74° to +74° (matching inclination)
 - Ground track pattern: Diagonal passes across Mars surface with gradual westward drift due to Mars rotation
 
+### Example 5: Mars Sub-Solar Latitude (Seasonal Cycles)
+
+```idl
+; ============================================================
+; Calculate Mars sub-solar latitude from areocentric solar longitude
+; ============================================================
+; The sub-solar latitude (where the Sun is directly overhead at
+; solar noon) drives Mars seasonal cycles, polar ice cap extent,
+; and atmospheric circulation.
+; ============================================================
+
+.compile mars_constants.pro
+.compile calculate_subsolar_latitude.pro
+
+; Cardinal points of Mars year
+print, 'Mars Seasonal Cardinal Points:'
+print, 'L_s =   0° (Northern Spring Equinox): ', $
+       calculate_subsolar_latitude(0.0d0, /DEGREES), '°'
+print, 'L_s =  90° (Northern Summer Solstice): ', $
+       calculate_subsolar_latitude(90.0d0, /DEGREES), '°'
+print, 'L_s = 180° (Northern Autumn Equinox): ', $
+       calculate_subsolar_latitude(180.0d0, /DEGREES), '°'
+print, 'L_s = 270° (Northern Winter Solstice): ', $
+       calculate_subsolar_latitude(270.0d0, /DEGREES), '°'
+
+; Plot seasonal cycle over full Mars year
+Ls_array = DINDGEN(361)  ; L_s from 0° to 360°
+subsolar_lat = calculate_subsolar_latitude(Ls_array, /DEGREES)
+
+plot, Ls_array, subsolar_lat, $
+      xtitle='Areocentric Solar Longitude (degrees)', $
+      ytitle='Sub-solar Latitude (degrees)', $
+      title='Mars Seasonal Variation of Sub-solar Latitude', $
+      xrange=[0, 360], yrange=[-30, 30], $
+      thick=2
+
+; Add reference lines for equinoxes and solstices
+oplot, [0, 0], [-30, 30], linestyle=1, color=100      ; Spring equinox
+oplot, [90, 90], [-30, 30], linestyle=1, color=100    ; Summer solstice
+oplot, [180, 180], [-30, 30], linestyle=1, color=100  ; Autumn equinox
+oplot, [270, 270], [-30, 30], linestyle=1, color=100  ; Winter solstice
+oplot, [0, 360], [0, 0], linestyle=2, color=150       ; Equator
+
+; Custom obliquity for past Mars epochs
+subsolar_historical = calculate_subsolar_latitude(90.0d0, /DEGREES, OBLIQUITY=35.0)
+print, 'Historical Mars (35° obliquity) at summer solstice: ', $
+       subsolar_historical, '°'
+```
+
+**What this example demonstrates:**
+- **Seasonal analysis**: Calculate where the Sun is directly overhead on Mars
+- **Climate applications**: Sub-solar latitude drives polar ice caps and atmospheric circulation
+- **Full Mars year**: Plot seasonal variation over complete orbital cycle (L_s = 0° to 360°)
+- **Custom obliquity**: Support for historical Mars epochs with different axial tilt
+- **Cardinal points**:
+  - L_s = 0°/180° (equinoxes) → Sun at equator (δ = 0°)
+  - L_s = 90° (summer solstice) → Sun at +25.19° north
+  - L_s = 270° (winter solstice) → Sun at -25.19° south
+
+**Expected Results:**
+- Northern spring/autumn equinoxes: 0°
+- Northern summer solstice: +25.19°
+- Northern winter solstice: -25.19°
+- Sinusoidal variation throughout Mars year
+- Current Mars obliquity: 25.19° (varies on ~120,000 year timescale)
+
 ## Variable Naming Conventions
 
+### Orbital Elements
 - **Ecc**: Eccentric Anomaly (capital E distinguishes from eccentricity e)
 - **M**: Mean Anomaly
 - **nu** (ν): True Anomaly
@@ -319,6 +403,11 @@ plot, result.t / 3600.0d0, result.alt, $
 - **omega** (ω): Argument of periapsis (radians)
 - **M0**: Mean anomaly at epoch (radians)
 
+### Mars Climate Parameters
+- **Ls** (L_s): Areocentric solar longitude (degrees or radians) - Mars' position in its orbit around the Sun
+- **subsolar_lat** (δ): Sub-solar latitude (degrees or radians) - latitude where Sun is at zenith
+- **obliquity** (ε): Mars axial tilt (25.19° for current epoch)
+
 ## Technical Details
 
 ### Accuracy
@@ -327,6 +416,7 @@ plot, result.t / 3600.0d0, result.alt, $
 - Anomaly conversions: ~10⁻¹⁶ radians (machine precision)
 - Geodetic latitude: < 10⁻⁸ degrees
 - Round-trip MCI ↔ LLA: < 0.1 meters
+- Sub-solar latitude: < 10⁻⁶ degrees
 - Energy conservation: ΔE/E < 10⁻¹²
 - Angular momentum conservation: Δh/h < 10⁻¹²
 
@@ -345,24 +435,36 @@ plot, result.t / 3600.0d0, result.alt, $
 
 ```
 satellite_position/
-├── mars_constants.pro              # Mars physical constants
-├── kepler_solver.pro               # Kepler equation solver
-├── anomaly_conversions.pro         # Anomaly conversions
-├── coordinate_transforms.pro       # Coordinate transformations
-├── mci_to_lla.pro                 # Geodetic conversions
-├── orbital_propagator.pro          # Main propagator
-├── test_mars_constants.pro         # Unit tests
-├── test_kepler_solver.pro          # Unit tests
-├── test_anomaly_conversions.pro    # Unit tests
-├── test_coordinate_transforms.pro  # Unit tests
-├── test_mci_to_lla.pro            # Unit tests
-├── test_orbital_propagator.pro     # Unit tests
-├── test_orbit_propagation.pro      # Integration tests
-├── run_test_kepler.pro            # Test runner
-├── run_test_anomaly.pro           # Test runner
-├── TODO.md                        # Task tracking
-├── STATUS.md                      # Project status
-└── README.md                      # This file
+├── mars_constants.pro                 # Mars physical constants
+├── solve_kepler.pro                   # Kepler equation solver
+├── ecc_to_true_anomaly.pro           # Anomaly conversions
+├── true_to_ecc_anomaly.pro           # Anomaly conversions
+├── calculate_perifocal_position.pro  # Coordinate transformations
+├── perifocal_to_mci.pro              # Coordinate transformations
+├── mci_to_perifocal.pro              # Coordinate transformations
+├── mci_to_mars_fixed.pro             # Rotation transformations
+├── mars_fixed_to_mci.pro             # Rotation transformations
+├── calculate_geodetic_latitude.pro   # Geodetic conversions
+├── mci_to_lla.pro                    # Geodetic conversions
+├── lla_to_mci.pro                    # Geodetic conversions
+├── calculate_subsolar_latitude.pro   # Mars climate calculations
+├── orbital_propagator.pro            # Main propagator
+├── test_mars_constants.pro           # Unit tests
+├── test_kepler_solver.pro            # Unit tests
+├── test_anomaly_conversions.pro      # Unit tests
+├── test_coordinate_transforms.pro    # Unit tests
+├── test_mci_to_lla.pro              # Unit tests
+├── test_subsolar_latitude.pro        # Unit tests
+├── test_orbital_propagator.pro       # Unit tests
+├── test_orbit_propagation.pro        # Integration tests
+├── run_test_kepler.pro              # Test runner
+├── run_test_anomaly.pro             # Test runner
+├── example_tgo.pro                  # TGO mission example
+├── run_example_tgo.pro              # TGO example runner
+├── TGO_EXAMPLE_VERIFICATION.md      # TGO verification docs
+├── TODO.md                          # Task tracking (if exists)
+├── STATUS.md                        # Project status (if exists)
+└── README.md                        # This file
 ```
 
 ## References

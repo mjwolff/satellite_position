@@ -64,7 +64,7 @@ PRO test_mars_constants
   endelse
 
   ; TEST 2: Verify all required fields exist
-  required_fields = ['mu', 'r_eq', 'r_pol', 'f', 'e2', 'omega_mars', 'ref_epoch']
+  required_fields = ['mu', 'r_eq', 'r_pol', 'f', 'e2', 'omega_mars', 'obliquity', 'ref_epoch']
 
   foreach field, required_fields do begin
     n_tests++
@@ -137,7 +137,19 @@ PRO test_mars_constants
     print, '  Expected: ', expected_omega, ' Got: ', mars.omega_mars
   endelse
 
-  ; TEST 8: Verify all values are double precision
+  ; TEST 8: Verify obliquity is positive and reasonable
+  n_tests++
+  test_name = 'obliquity is positive and in expected range'
+  expected_obliquity = 25.19d0 * !DTOR  ; radians
+  if (mars.obliquity gt 0 AND ABS(mars.obliquity - expected_obliquity) lt 1e-10) then begin
+    print, 'TEST: ' + test_name + ' ... PASS'
+    n_passed++
+  endif else begin
+    print, 'TEST: ' + test_name + ' ... FAIL'
+    print, '  Expected: ', expected_obliquity, ' Got: ', mars.obliquity
+  endelse
+
+  ; TEST 9: Verify all values are double precision
   n_tests++
   test_name = 'All numeric fields use double precision'
   all_double = 1b  ; boolean flag
@@ -148,6 +160,7 @@ PRO test_mars_constants
   if (SIZE(mars.f, /TYPE) ne 5) then all_double = 0b
   if (SIZE(mars.e2, /TYPE) ne 5) then all_double = 0b
   if (SIZE(mars.omega_mars, /TYPE) ne 5) then all_double = 0b
+  if (SIZE(mars.obliquity, /TYPE) ne 5) then all_double = 0b
   if (SIZE(mars.ref_epoch, /TYPE) ne 5) then all_double = 0b
 
   if (all_double) then begin

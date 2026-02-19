@@ -24,6 +24,7 @@
 ;     .f           - Flattening factor (dimensionless)
 ;     .e2          - Eccentricity squared (dimensionless)
 ;     .omega_mars  - Mars rotation rate (rad/s)
+;     .obliquity   - Axial tilt/obliquity (radians)
 ;     .ref_epoch   - Reference epoch for rotation (J2000.0, seconds since epoch)
 ;
 ; EXAMPLE:
@@ -39,6 +40,7 @@
 ;
 ; MODIFICATION HISTORY:
 ;   2026-02-18: Initial implementation
+;   2026-02-18: Added obliquity (axial tilt) constant
 ;-
 
 FUNCTION mars_constants
@@ -66,6 +68,11 @@ FUNCTION mars_constants
   ; omega = 2π / T_sidereal
   omega_mars = 7.088218d-5  ; rad/s
 
+  ; Mars axial tilt (obliquity)
+  ; Source: IAU 2015 / NASA Mars Fact Sheet
+  ; Note: Mars obliquity varies on ~120,000 year timescale
+  obliquity = 25.19d0 * !DTOR  ; radians (current epoch)
+
   ; Reference epoch: J2000.0 (January 1, 2000, 12:00:00 TT)
   ; This is the reference time for Mars rotation calculations
   ; Set to 0.0 for simplicity (user can offset relative to this)
@@ -79,6 +86,7 @@ FUNCTION mars_constants
     f:          f, $
     e2:         e2, $
     omega_mars: omega_mars, $
+    obliquity:  obliquity, $
     ref_epoch:  ref_epoch $
   }
 
