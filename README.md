@@ -84,30 +84,31 @@ Defines physical and orbital constants for Mars:
 - Reference ellipsoid dimensions (r_eq = 3396.19 km, r_pol = 3376.20 km)
 - Rotation rate (ω = 7.088218×10⁻⁵ rad/s)
 
-#### `kepler_solver.pro`
+#### `solve_kepler.pro`
 Solves Kepler's equation (M = Ecc - e·sin(Ecc)) using Newton-Raphson iteration:
 - Converges in typically 4-6 iterations
 - Accuracy: < 10⁻¹⁰ radians
 - Handles eccentricities from 0 to 0.99
 
-#### `anomaly_conversions.pro`
+#### Anomaly Conversions
 Converts between eccentric and true anomaly:
-- `ecc_to_true_anomaly(Ecc, e)` - Eccentric → True anomaly
-- `true_to_ecc_anomaly(nu, e)` - True → Eccentric anomaly
+- `ecc_to_true_anomaly.pro` - Eccentric → True anomaly
+- `true_to_ecc_anomaly.pro` - True → Eccentric anomaly
 - Round-trip accuracy: machine precision (~10⁻¹⁶)
 
-#### `coordinate_transforms.pro`
+#### Coordinate Transformations
 Coordinate frame transformations:
-- `calculate_perifocal_position(a, e, nu, mu)` - Calculate position/velocity in perifocal frame
-- `perifocal_to_mci(r_pqw, v_pqw, raan, omega, i)` - Perifocal → MCI transformation
-- `mci_to_perifocal(r_mci, v_mci, raan, omega, i)` - MCI → Perifocal transformation
+- `calculate_perifocal_position.pro` - Calculate position/velocity in perifocal frame
+- `perifocal_to_mci.pro` - Perifocal → MCI transformation
+- `mci_to_perifocal.pro` - MCI → Perifocal transformation
 
-#### `mci_to_lla.pro`
+#### Geodetic Conversions
 Geodetic coordinate conversions:
-- `mci_to_mars_fixed(r_mci, t, t_ref, omega_mars)` - Account for Mars rotation
-- `calculate_geodetic_latitude(x, y, z, r_eq, e2)` - Iterative geodetic latitude solver
-- `mci_to_lla(r_mci, t, constants)` - Full MCI → Longitude/Latitude/Altitude
-- `lla_to_mci(lon, lat, alt, t, constants)` - Inverse transformation
+- `mci_to_mars_fixed.pro` - Account for Mars rotation (MCI → Mars-fixed)
+- `mars_fixed_to_mci.pro` - Mars-fixed → MCI transformation
+- `calculate_geodetic_latitude.pro` - Iterative geodetic latitude solver
+- `mci_to_lla.pro` - Full MCI → Longitude/Latitude/Altitude
+- `lla_to_mci.pro` - Inverse transformation (LLA → MCI)
 
 #### `orbital_propagator.pro`
 Main propagator integrating all modules:

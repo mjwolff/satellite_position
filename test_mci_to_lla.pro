@@ -36,7 +36,6 @@ PRO test_mci_to_lla
   print, ''
 
   ; Get Mars constants
-  .compile mars_constants.pro
   mars = mars_constants()
 
   print, '--- Testing MCI to Mars-Fixed Rotation ---'

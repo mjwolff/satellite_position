@@ -36,7 +36,6 @@ PRO test_orbital_propagator
   print, ''
 
   ; Get Mars constants
-  .compile mars_constants.pro
   mars = mars_constants()
 
   ; TEST 1: All output fields present

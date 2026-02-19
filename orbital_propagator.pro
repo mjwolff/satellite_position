@@ -71,12 +71,6 @@ FUNCTION propagate_orbit, elements, t, t0, constants
 
   COMPILE_OPT IDL2, HIDDEN
 
-  ; Compile dependencies
-  .compile kepler_solver.pro
-  .compile anomaly_conversions.pro
-  .compile coordinate_transforms.pro
-  .compile mci_to_lla.pro
-
   ; Extract orbital elements
   a = elements.a
   e = elements.e

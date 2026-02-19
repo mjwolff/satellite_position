@@ -37,8 +37,6 @@ PRO test_orbit_propagation
   print, ''
 
   ; Get Mars constants
-  .compile mars_constants.pro
-  .compile orbital_propagator.pro
   mars = mars_constants()
 
   ; TEST 1: Circular equatorial orbit - constant altitude

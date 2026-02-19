@@ -36,7 +36,6 @@ PRO test_coordinate_transforms
   print, ''
 
   ; Get Mars constants
-  .compile mars_constants.pro
   mars = mars_constants()
 
   ; TEST 1: Circular orbit at periapsis (nu=0)
