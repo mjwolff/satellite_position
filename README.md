@@ -36,7 +36,7 @@ This project provides tools to:
 ```bash
 # Test installation
 cd satellite_position
-idl -e ".compile mars_constants.pro" -e "mars = mars_constants()" -e "help, mars"
+idl -e "mars = mars_constants()" -e "help, mars"
 ```
 
 ## Quick Start
@@ -45,8 +45,6 @@ idl -e ".compile mars_constants.pro" -e "mars = mars_constants()" -e "help, mars
 
 ```idl
 ; Initialize Mars constants
-.compile mars_constants.pro
-.compile orbital_propagator.pro
 mars = mars_constants()
 
 ; Define orbital elements (Phobos-like orbit)
@@ -157,31 +155,31 @@ Each module has its own unit test file:
 
 ```bash
 # Test Mars constants
-idl run_test_mars.pro  # Or: idl -e ".compile mars_constants.pro" -e ".compile test_mars_constants.pro" -e "test_mars_constants"
+idl -e "test_mars_constants"
 
 # Test Kepler solver
-idl run_test_kepler.pro
+idl -e "test_kepler_solver"
 
 # Test anomaly conversions
-idl run_test_anomaly.pro
+idl -e "test_anomaly_conversions"
 
 # Test coordinate transforms
-idl -e ".compile coordinate_transforms.pro" -e ".compile test_coordinate_transforms.pro" -e "test_coordinate_transforms"
+idl -e "test_coordinate_transforms"
 
 # Test MCI to LLA conversions
-idl -e ".compile mci_to_lla.pro" -e ".compile test_mci_to_lla.pro" -e "test_mci_to_lla"
+idl -e "test_mci_to_lla"
 
 # Test orbital propagator
-idl -e ".compile orbital_propagator.pro" -e ".compile test_orbital_propagator.pro" -e "test_orbital_propagator"
+idl -e "test_orbital_propagator"
 
 # Test sub-solar latitude calculations
-idl -e ".compile mars_constants.pro" -e ".compile calculate_subsolar_latitude.pro" -e ".compile test_subsolar_latitude.pro" -e "test_subsolar_latitude"
+idl -e "test_subsolar_latitude"
 ```
 
 ### Integration Tests
 
 ```bash
-idl -e ".compile test_orbit_propagation.pro" -e "test_orbit_propagation"
+idl -e "test_orbit_propagation"
 ```
 
 Integration tests validate:
@@ -334,9 +332,6 @@ plot, result.t / 3600.0d0, result.alt, $
 ; solar noon) drives Mars seasonal cycles, polar ice cap extent,
 ; and atmospheric circulation.
 ; ============================================================
-
-.compile mars_constants.pro
-.compile calculate_subsolar_latitude.pro
 
 ; Cardinal points of Mars year
 print, 'Mars Seasonal Cardinal Points:'

@@ -135,13 +135,13 @@ To verify the implementation when IDL is available:
 ### Syntax Verification
 ```bash
 cd /Users/mwolff/processing_local/claude/orbit/satellite_position
-idl -e ".compile example_tgo.pro"
+idl -e "example_tgo"
 ```
-Expected: No syntax errors
+Expected: No syntax errors, output printed to console
 
 ### Example Execution
 ```bash
-idl -e ".compile example_tgo.pro" -e "example_tgo" -e "exit"
+idl -e "example_tgo" -e "exit"
 ```
 
 ### Expected Output Checks
