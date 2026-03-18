@@ -31,12 +31,36 @@ This project provides tools to:
 
 1. Clone or download this repository
 2. Ensure IDL is installed and accessible from your command line
-3. Add the project directory to your IDL path (optional)
+3. Add the source directories to your IDL path
+
+### Setting Up IDL Path
+
+Add the following to your IDL startup file (`.idl_startup` or `idl_startup.pro`) or execute at the IDL prompt:
+
+```idl
+; Add all directories to IDL path
+!PATH = '/path/to/satellite_position/src' + ':' + !PATH
+!PATH = '/path/to/satellite_position/tests' + ':' + !PATH
+!PATH = '/path/to/satellite_position/examples' + ':' + !PATH
+```
+
+Alternatively, add just the source directory if you only need the core library:
+
+```idl
+; Minimal setup - just source code
+!PATH = '/path/to/satellite_position/src' + ':' + !PATH
+```
+
+**Note for Windows users**: Use semicolon (`;`) instead of colon (`:`) as the path separator:
+```idl
+!PATH = 'C:\path\to\satellite_position\src' + ';' + !PATH
+```
+
+### Test Installation
 
 ```bash
-# Test installation
 cd satellite_position
-idl -e "mars = mars_constants()" -e "help, mars"
+idl -e "!PATH = 'src' + ':' + !PATH" -e "mars = mars_constants()" -e "help, mars"
 ```
 
 ## Quick Start
@@ -151,35 +175,37 @@ Calculates the sub-solar latitude on Mars (where the Sun is directly overhead at
 
 ### Unit Tests
 
-Each module has its own unit test file:
+Each module has its own unit test file. Make sure to set up your IDL path first (see Installation section above).
 
 ```bash
+# From the satellite_position directory:
+
 # Test Mars constants
-idl -e "test_mars_constants"
+idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "test_mars_constants"
 
 # Test Kepler solver
-idl -e "test_kepler_solver"
+idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "test_kepler_solver"
 
 # Test anomaly conversions
-idl -e "test_anomaly_conversions"
+idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "test_anomaly_conversions"
 
 # Test coordinate transforms
-idl -e "test_coordinate_transforms"
+idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "test_coordinate_transforms"
 
 # Test MCI to LLA conversions
-idl -e "test_mci_to_lla"
+idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "test_mci_to_lla"
 
 # Test orbital propagator
-idl -e "test_propagate_orbit"
+idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "test_propagate_orbit"
 
 # Test sub-solar latitude calculations
-idl -e "test_subsolar_latitude"
+idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "test_subsolar_latitude"
 ```
 
 ### Integration Tests
 
 ```bash
-idl -e "test_orbit_propagation"
+idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "test_orbit_propagation"
 ```
 
 Integration tests validate:
@@ -430,36 +456,40 @@ print, 'Historical Mars (35° obliquity) at summer solstice: ', $
 
 ```
 satellite_position/
-├── mars_constants.pro                 # Mars physical constants
-├── solve_kepler.pro                   # Kepler equation solver
-├── ecc_to_true_anomaly.pro           # Anomaly conversions
-├── true_to_ecc_anomaly.pro           # Anomaly conversions
-├── calculate_perifocal_position.pro  # Coordinate transformations
-├── perifocal_to_mci.pro              # Coordinate transformations
-├── mci_to_perifocal.pro              # Coordinate transformations
-├── mci_to_mars_fixed.pro             # Rotation transformations
-├── mars_fixed_to_mci.pro             # Rotation transformations
-├── calculate_geodetic_latitude.pro   # Geodetic conversions
-├── mci_to_lla.pro                    # Geodetic conversions
-├── lla_to_mci.pro                    # Geodetic conversions
-├── calculate_subsolar_latitude.pro   # Mars climate calculations
-├── propagate_orbit.pro               # Main propagator
-├── test_mars_constants.pro           # Unit tests
-├── test_kepler_solver.pro            # Unit tests
-├── test_anomaly_conversions.pro      # Unit tests
-├── test_coordinate_transforms.pro    # Unit tests
-├── test_mci_to_lla.pro              # Unit tests
-├── test_subsolar_latitude.pro        # Unit tests
-├── test_propagate_orbit.pro          # Unit tests
-├── test_orbit_propagation.pro        # Integration tests
-├── run_test_kepler.pro              # Test runner
-├── run_test_anomaly.pro             # Test runner
-├── example_tgo.pro                  # TGO mission example
-├── run_example_tgo.pro              # TGO example runner
-├── TGO_EXAMPLE_VERIFICATION.md      # TGO verification docs
-├── TODO.md                          # Task tracking (if exists)
-├── STATUS.md                        # Project status (if exists)
-└── README.md                        # This file
+├── README.md                        # This file
+├── src/                             # Source code
+│   ├── mars_constants.pro           # Mars physical constants
+│   ├── solve_kepler.pro             # Kepler equation solver
+│   ├── ecc_to_true_anomaly.pro      # Anomaly conversions
+│   ├── true_to_ecc_anomaly.pro      # Anomaly conversions
+│   ├── calculate_perifocal_position.pro  # Coordinate transformations
+│   ├── perifocal_to_mci.pro         # Coordinate transformations
+│   ├── mci_to_perifocal.pro         # Coordinate transformations
+│   ├── mci_to_mars_fixed.pro        # Rotation transformations
+│   ├── mars_fixed_to_mci.pro        # Rotation transformations
+│   ├── calculate_geodetic_latitude.pro  # Geodetic conversions
+│   ├── mci_to_lla.pro               # Geodetic conversions
+│   ├── lla_to_mci.pro               # Geodetic conversions
+│   ├── calculate_subsolar_latitude.pro  # Mars climate calculations
+│   └── propagate_orbit.pro          # Main propagator
+├── tests/                           # Test files
+│   ├── test_mars_constants.pro      # Unit tests
+│   ├── test_kepler_solver.pro       # Unit tests
+│   ├── test_anomaly_conversions.pro # Unit tests
+│   ├── test_coordinate_transforms.pro  # Unit tests
+│   ├── test_mci_to_lla.pro          # Unit tests
+│   ├── test_subsolar_latitude.pro   # Unit tests
+│   ├── test_propagate_orbit.pro     # Unit tests
+│   ├── test_orbit_propagation.pro   # Integration tests
+│   ├── run_test_kepler.pro          # Test runner
+│   └── run_test_anomaly.pro         # Test runner
+├── examples/                        # Example usage
+│   ├── example_tgo.pro              # TGO mission example
+│   └── run_example_tgo.pro          # TGO example runner
+└── docs/                            # Documentation
+    ├── STATUS.md                    # Project status
+    ├── TODO.md                      # Task tracking
+    └── TGO_EXAMPLE_VERIFICATION.md  # TGO verification docs
 ```
 
 ## References
