@@ -361,6 +361,37 @@ plot, result.t / 3600.0d0, result.alt, $
 - Latitude coverage: -74° to +74° (matching inclination)
 - Ground track pattern: Diagonal passes across Mars surface with gradual westward drift due to Mars rotation
 
+**Running the Complete TGO Example:**
+
+A complete, interactive TGO example is provided in `examples/example_tgo.pro`. To run it:
+
+```bash
+cd satellite_position
+idl
+```
+
+Then at the IDL prompt:
+```idl
+IDL> !PATH = 'src:examples' + ':' + !PATH
+IDL> .run examples/example_tgo.pro
+IDL> example_tgo
+```
+
+This will:
+- Load Mars constants and define TGO orbital elements
+- Calculate and verify the orbital period
+- Propagate the orbit for 10 complete revolutions (~20 hours)
+- Display altitude, latitude, and longitude statistics
+- Generate three visualization windows:
+  - Window 0: Ground track showing latitude/longitude coverage
+  - Window 1: Altitude profile vs time (nearly flat for circular orbit)
+  - Window 2: Orbital path in MCI frame (X-Y projection)
+
+**Platform Note:** On Windows, use semicolon (`;`) instead of colon (`:`) as the path separator:
+```idl
+IDL> !PATH = 'src;examples' + ';' + !PATH
+```
+
 ### Example 5: Mars Sub-Solar Latitude (Seasonal Cycles)
 
 ```idl
