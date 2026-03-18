@@ -168,7 +168,17 @@ PRO example_tgo
 
   ; 3D orbital visualization (X-Y plane)
   window, 2, xsize=600, ysize=600
-  plot, result.mci_pos[0,*], result.mci_pos[1,*], psym=3, $
+
+  ; Extract X and Y coordinates from array of structures
+  n_points = N_ELEMENTS(result)
+  x_coords = DBLARR(n_points)
+  y_coords = DBLARR(n_points)
+  FOR i = 0, n_points - 1 DO BEGIN
+    x_coords[i] = result[i].r_mci[0]
+    y_coords[i] = result[i].r_mci[1]
+  ENDFOR
+
+  plot, x_coords, y_coords, psym=3, $
         xtitle='X (km)', ytitle='Y (km)', $
         title='TGO Orbit - MCI Frame (X-Y Projection)', $
         charsize=1.5, /isotropic
