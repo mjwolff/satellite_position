@@ -111,7 +111,7 @@ Geodetic coordinate conversions:
 - `mci_to_lla.pro` - Full MCI → Longitude/Latitude/Altitude
 - `lla_to_mci.pro` - Inverse transformation (LLA → MCI)
 
-#### `orbital_propagator.pro`
+#### `propagate_orbit.pro`
 Main propagator integrating all modules:
 - Input: Keplerian elements + time array
 - Output: Position/velocity in all coordinate frames
@@ -170,7 +170,7 @@ idl -e "test_coordinate_transforms"
 idl -e "test_mci_to_lla"
 
 # Test orbital propagator
-idl -e "test_orbital_propagator"
+idl -e "test_propagate_orbit"
 
 # Test sub-solar latitude calculations
 idl -e "test_subsolar_latitude"
@@ -443,14 +443,14 @@ satellite_position/
 ├── mci_to_lla.pro                    # Geodetic conversions
 ├── lla_to_mci.pro                    # Geodetic conversions
 ├── calculate_subsolar_latitude.pro   # Mars climate calculations
-├── orbital_propagator.pro            # Main propagator
+├── propagate_orbit.pro               # Main propagator
 ├── test_mars_constants.pro           # Unit tests
 ├── test_kepler_solver.pro            # Unit tests
 ├── test_anomaly_conversions.pro      # Unit tests
 ├── test_coordinate_transforms.pro    # Unit tests
 ├── test_mci_to_lla.pro              # Unit tests
 ├── test_subsolar_latitude.pro        # Unit tests
-├── test_orbital_propagator.pro       # Unit tests
+├── test_propagate_orbit.pro          # Unit tests
 ├── test_orbit_propagation.pro        # Integration tests
 ├── run_test_kepler.pro              # Test runner
 ├── run_test_anomaly.pro             # Test runner

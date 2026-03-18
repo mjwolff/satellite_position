@@ -21,7 +21,7 @@
 PRO example_tgo
 
   ; Initialize Mars constants
-  ; Note: Ensure mars_constants.pro and orbital_propagator.pro are compiled before running
+  ; Note: Ensure mars_constants.pro and propagate_orbit.pro are compiled before running
   mars = mars_constants()
 
   print, ''

@@ -118,7 +118,7 @@ The TGO example uses the complete orbital propagation pipeline:
 6. `mci_to_mars_fixed.pro` - Account for Mars rotation
 7. `calculate_geodetic_latitude.pro` - Compute geodetic coordinates
 8. `mci_to_lla.pro` - Full conversion to Longitude/Latitude/Altitude
-9. `orbital_propagator.pro` - Main propagator integrating all modules
+9. `propagate_orbit.pro` - Main propagator integrating all modules
 
 **All modules already exist and are tested** - no new code required.
 

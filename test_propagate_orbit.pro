@@ -1,15 +1,15 @@
 ;+
 ; NAME:
-;   TEST_ORBITAL_PROPAGATOR
+;   TEST_PROPAGATE_ORBIT
 ;
 ; PURPOSE:
-;   Unit test for orbital_propagator.pro
+;   Unit test for propagate_orbit.pro
 ;
 ; CATEGORY:
 ;   Unit Testing / Orbital Mechanics
 ;
 ; CALLING SEQUENCE:
-;   test_orbital_propagator
+;   test_propagate_orbit
 ;
 ; INPUTS:
 ;   None
@@ -21,7 +21,7 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-PRO test_orbital_propagator
+PRO test_propagate_orbit
 
   COMPILE_OPT IDL2
 
@@ -31,7 +31,7 @@ PRO test_orbital_propagator
 
   print, ''
   print, '========================================='
-  print, 'Running Unit Tests for orbital_propagator'
+  print, 'Running Unit Tests for propagate_orbit'
   print, '========================================='
   print, ''
 
