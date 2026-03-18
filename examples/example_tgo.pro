@@ -21,8 +21,8 @@
 PRO example_tgo
 
   ; Initialize Mars constants
-  ; Note: Ensure mars_constants.pro and propagate_orbit.pro are compiled before running
-  mars = mars_constants()
+  ; Note: Ensure sp_mars_constants.pro and sp_propagate_orbit.pro are compiled before running
+  mars = sp_mars_constants()
 
   print, ''
   print, '============================================================'
@@ -76,7 +76,7 @@ PRO example_tgo
   t = DINDGEN(n_orbits * n_points_per_orbit) * period_tgo / DOUBLE(n_points_per_orbit)
 
   print, 'Propagating orbit for ', n_orbits, ' revolutions...'
-  result = propagate_orbit(elements_tgo, t, 0.0d0, mars)
+  result = sp_propagate_orbit(elements_tgo, t, 0.0d0, mars)
   print, 'Propagation complete.'
   print, ''
 
