@@ -58,10 +58,23 @@ Alternatively, add just the source directory if you only need the core library:
 
 ### Test Installation
 
+Run the installation test script to verify everything is working:
+
 ```bash
 cd satellite_position
-idl -e "!PATH = 'src' + ':' + !PATH" -e "mars = mars_constants()" -e "help, mars"
+idl -e "test_install"
 ```
+
+Or from within IDL:
+```idl
+IDL> cd, '/path/to/satellite_position'
+IDL> .run test_install
+```
+
+The test script will:
+- Load Mars constants
+- Propagate a simple circular orbit
+- Display results to verify correct installation
 
 ## Quick Start
 
@@ -457,6 +470,7 @@ print, 'Historical Mars (35° obliquity) at summer solstice: ', $
 ```
 satellite_position/
 ├── README.md                        # This file
+├── test_install.pro                 # Installation test script
 ├── src/                             # Source code
 │   ├── mars_constants.pro           # Mars physical constants
 │   ├── solve_kepler.pro             # Kepler equation solver
