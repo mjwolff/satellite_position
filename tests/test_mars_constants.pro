@@ -46,16 +46,16 @@ PRO test_mars_constants
 
   print, ''
   print, '========================================='
-  print, 'Running Unit Tests for mars_constants()'
+  print, 'Running Unit Tests for sp_mars_constants()'
   print, '========================================='
   print, ''
 
   ; Call the function
-  mars = mars_constants()
+  mars = sp_mars_constants()
 
   ; TEST 1: Verify function returns a structure
   n_tests++
-  test_name = 'mars_constants returns a structure'
+  test_name = 'sp_mars_constants returns a structure'
   if (SIZE(mars, /TYPE) eq 8) then begin  ; 8 = structure type
     print, 'TEST: ' + test_name + ' ... PASS'
     n_passed++

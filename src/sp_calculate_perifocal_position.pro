@@ -1,6 +1,6 @@
 ;+
 ; NAME:
-;   CALCULATE_PERIFOCAL_POSITION
+;   SP_CALCULATE_PERIFOCAL_POSITION
 ;
 ; PURPOSE:
 ;   Calculates position and velocity vectors in the perifocal (PQW) coordinate
@@ -10,7 +10,7 @@
 ;   Orbital Mechanics / Coordinate Transformations
 ;
 ; CALLING SEQUENCE:
-;   result = calculate_perifocal_position(a, e, nu, mu)
+;   result = sp_calculate_perifocal_position(a, e, nu, mu)
 ;
 ; INPUTS:
 ;   a  - Semi-major axis (km), scalar or array
@@ -36,11 +36,11 @@
 ;   - W-axis: Normal to orbital plane (P × Q), aligned with angular momentum
 ;
 ; EXAMPLE:
-;   IDL> mars = mars_constants()
+;   IDL> mars = sp_mars_constants()
 ;   IDL> a = 9376.0d0        ; Semi-major axis (km)
 ;   IDL> e = 0.0151d0        ; Eccentricity
 ;   IDL> nu = !DPI/4.0d0     ; True anomaly = 45 degrees
-;   IDL> result = calculate_perifocal_position(a, e, nu, mars.mu)
+;   IDL> result = sp_calculate_perifocal_position(a, e, nu, mars.mu)
 ;   IDL> print, result.r_pqw
 ;        6620.5    6620.5       0.0
 ;
@@ -51,7 +51,7 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-FUNCTION calculate_perifocal_position, a, e, nu, mu
+FUNCTION sp_calculate_perifocal_position, a, e, nu, mu
 
   COMPILE_OPT IDL2, HIDDEN
 

@@ -36,7 +36,7 @@ PRO test_coordinate_transforms
   print, ''
 
   ; Get Mars constants
-  mars = mars_constants()
+  mars = sp_mars_constants()
 
   ; TEST 1: Circular orbit at periapsis (nu=0)
   n_tests++
@@ -45,7 +45,7 @@ PRO test_coordinate_transforms
   e = 0.0d0
   nu = 0.0d0
 
-  result = calculate_perifocal_position(a, e, nu, mars.mu)
+  result = sp_calculate_perifocal_position(a, e, nu, mars.mu)
 
   ; For circular orbit, r should equal a
   if (ABS(result.r - a) lt 1e-6) then begin
@@ -63,7 +63,7 @@ PRO test_coordinate_transforms
   e = 0.0d0
   nu = 0.0d0
 
-  result = calculate_perifocal_position(a, e, nu, mars.mu)
+  result = sp_calculate_perifocal_position(a, e, nu, mars.mu)
   expected_pos = [a, 0.0d0, 0.0d0]
   error = MAX(ABS(result.r_pqw - expected_pos))
 
@@ -84,7 +84,7 @@ PRO test_coordinate_transforms
   e = 0.0d0
   nu = 0.0d0
 
-  result = calculate_perifocal_position(a, e, nu, mars.mu)
+  result = sp_calculate_perifocal_position(a, e, nu, mars.mu)
   v_circ = SQRT(mars.mu / a)
   expected_vel = [0.0d0, v_circ, 0.0d0]
   error = MAX(ABS(result.v_pqw - expected_vel))
@@ -107,7 +107,7 @@ PRO test_coordinate_transforms
   e = 0.5d0
   nu = 0.0d0
 
-  result = calculate_perifocal_position(a, e, nu, mars.mu)
+  result = sp_calculate_perifocal_position(a, e, nu, mars.mu)
   r_periapsis = a * (1.0d0 - e)
   error = ABS(result.r - r_periapsis)
 
@@ -128,7 +128,7 @@ PRO test_coordinate_transforms
   e = 0.5d0
   nu = !DPI
 
-  result = calculate_perifocal_position(a, e, nu, mars.mu)
+  result = sp_calculate_perifocal_position(a, e, nu, mars.mu)
   r_apoapsis = a * (1.0d0 + e)
   error = ABS(result.r - r_apoapsis)
 
@@ -149,7 +149,7 @@ PRO test_coordinate_transforms
   e = 0.3d0
   nu = 0.0d0
 
-  result = calculate_perifocal_position(a, e, nu, mars.mu)
+  result = sp_calculate_perifocal_position(a, e, nu, mars.mu)
   dot_product = TOTAL(result.r_pqw * result.v_pqw)
 
   if (ABS(dot_product) lt 1e-6) then begin
@@ -168,7 +168,7 @@ PRO test_coordinate_transforms
   e = 0.4d0
   nu = !DPI / 4.0d0
 
-  result = calculate_perifocal_position(a, e, nu, mars.mu)
+  result = sp_calculate_perifocal_position(a, e, nu, mars.mu)
   v_mag = SQRT(TOTAL(result.v_pqw^2))
   E_actual = 0.5d0 * v_mag^2 - mars.mu / result.r
   E_expected = -mars.mu / (2.0d0 * a)
@@ -191,7 +191,7 @@ PRO test_coordinate_transforms
   e = 0.6d0
   nu = !DPI / 3.0d0
 
-  result = calculate_perifocal_position(a, e, nu, mars.mu)
+  result = sp_calculate_perifocal_position(a, e, nu, mars.mu)
   ; h = r × v
   h_vec = DBLARR(3)
   h_vec[0] = result.r_pqw[1] * result.v_pqw[2] - result.r_pqw[2] * result.v_pqw[1]
@@ -219,7 +219,7 @@ PRO test_coordinate_transforms
   e = 0.3d0
   nu = !DPI / 6.0d0
 
-  result = calculate_perifocal_position(a, e, nu, mars.mu)
+  result = sp_calculate_perifocal_position(a, e, nu, mars.mu)
   ; h = r × v
   h_vec = DBLARR(3)
   h_vec[0] = result.r_pqw[1] * result.v_pqw[2] - result.r_pqw[2] * result.v_pqw[1]
@@ -244,7 +244,7 @@ PRO test_coordinate_transforms
   e = 0.7d0
   nu = !DPI / 2.0d0
 
-  result = calculate_perifocal_position(a, e, nu, mars.mu)
+  result = sp_calculate_perifocal_position(a, e, nu, mars.mu)
 
   if (result.r_pqw[2] eq 0.0d0 AND result.v_pqw[2] eq 0.0d0) then begin
     print, 'TEST: ' + test_name + ' ... PASS'
@@ -264,7 +264,7 @@ PRO test_coordinate_transforms
   r_pqw_test = [10000.0d0, 5000.0d0, 0.0d0]
   v_pqw_test = [0.0d0, 3.0d0, 0.0d0]
 
-  result_mci = perifocal_to_mci(r_pqw_test, v_pqw_test, 0.0d0, 0.0d0, 0.0d0)
+  result_mci = sp_perifocal_to_mci(r_pqw_test, v_pqw_test, 0.0d0, 0.0d0, 0.0d0)
   error = MAX(ABS(result_mci.r_mci - r_pqw_test))
 
   if (error lt 1e-10) then begin
@@ -288,8 +288,8 @@ PRO test_coordinate_transforms
   v_pqw_test = [1.0d0, 2.0d0, 0.0d0]
 
   ; Transform forward and back
-  result_mci = perifocal_to_mci(r_pqw_test, v_pqw_test, Omega_test, omega_test, i_test)
-  result_pqw = mci_to_perifocal(result_mci.r_mci, result_mci.v_mci, Omega_test, omega_test, i_test)
+  result_mci = sp_perifocal_to_mci(r_pqw_test, v_pqw_test, Omega_test, omega_test, i_test)
+  result_pqw = sp_mci_to_perifocal(result_mci.r_mci, result_mci.v_mci, Omega_test, omega_test, i_test)
 
   error_r = MAX(ABS(result_pqw.r_pqw - r_pqw_test))
   error_v = MAX(ABS(result_pqw.v_pqw - v_pqw_test))
@@ -317,7 +317,7 @@ PRO test_coordinate_transforms
   r_mag_pqw = SQRT(TOTAL(r_pqw_test^2))
   v_mag_pqw = SQRT(TOTAL(v_pqw_test^2))
 
-  result_mci = perifocal_to_mci(r_pqw_test, v_pqw_test, Omega_test, omega_test, i_test)
+  result_mci = sp_perifocal_to_mci(r_pqw_test, v_pqw_test, Omega_test, omega_test, i_test)
 
   r_mag_mci = SQRT(TOTAL(result_mci.r_mci^2))
   v_mag_mci = SQRT(TOTAL(result_mci.v_mci^2))
@@ -342,7 +342,7 @@ PRO test_coordinate_transforms
   v_pqw_test = [0.0d0, 3.0d0, 0.0d0]
   Omega_test = !DPI / 2.0d0  ; 90 degrees
 
-  result_mci = perifocal_to_mci(r_pqw_test, v_pqw_test, Omega_test, 0.0d0, 0.0d0)
+  result_mci = sp_perifocal_to_mci(r_pqw_test, v_pqw_test, Omega_test, 0.0d0, 0.0d0)
 
   ; After 90° rotation about Z, [10000, 0, 0] becomes [0, 10000, 0]
   expected_r = [0.0d0, 10000.0d0, 0.0d0]
@@ -364,7 +364,7 @@ PRO test_coordinate_transforms
   v_pqw_test = [0.0d0, 3.0d0, 0.0d0]
   i_test = !DPI / 2.0d0  ; 90 degrees
 
-  result_mci = perifocal_to_mci(r_pqw_test, v_pqw_test, 0.0d0, 0.0d0, i_test)
+  result_mci = sp_perifocal_to_mci(r_pqw_test, v_pqw_test, 0.0d0, 0.0d0, i_test)
 
   ; Z-component should be zero for r (in P-axis initially)
   ; But v (in Q-axis) should have Z-component after rotation

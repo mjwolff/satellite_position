@@ -36,7 +36,7 @@ PRO test_mci_to_lla
   print, ''
 
   ; Get Mars constants
-  mars = mars_constants()
+  mars = sp_mars_constants()
 
   print, '--- Testing MCI to Mars-Fixed Rotation ---'
   print, ''
@@ -48,7 +48,7 @@ PRO test_mci_to_lla
   t = 0.0d0
   t_ref = 0.0d0
 
-  r_fixed = mci_to_mars_fixed(r_mci, t, t_ref, mars.omega_mars)
+  r_fixed = sp_mci_to_mars_fixed(r_mci, t, t_ref, mars.omega_mars)
   error = MAX(ABS(r_fixed - r_mci))
 
   if (error lt 1e-10) then begin
@@ -69,7 +69,7 @@ PRO test_mci_to_lla
   t = !DPI / (2.0d0 * mars.omega_mars)
   t_ref = 0.0d0
 
-  r_fixed = mci_to_mars_fixed(r_mci, t, t_ref, mars.omega_mars)
+  r_fixed = sp_mci_to_mars_fixed(r_mci, t, t_ref, mars.omega_mars)
   expected = [0.0d0, 10000.0d0, 0.0d0]
   error = MAX(ABS(r_fixed - expected))
 
@@ -90,7 +90,7 @@ PRO test_mci_to_lla
   t = !DPI / mars.omega_mars
   t_ref = 0.0d0
 
-  r_fixed = mci_to_mars_fixed(r_mci, t, t_ref, mars.omega_mars)
+  r_fixed = sp_mci_to_mars_fixed(r_mci, t, t_ref, mars.omega_mars)
   expected = [-10000.0d0, 0.0d0, 0.0d0]
   error = MAX(ABS(r_fixed - expected))
 
@@ -110,7 +110,7 @@ PRO test_mci_to_lla
   t = 1234.5d0
   t_ref = 0.0d0
 
-  r_fixed = mci_to_mars_fixed(r_mci, t, t_ref, mars.omega_mars)
+  r_fixed = sp_mci_to_mars_fixed(r_mci, t, t_ref, mars.omega_mars)
 
   if (ABS(r_fixed[2] - r_mci[2]) lt 1e-10) then begin
     print, 'TEST: ' + test_name + ' ... PASS'
@@ -129,7 +129,7 @@ PRO test_mci_to_lla
   t_ref = 0.0d0
 
   r_mag_mci = SQRT(TOTAL(r_mci^2))
-  r_fixed = mci_to_mars_fixed(r_mci, t, t_ref, mars.omega_mars)
+  r_fixed = sp_mci_to_mars_fixed(r_mci, t, t_ref, mars.omega_mars)
   r_mag_fixed = SQRT(TOTAL(r_fixed^2))
 
   error = ABS(r_mag_fixed - r_mag_mci)
@@ -149,8 +149,8 @@ PRO test_mci_to_lla
   t = 3600.0d0
   t_ref = 0.0d0
 
-  r_fixed = mci_to_mars_fixed(r_mci_original, t, t_ref, mars.omega_mars)
-  r_mci_final = mars_fixed_to_mci(r_fixed, t, t_ref, mars.omega_mars)
+  r_fixed = sp_mci_to_mars_fixed(r_mci_original, t, t_ref, mars.omega_mars)
+  r_mci_final = sp_mars_fixed_to_mci(r_fixed, t, t_ref, mars.omega_mars)
 
   error = MAX(ABS(r_mci_final - r_mci_original))
 
@@ -171,7 +171,7 @@ PRO test_mci_to_lla
   t = 3600.0d0
   t_ref = 3600.0d0  ; Same as t, so no rotation
 
-  r_fixed = mci_to_mars_fixed(r_mci, t, t_ref, mars.omega_mars)
+  r_fixed = sp_mci_to_mars_fixed(r_mci, t, t_ref, mars.omega_mars)
   error = MAX(ABS(r_fixed - r_mci))
 
   if (error lt 1e-10) then begin
@@ -190,7 +190,7 @@ PRO test_mci_to_lla
   t = 2.0d0 * !DPI / mars.omega_mars
   t_ref = 0.0d0
 
-  r_fixed = mci_to_mars_fixed(r_mci, t, t_ref, mars.omega_mars)
+  r_fixed = sp_mci_to_mars_fixed(r_mci, t, t_ref, mars.omega_mars)
   error = MAX(ABS(r_fixed - r_mci))
 
   if (error lt 1.0d0) then begin  ; Should return to original position
@@ -213,7 +213,7 @@ PRO test_mci_to_lla
   y_fixed = 0.0d0
   z_fixed = 0.0d0
 
-  result = calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2)
+  result = sp_calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2)
 
   if (result.converged AND ABS(result.lat) lt 1e-10) then begin
     print, 'TEST: ' + test_name + ' ... PASS'
@@ -232,7 +232,7 @@ PRO test_mci_to_lla
   y_fixed = 0.0d0
   z_fixed = mars.r_pol + 1000.0d0  ; 1000 km above pole
 
-  result = calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2)
+  result = sp_calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2)
   expected_lat = !DPI / 2.0d0
 
   if (result.converged AND ABS(result.lat - expected_lat) lt 1e-10) then begin
@@ -250,7 +250,7 @@ PRO test_mci_to_lla
   y_fixed = 0.0d0
   z_fixed = -(mars.r_pol + 500.0d0)
 
-  result = calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2)
+  result = sp_calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2)
   expected_lat = -!DPI / 2.0d0
 
   if (result.converged AND ABS(result.lat - expected_lat) lt 1e-10) then begin
@@ -268,7 +268,7 @@ PRO test_mci_to_lla
   y_fixed = 5000.0d0
   z_fixed = 3000.0d0
 
-  result = calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2)
+  result = sp_calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2)
 
   if (result.converged AND result.n_iter lt 10) then begin
     print, 'TEST: ' + test_name + ' ... PASS'
@@ -286,7 +286,7 @@ PRO test_mci_to_lla
   y_fixed = 4000.0d0
   z_fixed = 2500.0d0
 
-  result = calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2, tol=1e-14)
+  result = sp_calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2, tol=1e-14)
 
   ; Test that it converges to high precision
   if (result.converged) then begin
@@ -306,7 +306,7 @@ PRO test_mci_to_lla
   y_fixed = 0.0d0
   z_fixed = 0.0d0
 
-  result = calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2)
+  result = sp_calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2)
 
   if (result.converged AND ABS(result.h) lt 1.0d0) then begin  ; 1 km tolerance
     print, 'TEST: ' + test_name + ' ... PASS'
@@ -332,7 +332,7 @@ PRO test_mci_to_lla
   y_fixed = 0.0d0
   z_fixed = (N * (1.0d0 - mars.e2) + h_test) * sin_lat
 
-  result = calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2)
+  result = sp_calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, mars.r_eq, mars.e2)
 
   error_lat = ABS(result.lat - lat_target)
   error_h = ABS(result.h - h_test)
@@ -358,10 +358,10 @@ PRO test_mci_to_lla
   t = 3600.0d0
 
   ; Forward conversion
-  lla_result = mci_to_lla(r_mci_original, t, mars)
+  lla_result = sp_mci_to_lla(r_mci_original, t, mars)
 
   ; Backward conversion
-  r_mci_final = lla_to_mci(lla_result.lon, lla_result.lat, lla_result.alt, t, mars)
+  r_mci_final = sp_lla_to_mci(lla_result.lon, lla_result.lat, lla_result.alt, t, mars)
 
   error = MAX(ABS(r_mci_final - r_mci_original))
 
@@ -382,7 +382,7 @@ PRO test_mci_to_lla
   r_mci = [8000.0d0, 6000.0d0, 4000.0d0]
   t = 0.0d0
 
-  lla_result = mci_to_lla(r_mci, t, mars)
+  lla_result = sp_mci_to_lla(r_mci, t, mars)
 
   valid_lon = (lla_result.lon ge -180.0d0 AND lla_result.lon le 180.0d0)
   valid_lat = (lla_result.lat ge -90.0d0 AND lla_result.lat le 90.0d0)
@@ -407,7 +407,7 @@ PRO test_mci_to_lla
   r_mci = [10000.0d0, 0.0d0, 0.0d0]
   t = 0.0d0
 
-  lla_result = mci_to_lla(r_mci, t, mars)
+  lla_result = sp_mci_to_lla(r_mci, t, mars)
 
   if (ABS(lla_result.lat) lt 1.0d0) then begin  ; Within 1 degree
     print, 'TEST: ' + test_name + ' ... PASS'
@@ -427,8 +427,8 @@ PRO test_mci_to_lla
   all_passed = 1b
 
   foreach t_val, times do begin
-    lla = mci_to_lla(r_mci_test, t_val, mars)
-    r_mci_check = lla_to_mci(lla.lon, lla.lat, lla.alt, t_val, mars)
+    lla = sp_mci_to_lla(r_mci_test, t_val, mars)
+    r_mci_check = sp_lla_to_mci(lla.lon, lla.lat, lla.alt, t_val, mars)
     error = MAX(ABS(r_mci_check - r_mci_test))
     if (error gt max_error) then max_error = error
     if (error gt 0.0001d0) then all_passed = 0b
@@ -451,8 +451,8 @@ PRO test_mci_to_lla
   alt_test = 10000.0d0
   t = 0.0d0
 
-  r_mci = lla_to_mci(lon_test, lat_test, alt_test, t, mars)
-  lla = mci_to_lla(r_mci, t, mars)
+  r_mci = sp_lla_to_mci(lon_test, lat_test, alt_test, t, mars)
+  lla = sp_mci_to_lla(r_mci, t, mars)
 
   error_lon = ABS(lla.lon - lon_test)
   error_lat = ABS(lla.lat - lat_test)

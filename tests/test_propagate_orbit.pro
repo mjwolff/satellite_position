@@ -36,7 +36,7 @@ PRO test_propagate_orbit
   print, ''
 
   ; Get Mars constants
-  mars = mars_constants()
+  mars = sp_mars_constants()
 
   ; TEST 1: All output fields present
   n_tests++
@@ -46,7 +46,7 @@ PRO test_propagate_orbit
   t = 0.0d0
   t0 = 0.0d0
 
-  result = propagate_orbit(elements, t, t0, mars)
+  result = sp_propagate_orbit(elements, t, t0, mars)
 
   ; Check that all expected fields exist
   has_t = TAG_EXIST(result, 't')
@@ -83,7 +83,7 @@ PRO test_propagate_orbit
   period = 2.0d0 * !DPI * SQRT(elements.a^3 / mars.mu)
   t = DINDGEN(10) * period / 9.0d0  ; 10 points over one orbit
 
-  result = propagate_orbit(elements, t, t0, mars)
+  result = sp_propagate_orbit(elements, t, t0, mars)
 
   ; Check that radius is constant
   radii = DBLARR(N_ELEMENTS(result))
@@ -111,7 +111,7 @@ PRO test_propagate_orbit
   t = 0.0d0
   t0 = 0.0d0
 
-  result = propagate_orbit(elements, t, t0, mars)
+  result = sp_propagate_orbit(elements, t, t0, mars)
 
   if (ABS(result.lat) lt 1.0d0) then begin  ; Within 1 degree
     print, 'TEST: ' + test_name + ' ... PASS'
@@ -130,7 +130,7 @@ PRO test_propagate_orbit
   t0 = 0.0d0
   t = DINDGEN(5) * 3600.0d0  ; Every hour for 5 hours
 
-  result = propagate_orbit(elements, t, t0, mars)
+  result = sp_propagate_orbit(elements, t, t0, mars)
 
   ; Mean anomaly should increase monotonically
   monotonic = 1b
@@ -155,12 +155,12 @@ PRO test_propagate_orbit
   t0 = 0.0d0
 
   ; At t=0, M=0, so at periapsis
-  result_peri = propagate_orbit(elements, 0.0d0, t0, mars)
+  result_peri = sp_propagate_orbit(elements, 0.0d0, t0, mars)
 
   ; At apoapsis, M = π
   n = SQRT(mars.mu / a^3)
   t_apo = !DPI / n  ; Time when M = π
-  result_apo = propagate_orbit(elements, t_apo, t0, mars)
+  result_apo = sp_propagate_orbit(elements, t_apo, t0, mars)
 
   r_peri_expected = a * (1.0d0 - e)
   r_apo_expected = a * (1.0d0 + e)
@@ -187,7 +187,7 @@ PRO test_propagate_orbit
   t0 = 0.0d0
   t = DINDGEN(10) * 1000.0d0
 
-  result = propagate_orbit(elements, t, t0, mars)
+  result = sp_propagate_orbit(elements, t, t0, mars)
 
   ; Calculate specific energy at each point
   E_expected = -mars.mu / (2.0d0 * elements.a)
@@ -218,10 +218,10 @@ PRO test_propagate_orbit
   t_test = 3600.0d0
 
   ; Single time
-  result_single = propagate_orbit(elements, t_test, t0, mars)
+  result_single = sp_propagate_orbit(elements, t_test, t0, mars)
 
   ; Array with one element
-  result_array = propagate_orbit(elements, [t_test], t0, mars)
+  result_array = sp_propagate_orbit(elements, [t_test], t0, mars)
 
   ; Compare results
   error_r = MAX(ABS(result_single.r_mci - result_array[0].r_mci))
@@ -244,7 +244,7 @@ PRO test_propagate_orbit
   t = 0.0d0
   t0 = 0.0d0
 
-  result = propagate_orbit(elements, t, t0, mars)
+  result = sp_propagate_orbit(elements, t, t0, mars)
 
   ; Altitude should be positive and less than radius
   altitude_ok = (result.alt gt 0.0d0 AND result.alt lt elements.a)

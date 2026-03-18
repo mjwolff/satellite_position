@@ -1,6 +1,6 @@
 ;+
 ; NAME:
-;   MCI_TO_PERIFOCAL
+;   SP_MCI_TO_PERIFOCAL
 ;
 ; PURPOSE:
 ;   Transforms position and velocity vectors from Mars-Centered Inertial (MCI)
@@ -10,7 +10,7 @@
 ;   Orbital Mechanics / Coordinate Transformations
 ;
 ; CALLING SEQUENCE:
-;   result = mci_to_perifocal(r_mci, v_mci, raan, omega, i)
+;   result = sp_mci_to_perifocal(r_mci, v_mci, raan, omega, i)
 ;
 ; INPUTS:
 ;   r_mci - Position vector in MCI frame [3] (km)
@@ -34,7 +34,7 @@
 ;   IDL> raan = 0.0d0
 ;   IDL> omega = 0.0d0
 ;   IDL> i = 0.0d0
-;   IDL> result = mci_to_perifocal(r_mci, v_mci, raan, omega, i)
+;   IDL> result = sp_mci_to_perifocal(r_mci, v_mci, raan, omega, i)
 ;   IDL> print, result.r_pqw
 ;        10000.0       0.0       0.0
 ;
@@ -42,7 +42,7 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-FUNCTION mci_to_perifocal, r_mci, v_mci, raan, omega, i
+FUNCTION sp_mci_to_perifocal, r_mci, v_mci, raan, omega, i
 
   COMPILE_OPT IDL2, HIDDEN
 

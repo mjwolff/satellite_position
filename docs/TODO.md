@@ -3,7 +3,7 @@
 ## Project Tasks
 
 ### 1. Foundation Module
-- [x] **1.1** Create `mars_constants.pro` with Mars physical constants and unit test (2026-02-18)
+- [x] **1.1** Create `sp_mars_constants.pro` with Mars physical constants and unit test (2026-02-18)
   - **Acceptance**: Function returns structure with μ, r_eq, r_pol, f, e2, omega_mars, ref_epoch; unit test verifies all values
 
 ### 2. Core Mathematical Solvers
@@ -21,17 +21,17 @@
   - **Acceptance**: Unit test verifies rotation matrix is orthogonal (R·R^T = I) and known vectors transform correctly
 
 ### 4. Geodetic Conversion Module
-- [x] **4.1** Create `mci_to_lla.pro` with MCI to Mars-fixed rotation and unit test (2026-02-18)
+- [x] **4.1** Create `sp_mci_to_lla.pro` with MCI to Mars-fixed rotation and unit test (2026-02-18)
   - **Acceptance**: Unit test verifies rotation by θ = ω_Mars·(t - t_ref) about Z-axis for known test vectors
 
-- [x] **4.2** Add iterative geodetic latitude calculator to `mci_to_lla.pro` with unit test (2026-02-18)
+- [x] **4.2** Add iterative geodetic latitude calculator to `sp_mci_to_lla.pro` with unit test (2026-02-18)
   - **Acceptance**: Unit test verifies convergence to geodetic latitude within 1e-8 degrees in < 10 iterations
 
-- [x] **4.3** Add longitude and altitude calculations to `mci_to_lla.pro` with unit test (2026-02-18)
+- [x] **4.3** Add longitude and altitude calculations to `sp_mci_to_lla.pro` with unit test (2026-02-18)
   - **Acceptance**: Unit test verifies round-trip MCI → LLA → MCI returns original position within 0.1 meters
 
 ### 5. Main Propagator
-- [x] **5.1** Create `propagate_orbit.pro` integrating all modules with unit test (2026-02-18)
+- [x] **5.1** Create `sp_propagate_orbit.pro` integrating all modules with unit test (2026-02-18)
   - **Acceptance**: Unit test verifies propagation for simple circular orbit returns expected position; all output fields present
 
 ### 6. Validation & Testing

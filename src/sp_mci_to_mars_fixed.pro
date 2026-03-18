@@ -1,6 +1,6 @@
 ;+
 ; NAME:
-;   MCI_TO_MARS_FIXED
+;   SP_MCI_TO_MARS_FIXED
 ;
 ; PURPOSE:
 ;   Transforms position vector from Mars-Centered Inertial (MCI) frame to
@@ -10,7 +10,7 @@
 ;   Orbital Mechanics / Coordinate Transformations
 ;
 ; CALLING SEQUENCE:
-;   r_fixed = mci_to_mars_fixed(r_mci, t, t_ref, omega_mars)
+;   r_fixed = sp_mci_to_mars_fixed(r_mci, t, t_ref, omega_mars)
 ;
 ; INPUTS:
 ;   r_mci      - Position vector in MCI frame [3] (km)
@@ -34,10 +34,10 @@
 ;   - Prime meridian at reference time aligns with X-axis of MCI
 ;
 ; EXAMPLE:
-;   IDL> mars = mars_constants()
+;   IDL> mars = sp_mars_constants()
 ;   IDL> r_mci = [10000.0d0, 0.0d0, 0.0d0]
 ;   IDL> t = 3600.0d0  ; 1 hour
-;   IDL> r_fixed = mci_to_mars_fixed(r_mci, t, 0.0d0, mars.omega_mars)
+;   IDL> r_fixed = sp_mci_to_mars_fixed(r_mci, t, 0.0d0, mars.omega_mars)
 ;   IDL> print, r_fixed
 ;
 ; REFERENCES:
@@ -47,7 +47,7 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-FUNCTION mci_to_mars_fixed, r_mci, t, t_ref, omega_mars
+FUNCTION sp_mci_to_mars_fixed, r_mci, t, t_ref, omega_mars
 
   COMPILE_OPT IDL2, HIDDEN
 

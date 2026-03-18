@@ -7,7 +7,7 @@
 
 ### Completed Tasks (3/14 - 21.4%)
 
-1. **mars_constants.pro** ✓
+1. **sp_mars_constants.pro** ✓
    - Defines Mars physical constants (μ, radii, flattening, rotation rate)
    - Unit test: 14/14 tests passing
    - All values use double precision
@@ -25,10 +25,10 @@
 
 ### Files in Repository
 
-- `mars_constants.pro` - Mars physical constants
+- `sp_mars_constants.pro` - Mars physical constants
 - `kepler_solver.pro` - Kepler equation solver
 - `anomaly_conversions.pro` - Anomaly conversion functions
-- `test_mars_constants.pro` - Unit tests for constants
+- `test_sp_mars_constants.pro` - Unit tests for constants
 - `test_kepler_solver.pro` - Unit tests for Kepler solver
 - `test_anomaly_conversions.pro` - Unit tests for anomaly conversions
 - `run_test_kepler.pro` - Batch runner for Kepler tests
@@ -45,9 +45,9 @@ f9ce970 Complete task 2.2: Create anomaly_conversions.pro with unit test
 58807c8 Mark task 2.2 as in progress
 c4c34b3 Complete task 2.1: Create kepler_solver.pro with unit test
 309186f Mark task 2.1 as in progress
-3e6cba2 Add unit test for mars_constants.pro
+3e6cba2 Add unit test for sp_mars_constants.pro
 f918442 Add unit test requirements to each implementation task
-cf3a413 Complete task 1.1: Create mars_constants.pro
+cf3a413 Complete task 1.1: Create sp_mars_constants.pro
 52b52b2 Mark task 1.1 as in progress
 c07369e Add project TODO list
 ```

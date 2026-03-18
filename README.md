@@ -115,14 +115,14 @@ plot, result.t / 3600.0d0, result.alt, $
 
 ### Core Modules
 
-#### `mars_constants.pro`
+#### `sp_mars_constants.pro`
 Defines physical and orbital constants for Mars:
 - Gravitational parameter (μ = 42828.37 km³/s²)
 - Reference ellipsoid dimensions (r_eq = 3396.19 km, r_pol = 3376.20 km)
 - Rotation rate (ω = 7.088218×10⁻⁵ rad/s)
 - Axial tilt/obliquity (ε = 25.19°)
 
-#### `solve_kepler.pro`
+#### `sp_solve_kepler.pro`
 Solves Kepler's equation (M = Ecc - e·sin(Ecc)) using Newton-Raphson iteration:
 - Converges in typically 4-6 iterations
 - Accuracy: < 10⁻¹⁰ radians
@@ -130,25 +130,25 @@ Solves Kepler's equation (M = Ecc - e·sin(Ecc)) using Newton-Raphson iteration:
 
 #### Anomaly Conversions
 Converts between eccentric and true anomaly:
-- `ecc_to_true_anomaly.pro` - Eccentric → True anomaly
-- `true_to_ecc_anomaly.pro` - True → Eccentric anomaly
+- `sp_ecc_to_true_anomaly.pro` - Eccentric → True anomaly
+- `sp_true_to_ecc_anomaly.pro` - True → Eccentric anomaly
 - Round-trip accuracy: machine precision (~10⁻¹⁶)
 
 #### Coordinate Transformations
 Coordinate frame transformations:
-- `calculate_perifocal_position.pro` - Calculate position/velocity in perifocal frame
-- `perifocal_to_mci.pro` - Perifocal → MCI transformation
-- `mci_to_perifocal.pro` - MCI → Perifocal transformation
+- `sp_calculate_perifocal_position.pro` - Calculate position/velocity in perifocal frame
+- `sp_perifocal_to_mci.pro` - Perifocal → MCI transformation
+- `sp_mci_to_perifocal.pro` - MCI → Perifocal transformation
 
 #### Geodetic Conversions
 Geodetic coordinate conversions:
-- `mci_to_mars_fixed.pro` - Account for Mars rotation (MCI → Mars-fixed)
-- `mars_fixed_to_mci.pro` - Mars-fixed → MCI transformation
-- `calculate_geodetic_latitude.pro` - Iterative geodetic latitude solver
-- `mci_to_lla.pro` - Full MCI → Longitude/Latitude/Altitude
-- `lla_to_mci.pro` - Inverse transformation (LLA → MCI)
+- `sp_mci_to_mars_fixed.pro` - Account for Mars rotation (MCI → Mars-fixed)
+- `sp_mars_fixed_to_mci.pro` - Mars-fixed → MCI transformation
+- `sp_calculate_geodetic_latitude.pro` - Iterative geodetic latitude solver
+- `sp_mci_to_lla.pro` - Full MCI → Longitude/Latitude/Altitude
+- `sp_lla_to_mci.pro` - Inverse transformation (LLA → MCI)
 
-#### `propagate_orbit.pro`
+#### `sp_propagate_orbit.pro`
 Main propagator integrating all modules:
 - Input: Keplerian elements + time array
 - Output: Position/velocity in all coordinate frames
@@ -156,7 +156,7 @@ Main propagator integrating all modules:
 
 ### Mars Climate Calculations
 
-#### `calculate_subsolar_latitude.pro`
+#### `sp_calculate_subsolar_latitude.pro`
 Calculates the sub-solar latitude on Mars (where the Sun is directly overhead at solar noon) from areocentric solar longitude (L_s):
 - **Input**: L_s (Mars' position in its orbit around the Sun)
 - **Output**: Sub-solar latitude (latitude where Sun is at zenith)
@@ -503,28 +503,28 @@ satellite_position/
 ├── README.md                        # This file
 ├── test_install.pro                 # Installation test script
 ├── src/                             # Source code
-│   ├── mars_constants.pro           # Mars physical constants
-│   ├── solve_kepler.pro             # Kepler equation solver
-│   ├── ecc_to_true_anomaly.pro      # Anomaly conversions
-│   ├── true_to_ecc_anomaly.pro      # Anomaly conversions
-│   ├── calculate_perifocal_position.pro  # Coordinate transformations
-│   ├── perifocal_to_mci.pro         # Coordinate transformations
-│   ├── mci_to_perifocal.pro         # Coordinate transformations
-│   ├── mci_to_mars_fixed.pro        # Rotation transformations
-│   ├── mars_fixed_to_mci.pro        # Rotation transformations
-│   ├── calculate_geodetic_latitude.pro  # Geodetic conversions
-│   ├── mci_to_lla.pro               # Geodetic conversions
-│   ├── lla_to_mci.pro               # Geodetic conversions
-│   ├── calculate_subsolar_latitude.pro  # Mars climate calculations
-│   └── propagate_orbit.pro          # Main propagator
+│   ├── sp_mars_constants.pro           # Mars physical constants
+│   ├── sp_solve_kepler.pro             # Kepler equation solver
+│   ├── sp_ecc_to_true_anomaly.pro      # Anomaly conversions
+│   ├── sp_true_to_ecc_anomaly.pro      # Anomaly conversions
+│   ├── sp_calculate_perifocal_position.pro  # Coordinate transformations
+│   ├── sp_perifocal_to_mci.pro         # Coordinate transformations
+│   ├── sp_mci_to_perifocal.pro         # Coordinate transformations
+│   ├── sp_mci_to_mars_fixed.pro        # Rotation transformations
+│   ├── sp_mars_fixed_to_mci.pro        # Rotation transformations
+│   ├── sp_calculate_geodetic_latitude.pro  # Geodetic conversions
+│   ├── sp_mci_to_lla.pro               # Geodetic conversions
+│   ├── sp_lla_to_mci.pro               # Geodetic conversions
+│   ├── sp_calculate_subsolar_latitude.pro  # Mars climate calculations
+│   └── sp_propagate_orbit.pro          # Main propagator
 ├── tests/                           # Test files
-│   ├── test_mars_constants.pro      # Unit tests
+│   ├── test_sp_mars_constants.pro      # Unit tests
 │   ├── test_kepler_solver.pro       # Unit tests
 │   ├── test_anomaly_conversions.pro # Unit tests
 │   ├── test_coordinate_transforms.pro  # Unit tests
-│   ├── test_mci_to_lla.pro          # Unit tests
+│   ├── test_sp_mci_to_lla.pro          # Unit tests
 │   ├── test_subsolar_latitude.pro   # Unit tests
-│   ├── test_propagate_orbit.pro     # Unit tests
+│   ├── test_sp_propagate_orbit.pro     # Unit tests
 │   ├── test_orbit_propagation.pro   # Integration tests
 │   ├── run_test_kepler.pro          # Test runner
 │   └── run_test_anomaly.pro         # Test runner

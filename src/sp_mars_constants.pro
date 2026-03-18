@@ -1,6 +1,6 @@
 ;+
 ; NAME:
-;   MARS_CONSTANTS
+;   SP_MARS_CONSTANTS
 ;
 ; PURPOSE:
 ;   Returns a structure containing fundamental physical and orbital constants
@@ -11,7 +11,7 @@
 ;   Orbital Mechanics / Planetary Constants
 ;
 ; CALLING SEQUENCE:
-;   mars = mars_constants()
+;   mars = sp_mars_constants()
 ;
 ; INPUTS:
 ;   None
@@ -28,7 +28,7 @@
 ;     .ref_epoch   - Reference epoch for rotation (J2000.0, seconds since epoch)
 ;
 ; EXAMPLE:
-;   IDL> mars = mars_constants()
+;   IDL> mars = sp_mars_constants()
 ;   IDL> print, mars.mu
 ;        42828.370
 ;   IDL> print, mars.r_eq
@@ -43,7 +43,7 @@
 ;   2026-02-18: Added obliquity (axial tilt) constant
 ;-
 
-FUNCTION mars_constants
+FUNCTION sp_mars_constants
 
   ; Compile options
   COMPILE_OPT IDL2, HIDDEN

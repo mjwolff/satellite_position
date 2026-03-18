@@ -110,15 +110,15 @@ Together, these examples show progression from simple theoretical cases to reali
 
 The TGO example uses the complete orbital propagation pipeline:
 
-1. `mars_constants.pro` - Mars physical parameters (μ, radii, rotation rate)
-2. `solve_kepler.pro` - Solve Kepler's equation for eccentric anomaly
-3. `ecc_to_true_anomaly.pro` - Convert to true anomaly
-4. `calculate_perifocal_position.pro` - Calculate position/velocity in perifocal frame
-5. `perifocal_to_mci.pro` - Transform to Mars-Centered Inertial frame
-6. `mci_to_mars_fixed.pro` - Account for Mars rotation
-7. `calculate_geodetic_latitude.pro` - Compute geodetic coordinates
-8. `mci_to_lla.pro` - Full conversion to Longitude/Latitude/Altitude
-9. `propagate_orbit.pro` - Main propagator integrating all modules
+1. `sp_mars_constants.pro` - Mars physical parameters (μ, radii, rotation rate)
+2. `sp_solve_kepler.pro` - Solve Kepler's equation for eccentric anomaly
+3. `sp_ecc_to_true_anomaly.pro` - Convert to true anomaly
+4. `sp_calculate_perifocal_position.pro` - Calculate position/velocity in perifocal frame
+5. `sp_perifocal_to_mci.pro` - Transform to Mars-Centered Inertial frame
+6. `sp_mci_to_mars_fixed.pro` - Account for Mars rotation
+7. `sp_calculate_geodetic_latitude.pro` - Compute geodetic coordinates
+8. `sp_mci_to_lla.pro` - Full conversion to Longitude/Latitude/Altitude
+9. `sp_propagate_orbit.pro` - Main propagator integrating all modules
 
 **All modules already exist and are tested** - no new code required.
 

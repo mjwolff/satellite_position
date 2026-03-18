@@ -59,7 +59,7 @@ PRO test_anomaly_conversions
   test_name = 'Circular orbit: e=0, ν=Ecc'
   Ecc_test = !DPI / 4.0d0  ; 45 degrees
   e_test = 0.0d0
-  nu = ecc_to_true_anomaly(Ecc_test, e_test)
+  nu = sp_ecc_to_true_anomaly(Ecc_test, e_test)
 
   if (ABS(nu - Ecc_test) lt 1e-10) then begin
     print, 'TEST: ' + test_name + ' ... PASS'
@@ -75,8 +75,8 @@ PRO test_anomaly_conversions
   Ecc_original = !DPI / 3.0d0  ; 60 degrees
   e_test = 0.5d0
 
-  nu = ecc_to_true_anomaly(Ecc_original, e_test)
-  Ecc_final = true_to_ecc_anomaly(nu, e_test)
+  nu = sp_ecc_to_true_anomaly(Ecc_original, e_test)
+  Ecc_final = sp_true_to_ecc_anomaly(nu, e_test)
   error = ABS(Ecc_final - Ecc_original)
 
   if (error lt 1e-10) then begin
@@ -94,8 +94,8 @@ PRO test_anomaly_conversions
   nu_original = !DPI / 4.0d0  ; 45 degrees
   e_test = 0.7d0
 
-  Ecc = true_to_ecc_anomaly(nu_original, e_test)
-  nu_final = ecc_to_true_anomaly(Ecc, e_test)
+  Ecc = sp_true_to_ecc_anomaly(nu_original, e_test)
+  nu_final = sp_ecc_to_true_anomaly(Ecc, e_test)
   error = ABS(nu_final - nu_original)
 
   if (error lt 1e-10) then begin
@@ -112,7 +112,7 @@ PRO test_anomaly_conversions
   test_name = 'Periapsis: ν=0 → Ecc=0'
   nu_test = 0.0d0
   e_test = 0.5d0
-  Ecc = true_to_ecc_anomaly(nu_test, e_test)
+  Ecc = sp_true_to_ecc_anomaly(nu_test, e_test)
 
   if (ABS(Ecc) lt 1e-10) then begin
     print, 'TEST: ' + test_name + ' ... PASS'
@@ -127,7 +127,7 @@ PRO test_anomaly_conversions
   test_name = 'Apoapsis: ν=π → Ecc=π'
   nu_test = !DPI
   e_test = 0.5d0
-  Ecc = true_to_ecc_anomaly(nu_test, e_test)
+  Ecc = sp_true_to_ecc_anomaly(nu_test, e_test)
 
   if (ABS(Ecc - !DPI) lt 1e-10) then begin
     print, 'TEST: ' + test_name + ' ... PASS'
@@ -144,7 +144,7 @@ PRO test_anomaly_conversions
   test_name = 'Known case: e=0.5, Ecc=60° → ν=90°'
   Ecc_test = !DPI / 3.0d0  ; 60 degrees
   e_test = 0.5d0
-  nu = ecc_to_true_anomaly(Ecc_test, e_test)
+  nu = sp_ecc_to_true_anomaly(Ecc_test, e_test)
 
   ; Expected value: exactly π/2 (90 degrees)
   nu_expected = !DPI / 2.0d0
@@ -168,8 +168,8 @@ PRO test_anomaly_conversions
   all_passed = 1b
 
   foreach e_val, e_array do begin
-    nu = ecc_to_true_anomaly(Ecc_test, e_val)
-    Ecc_final = true_to_ecc_anomaly(nu, e_val)
+    nu = sp_ecc_to_true_anomaly(Ecc_test, e_val)
+    Ecc_final = sp_true_to_ecc_anomaly(nu, e_val)
     error = ABS(Ecc_final - Ecc_test)
     if (error gt max_error) then max_error = error
     if (error gt 1e-10) then all_passed = 0b
@@ -194,8 +194,8 @@ PRO test_anomaly_conversions
   all_passed = 1b
 
   foreach nu_val, nu_array do begin
-    Ecc = true_to_ecc_anomaly(nu_val, e_test)
-    nu_final = ecc_to_true_anomaly(Ecc, e_test)
+    Ecc = sp_true_to_ecc_anomaly(nu_val, e_test)
+    nu_final = sp_ecc_to_true_anomaly(Ecc, e_test)
 
     ; Normalize both angles to [-π, π] for comparison
     nu_norm = ATAN(SIN(nu_val), COS(nu_val))
@@ -221,8 +221,8 @@ PRO test_anomaly_conversions
   nu_test = !DPI / 6.0d0  ; 30 degrees
   e_test = 0.4d0
 
-  Ecc_pos = true_to_ecc_anomaly(nu_test, e_test)
-  Ecc_neg = true_to_ecc_anomaly(-nu_test, e_test)
+  Ecc_pos = sp_true_to_ecc_anomaly(nu_test, e_test)
+  Ecc_neg = sp_true_to_ecc_anomaly(-nu_test, e_test)
 
   ; For elliptical orbits, Ecc(-ν) should equal -Ecc(ν) (modulo 2π)
   error = ABS(Ecc_neg + Ecc_pos)
@@ -241,8 +241,8 @@ PRO test_anomaly_conversions
   Ecc_test = !DPI / 5.0d0  ; 36 degrees
   e_test = 0.99d0
 
-  nu = ecc_to_true_anomaly(Ecc_test, e_test)
-  Ecc_final = true_to_ecc_anomaly(nu, e_test)
+  nu = sp_ecc_to_true_anomaly(Ecc_test, e_test)
+  Ecc_final = sp_true_to_ecc_anomaly(nu, e_test)
   error = ABS(Ecc_final - Ecc_test)
 
   if (error lt 1e-10) then begin

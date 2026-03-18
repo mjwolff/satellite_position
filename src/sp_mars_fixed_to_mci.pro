@@ -1,6 +1,6 @@
 ;+
 ; NAME:
-;   MARS_FIXED_TO_MCI
+;   SP_MARS_FIXED_TO_MCI
 ;
 ; PURPOSE:
 ;   Transforms position vector from Mars-fixed (rotating) frame to
@@ -10,7 +10,7 @@
 ;   Orbital Mechanics / Coordinate Transformations
 ;
 ; CALLING SEQUENCE:
-;   r_mci = mars_fixed_to_mci(r_fixed, t, t_ref, omega_mars)
+;   r_mci = sp_mars_fixed_to_mci(r_fixed, t, t_ref, omega_mars)
 ;
 ; INPUTS:
 ;   r_fixed    - Position vector in Mars-fixed frame [3] (km)
@@ -26,16 +26,16 @@
 ;   2. Apply inverse rotation (rotation by -θ) about Z-axis
 ;
 ; EXAMPLE:
-;   IDL> mars = mars_constants()
+;   IDL> mars = sp_mars_constants()
 ;   IDL> r_fixed = [10000.0d0, 0.0d0, 0.0d0]
 ;   IDL> t = 3600.0d0
-;   IDL> r_mci = mars_fixed_to_mci(r_fixed, t, 0.0d0, mars.omega_mars)
+;   IDL> r_mci = sp_mars_fixed_to_mci(r_fixed, t, 0.0d0, mars.omega_mars)
 ;
 ; MODIFICATION HISTORY:
 ;   2026-02-18: Initial implementation
 ;-
 
-FUNCTION mars_fixed_to_mci, r_fixed, t, t_ref, omega_mars
+FUNCTION sp_mars_fixed_to_mci, r_fixed, t, t_ref, omega_mars
 
   COMPILE_OPT IDL2, HIDDEN
 

@@ -1,6 +1,6 @@
 ;+
 ; NAME:
-;   PROPAGATE_ORBIT
+;   SP_PROPAGATE_ORBIT
 ;
 ; PURPOSE:
 ;   Main orbital propagator that integrates all modules to propagate a satellite
@@ -10,7 +10,7 @@
 ;   Orbital Mechanics / Orbit Propagation
 ;
 ; CALLING SEQUENCE:
-;   result = propagate_orbit(elements, t, t0, constants)
+;   result = sp_propagate_orbit(elements, t, t0, constants)
 ;
 ; INPUTS:
 ;   elements  - Structure containing Keplerian orbital elements:
@@ -22,7 +22,7 @@
 ;               .M0    - Mean anomaly at epoch (radians)
 ;   t         - Time to propagate to (seconds since epoch), scalar or array
 ;   t0        - Epoch time (seconds)
-;   constants - Mars constants structure from mars_constants()
+;   constants - Mars constants structure from sp_mars_constants()
 ;
 ; OUTPUTS:
 ;   Structure (or array of structures if t is an array) containing:
@@ -50,14 +50,14 @@
 ;   7. Convert to longitude/latitude/altitude
 ;
 ; EXAMPLE:
-;   IDL> mars = mars_constants()
+;   IDL> mars = sp_mars_constants()
 ;   IDL> ; Phobos-like orbit
 ;   IDL> elements = {a: 9376.0d0, e: 0.0151d0, i: 1.093d0*!DTOR, $
 ;                     raan: 0.0d0, omega: 0.0d0, M0: 0.0d0}
 ;   IDL> t0 = 0.0d0
 ;   IDL> period = 2*!DPI*sqrt(elements.a^3 / mars.mu)
 ;   IDL> t = dindgen(100) * period / 99.0d0
-;   IDL> result = propagate_orbit(elements, t, t0, mars)
+;   IDL> result = sp_propagate_orbit(elements, t, t0, mars)
 ;   IDL> plot, result.lon, result.lat
 ;
 ; REFERENCES:
@@ -67,7 +67,7 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-FUNCTION propagate_orbit, elements, t, t0, constants
+FUNCTION sp_propagate_orbit, elements, t, t0, constants
 
   COMPILE_OPT IDL2, HIDDEN
 
@@ -108,19 +108,19 @@ FUNCTION propagate_orbit, elements, t, t0, constants
     M = M0 + n * (t_val - t0)
 
     ; Step 2: Solve Kepler's equation for eccentric anomaly
-    Ecc = solve_kepler(M, e)
+    Ecc = sp_solve_kepler(M, e)
 
     ; Step 3: Convert to true anomaly
-    nu = ecc_to_true_anomaly(Ecc, e)
+    nu = sp_ecc_to_true_anomaly(Ecc, e)
 
     ; Step 4: Calculate position & velocity in perifocal frame
-    peri_result = calculate_perifocal_position(a, e, nu, constants.mu)
+    peri_result = sp_calculate_perifocal_position(a, e, nu, constants.mu)
 
     ; Step 5: Transform to MCI frame
-    mci_result = perifocal_to_mci(peri_result.r_pqw, peri_result.v_pqw, raan, omega, i)
+    mci_result = sp_perifocal_to_mci(peri_result.r_pqw, peri_result.v_pqw, raan, omega, i)
 
     ; Step 6: Convert to LLA
-    lla_result = mci_to_lla(mci_result.r_mci, t_val, constants)
+    lla_result = sp_mci_to_lla(mci_result.r_mci, t_val, constants)
 
     ; Build result structure
     result = { $
@@ -153,19 +153,19 @@ FUNCTION propagate_orbit, elements, t, t0, constants
       M = M0 + n * (t_val - t0)
 
       ; Step 2: Solve Kepler's equation
-      Ecc = solve_kepler(M, e)
+      Ecc = sp_solve_kepler(M, e)
 
       ; Step 3: Convert to true anomaly
-      nu = ecc_to_true_anomaly(Ecc, e)
+      nu = sp_ecc_to_true_anomaly(Ecc, e)
 
       ; Step 4: Calculate perifocal position & velocity
-      peri_result = calculate_perifocal_position(a, e, nu, constants.mu)
+      peri_result = sp_calculate_perifocal_position(a, e, nu, constants.mu)
 
       ; Step 5: Transform to MCI
-      mci_result = perifocal_to_mci(peri_result.r_pqw, peri_result.v_pqw, raan, omega, i)
+      mci_result = sp_perifocal_to_mci(peri_result.r_pqw, peri_result.v_pqw, raan, omega, i)
 
       ; Step 6: Convert to LLA
-      lla_result = mci_to_lla(mci_result.r_mci, t_val, constants)
+      lla_result = sp_mci_to_lla(mci_result.r_mci, t_val, constants)
 
       ; Store results
       results[idx].t = t_val

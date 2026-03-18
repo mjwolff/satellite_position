@@ -1,6 +1,6 @@
 ;+
 ; NAME:
-;   TRUE_TO_ECC_ANOMALY
+;   SP_TRUE_TO_ECC_ANOMALY
 ;
 ; PURPOSE:
 ;   Converts true anomaly (ν) to eccentric anomaly (Ecc) for elliptical orbits.
@@ -9,7 +9,7 @@
 ;   Orbital Mechanics / Anomaly Conversions
 ;
 ; CALLING SEQUENCE:
-;   Ecc = true_to_ecc_anomaly(nu, e)
+;   Ecc = sp_true_to_ecc_anomaly(nu, e)
 ;
 ; INPUTS:
 ;   nu  - True anomaly (radians), scalar or array
@@ -25,7 +25,7 @@
 ; EXAMPLE:
 ;   IDL> nu = !DPI/2.0  ; 90 degrees true anomaly
 ;   IDL> e = 0.5
-;   IDL> Ecc = true_to_ecc_anomaly(nu, e)
+;   IDL> Ecc = sp_true_to_ecc_anomaly(nu, e)
 ;   IDL> print, Ecc * !RADEG
 ;        70.53
 ;
@@ -36,7 +36,7 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-FUNCTION true_to_ecc_anomaly, nu, e
+FUNCTION sp_true_to_ecc_anomaly, nu, e
 
   COMPILE_OPT IDL2, HIDDEN
 

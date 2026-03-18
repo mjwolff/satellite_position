@@ -45,7 +45,7 @@ PRO test_install
 
   ; Test 1: Load constants
   print, 'Test 1: Loading Mars constants...'
-  mars = mars_constants()
+  mars = sp_mars_constants()
   print, '  PASS - Mars constants loaded'
   print, '  mu = ', mars.mu, ' km^3/s^2'
   print, '  r_eq = ', mars.r_eq, ' km'
@@ -55,7 +55,7 @@ PRO test_install
   print, 'Test 2: Propagating simple circular orbit...'
   elements = {a: 10000.0d0, e: 0.0d0, i: 0.0d0, $
               raan: 0.0d0, omega: 0.0d0, M0: 0.0d0}
-  result = propagate_orbit(elements, 0.0d0, 0.0d0, mars)
+  result = sp_propagate_orbit(elements, 0.0d0, 0.0d0, mars)
   print, '  PASS - Orbit propagated successfully'
   print, '  Position: ', result.r_mci, ' km'
   print, '  Altitude: ', result.alt, ' km'

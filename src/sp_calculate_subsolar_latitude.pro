@@ -1,6 +1,6 @@
 ;+
 ; NAME:
-;   CALCULATE_SUBSOLAR_LATITUDE
+;   SP_CALCULATE_SUBSOLAR_LATITUDE
 ;
 ; PURPOSE:
 ;   Calculates the sub-solar latitude on Mars (latitude where the Sun is
@@ -10,7 +10,7 @@
 ;   Mars Climate / Orbital Mechanics
 ;
 ; CALLING SEQUENCE:
-;   subsolar_lat = calculate_subsolar_latitude(Ls [, /DEGREES] [, OBLIQUITY=value])
+;   subsolar_lat = sp_calculate_subsolar_latitude(Ls [, /DEGREES] [, OBLIQUITY=value])
 ;
 ; INPUTS:
 ;   Ls - Areocentric solar longitude (radians by default, degrees if /DEGREES set)
@@ -21,7 +21,7 @@
 ; KEYWORDS:
 ;   DEGREES   - If set, input/output in degrees instead of radians
 ;   OBLIQUITY - Optional custom Mars obliquity (radians or degrees based on DEGREES)
-;               Default: uses current epoch value from mars_constants()
+;               Default: uses current epoch value from sp_mars_constants()
 ;
 ; OUTPUTS:
 ;   Sub-solar latitude in same units as input (radians or degrees)
@@ -39,13 +39,13 @@
 ;
 ; EXAMPLE:
 ;   IDL> ; Northern summer solstice
-;   IDL> subsolar_lat = calculate_subsolar_latitude(90.0d0, /DEGREES)
+;   IDL> subsolar_lat = sp_calculate_subsolar_latitude(90.0d0, /DEGREES)
 ;   IDL> print, subsolar_lat
 ;        25.19
 ;
 ;   IDL> ; Seasonal cycle
 ;   IDL> Ls_array = DINDGEN(361) * !DTOR
-;   IDL> subsolar_lat_array = calculate_subsolar_latitude(Ls_array)
+;   IDL> subsolar_lat_array = sp_calculate_subsolar_latitude(Ls_array)
 ;   IDL> plot, Ls_array * !RADEG, subsolar_lat_array * !RADEG
 ;
 ; REFERENCES:
@@ -62,13 +62,13 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-FUNCTION calculate_subsolar_latitude, Ls, DEGREES=degrees, OBLIQUITY=obliquity
+FUNCTION sp_calculate_subsolar_latitude, Ls, DEGREES=degrees, OBLIQUITY=obliquity
 
   COMPILE_OPT IDL2, HIDDEN
 
   ; Get obliquity from mars_constants if not provided
   if (N_ELEMENTS(obliquity) eq 0) then begin
-    mars = mars_constants()
+    mars = sp_mars_constants()
     obliquity_rad = mars.obliquity
   endif else begin
     ; Convert custom obliquity to radians if needed

@@ -3,7 +3,7 @@
 ;   TEST_KEPLER_SOLVER
 ;
 ; PURPOSE:
-;   Unit test for the solve_kepler() function. Verifies Newton-Raphson
+;   Unit test for the sp_solve_kepler() function. Verifies Newton-Raphson
 ;   convergence, accuracy, and correctness of the solution to Kepler's equation.
 ;
 ; CATEGORY:
@@ -30,7 +30,7 @@
 ; EXAMPLE:
 ;   IDL> test_kepler_solver
 ;   =========================================
-;   Running Unit Tests for solve_kepler()
+;   Running Unit Tests for sp_solve_kepler()
 ;   =========================================
 ;   ...
 ;   All tests passed (X/X)
@@ -49,7 +49,7 @@ PRO test_kepler_solver
 
   print, ''
   print, '========================================='
-  print, 'Running Unit Tests for solve_kepler()'
+  print, 'Running Unit Tests for sp_solve_kepler()'
   print, '========================================='
   print, ''
 
@@ -58,7 +58,7 @@ PRO test_kepler_solver
   test_name = 'Circular orbit: e=0, Ecc=M'
   M_test = !DPI / 4.0d0  ; 45 degrees
   e_test = 0.0d0
-  Ecc = solve_kepler(M_test, e_test, n_iter=n_iter, converged=conv)
+  Ecc = sp_solve_kepler(M_test, e_test, n_iter=n_iter, converged=conv)
 
   if (conv AND ABS(Ecc - M_test) lt 1e-10) then begin
     print, 'TEST: ' + test_name + ' ... PASS'
@@ -73,7 +73,7 @@ PRO test_kepler_solver
   test_name = 'Low eccentricity: e=0.1 convergence'
   M_test = !DPI / 3.0d0  ; 60 degrees
   e_test = 0.1d0
-  Ecc = solve_kepler(M_test, e_test, n_iter=n_iter, converged=conv)
+  Ecc = sp_solve_kepler(M_test, e_test, n_iter=n_iter, converged=conv)
 
   ; Verify Kepler's equation: M = Ecc - e*sin(Ecc)
   M_computed = Ecc - e_test * SIN(Ecc)
@@ -93,7 +93,7 @@ PRO test_kepler_solver
   test_name = 'Moderate eccentricity: e=0.5 convergence'
   M_test = !DPI / 4.0d0  ; 45 degrees
   e_test = 0.5d0
-  Ecc = solve_kepler(M_test, e_test, n_iter=n_iter, converged=conv)
+  Ecc = sp_solve_kepler(M_test, e_test, n_iter=n_iter, converged=conv)
 
   M_computed = Ecc - e_test * SIN(Ecc)
   error = ABS(M_computed - M_test)
@@ -112,7 +112,7 @@ PRO test_kepler_solver
   test_name = 'High eccentricity: e=0.9 convergence'
   M_test = !DPI / 2.0d0  ; 90 degrees
   e_test = 0.9d0
-  Ecc = solve_kepler(M_test, e_test, n_iter=n_iter, converged=conv)
+  Ecc = sp_solve_kepler(M_test, e_test, n_iter=n_iter, converged=conv)
 
   M_computed = Ecc - e_test * SIN(Ecc)
   error = ABS(M_computed - M_test)
@@ -131,7 +131,7 @@ PRO test_kepler_solver
   test_name = 'Very high eccentricity: e=0.99 convergence'
   M_test = !DPI / 6.0d0  ; 30 degrees
   e_test = 0.99d0
-  Ecc = solve_kepler(M_test, e_test, n_iter=n_iter, converged=conv)
+  Ecc = sp_solve_kepler(M_test, e_test, n_iter=n_iter, converged=conv)
 
   M_computed = Ecc - e_test * SIN(Ecc)
   error = ABS(M_computed - M_test)
@@ -150,7 +150,7 @@ PRO test_kepler_solver
   test_name = 'Mean anomaly M=0 (periapsis)'
   M_test = 0.0d0
   e_test = 0.5d0
-  Ecc = solve_kepler(M_test, e_test, n_iter=n_iter, converged=conv)
+  Ecc = sp_solve_kepler(M_test, e_test, n_iter=n_iter, converged=conv)
 
   M_computed = Ecc - e_test * SIN(Ecc)
   error = ABS(M_computed - M_test)
@@ -168,7 +168,7 @@ PRO test_kepler_solver
   test_name = 'Mean anomaly M=π'
   M_test = !DPI
   e_test = 0.3d0
-  Ecc = solve_kepler(M_test, e_test, n_iter=n_iter, converged=conv)
+  Ecc = sp_solve_kepler(M_test, e_test, n_iter=n_iter, converged=conv)
 
   M_computed = Ecc - e_test * SIN(Ecc)
   error = ABS(M_computed - M_test)
@@ -186,7 +186,7 @@ PRO test_kepler_solver
   test_name = 'Mean anomaly M=2π (full orbit)'
   M_test = 2.0d0 * !DPI
   e_test = 0.4d0
-  Ecc = solve_kepler(M_test, e_test, n_iter=n_iter, converged=conv)
+  Ecc = sp_solve_kepler(M_test, e_test, n_iter=n_iter, converged=conv)
 
   ; Should normalize to M ≈ 0, so Ecc ≈ 0
   M_computed = Ecc - e_test * SIN(Ecc)
@@ -209,7 +209,7 @@ PRO test_kepler_solver
   max_error = 0.0d0
 
   foreach e_val, e_array do begin
-    Ecc = solve_kepler(M_test, e_val, n_iter=n_iter, converged=conv)
+    Ecc = sp_solve_kepler(M_test, e_val, n_iter=n_iter, converged=conv)
     M_computed = Ecc - e_val * SIN(Ecc)
     error = ABS(M_computed - M_test)
     if (error gt max_error) then max_error = error
@@ -229,7 +229,7 @@ PRO test_kepler_solver
   test_name = 'Solution accuracy for e=0.7, M=π/3'
   M_test = !DPI / 3.0d0
   e_test = 0.7d0
-  Ecc = solve_kepler(M_test, e_test, tol=1e-12, n_iter=n_iter, converged=conv)
+  Ecc = sp_solve_kepler(M_test, e_test, tol=1e-12, n_iter=n_iter, converged=conv)
 
   M_computed = Ecc - e_test * SIN(Ecc)
   error = ABS(M_computed - M_test)

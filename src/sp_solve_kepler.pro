@@ -1,6 +1,6 @@
 ;+
 ; NAME:
-;   SOLVE_KEPLER
+;   SP_SOLVE_KEPLER
 ;
 ; PURPOSE:
 ;   Solves Kepler's equation (M = Ecc - e*sin(Ecc)) for the eccentric anomaly
@@ -11,8 +11,8 @@
 ;   Orbital Mechanics / Mathematical Solvers
 ;
 ; CALLING SEQUENCE:
-;   Ecc = solve_kepler(M, e [, tol=tol, max_iter=max_iter, $
-;                      n_iter=n_iter, converged=converged])
+;   Ecc = sp_solve_kepler(M, e [, tol=tol, max_iter=max_iter, $
+;                         n_iter=n_iter, converged=converged])
 ;
 ; INPUTS:
 ;   M   - Mean anomaly (radians), scalar or array
@@ -40,7 +40,7 @@
 ; EXAMPLE:
 ;   IDL> M = !DPI/4.0  ; Mean anomaly = 45 degrees
 ;   IDL> e = 0.5       ; Moderate eccentricity
-;   IDL> Ecc = solve_kepler(M, e, n_iter=n)
+;   IDL> Ecc = sp_solve_kepler(M, e, n_iter=n)
 ;   IDL> print, Ecc * !RADEG
 ;        60.134
 ;   IDL> print, n
@@ -54,8 +54,8 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-FUNCTION solve_kepler, M, e, tol=tol, max_iter=max_iter, $
-                       n_iter=n_iter, converged=converged
+FUNCTION sp_solve_kepler, M, e, tol=tol, max_iter=max_iter, $
+                          n_iter=n_iter, converged=converged
 
   COMPILE_OPT IDL2, HIDDEN
 

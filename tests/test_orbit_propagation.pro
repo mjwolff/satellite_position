@@ -37,7 +37,7 @@ PRO test_orbit_propagation
   print, ''
 
   ; Get Mars constants
-  mars = mars_constants()
+  mars = sp_mars_constants()
 
   ; TEST 1: Circular equatorial orbit - constant altitude
   n_tests++
@@ -48,7 +48,7 @@ PRO test_orbit_propagation
   period = 2.0d0 * !DPI * SQRT(elements.a^3 / mars.mu)
   t = DINDGEN(100) * period / 99.0d0
 
-  result = propagate_orbit(elements, t, t0, mars)
+  result = sp_propagate_orbit(elements, t, t0, mars)
 
   ; Extract altitudes
   altitudes = DBLARR(N_ELEMENTS(result))
@@ -134,7 +134,7 @@ PRO test_orbit_propagation
   period = 2.0d0 * !DPI * SQRT(elements.a^3 / mars.mu)
   t = DINDGEN(100) * period / 99.0d0
 
-  result = propagate_orbit(elements, t, t0, mars)
+  result = sp_propagate_orbit(elements, t, t0, mars)
 
   latitudes = DBLARR(N_ELEMENTS(result))
   for idx = 0, N_ELEMENTS(result) - 1 do begin
@@ -165,7 +165,7 @@ PRO test_orbit_propagation
   period = 2.0d0 * !DPI * SQRT(elements.a^3 / mars.mu)
   t = DINDGEN(100) * period / 99.0d0
 
-  result = propagate_orbit(elements, t, t0, mars)
+  result = sp_propagate_orbit(elements, t, t0, mars)
 
   altitudes = DBLARR(N_ELEMENTS(result))
   for idx = 0, N_ELEMENTS(result) - 1 do begin
@@ -204,7 +204,7 @@ PRO test_orbit_propagation
   period = 2.0d0 * !DPI * SQRT(elements.a^3 / mars.mu)
   t = DINDGEN(50) * period / 49.0d0
 
-  result = propagate_orbit(elements, t, t0, mars)
+  result = sp_propagate_orbit(elements, t, t0, mars)
 
   E_expected = -mars.mu / (2.0d0 * elements.a)
   E_errors = DBLARR(N_ELEMENTS(result))
@@ -267,7 +267,7 @@ PRO test_orbit_propagation
 
   foreach e_val, e_values do begin
     elements_test = {a: 10000.0d0, e: e_val, i: 0.0d0, raan: 0.0d0, omega: 0.0d0, M0: !DPI/4.0d0}
-    result_test = propagate_orbit(elements_test, 0.0d0, 0.0d0, mars)
+    result_test = sp_propagate_orbit(elements_test, 0.0d0, 0.0d0, mars)
 
     ; Verify Kepler's equation: M = Ecc - e*sin(Ecc)
     M_rad = result_test.M * !DTOR

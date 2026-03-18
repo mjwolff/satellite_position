@@ -1,6 +1,6 @@
 ;+
 ; NAME:
-;   PERIFOCAL_TO_MCI
+;   SP_PERIFOCAL_TO_MCI
 ;
 ; PURPOSE:
 ;   Transforms position and velocity vectors from perifocal (PQW) frame to
@@ -10,7 +10,7 @@
 ;   Orbital Mechanics / Coordinate Transformations
 ;
 ; CALLING SEQUENCE:
-;   result = perifocal_to_mci(r_pqw, v_pqw, raan, omega, i)
+;   result = sp_perifocal_to_mci(r_pqw, v_pqw, raan, omega, i)
 ;
 ; INPUTS:
 ;   r_pqw - Position vector in perifocal frame [3] (km)
@@ -46,7 +46,7 @@
 ;   IDL> raan = 0.0d0
 ;   IDL> omega = 0.0d0
 ;   IDL> i = 0.0d0
-;   IDL> result = perifocal_to_mci(r_pqw, v_pqw, raan, omega, i)
+;   IDL> result = sp_perifocal_to_mci(r_pqw, v_pqw, raan, omega, i)
 ;   IDL> print, result.r_mci
 ;        10000.0       0.0       0.0
 ;
@@ -57,7 +57,7 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-FUNCTION perifocal_to_mci, r_pqw, v_pqw, raan, omega, i
+FUNCTION sp_perifocal_to_mci, r_pqw, v_pqw, raan, omega, i
 
   COMPILE_OPT IDL2, HIDDEN
 

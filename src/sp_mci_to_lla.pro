@@ -1,6 +1,6 @@
 ;+
 ; NAME:
-;   MCI_TO_LLA
+;   SP_MCI_TO_LLA
 ;
 ; PURPOSE:
 ;   Converts position from Mars-Centered Inertial (MCI) frame to
@@ -10,12 +10,12 @@
 ;   Orbital Mechanics / Coordinate Transformations
 ;
 ; CALLING SEQUENCE:
-;   result = mci_to_lla(r_mci, t, constants)
+;   result = sp_mci_to_lla(r_mci, t, constants)
 ;
 ; INPUTS:
 ;   r_mci     - Position vector in MCI frame [3] (km)
 ;   t         - Current time (seconds since epoch)
-;   constants - Mars constants structure from mars_constants()
+;   constants - Mars constants structure from sp_mars_constants()
 ;
 ; OUTPUTS:
 ;   Structure containing:
@@ -29,10 +29,10 @@
 ;   3. Calculate geodetic latitude and altitude iteratively
 ;
 ; EXAMPLE:
-;   IDL> mars = mars_constants()
+;   IDL> mars = sp_mars_constants()
 ;   IDL> r_mci = [10000.0d0, 0.0d0, 0.0d0]
 ;   IDL> t = 0.0d0
-;   IDL> result = mci_to_lla(r_mci, t, mars)
+;   IDL> result = sp_mci_to_lla(r_mci, t, mars)
 ;   IDL> print, result.lon, result.lat, result.alt
 ;
 ; REFERENCES:
@@ -42,12 +42,12 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-FUNCTION mci_to_lla, r_mci, t, constants
+FUNCTION sp_mci_to_lla, r_mci, t, constants
 
   COMPILE_OPT IDL2, HIDDEN
 
   ; Transform from MCI to Mars-fixed frame
-  r_fixed = mci_to_mars_fixed(r_mci, t, constants.ref_epoch, constants.omega_mars)
+  r_fixed = sp_mci_to_mars_fixed(r_mci, t, constants.ref_epoch, constants.omega_mars)
 
   ; Calculate longitude
   ; lon = atan2(y, x)
@@ -59,8 +59,8 @@ FUNCTION mci_to_lla, r_mci, t, constants
   if (lon_deg lt -180.0d0) then lon_deg = lon_deg + 360.0d0
 
   ; Calculate geodetic latitude and altitude
-  geo_result = calculate_geodetic_latitude(r_fixed[0], r_fixed[1], r_fixed[2], $
-                                            constants.r_eq, constants.e2)
+  geo_result = sp_calculate_geodetic_latitude(r_fixed[0], r_fixed[1], r_fixed[2], $
+                                               constants.r_eq, constants.e2)
 
   ; Convert latitude to degrees
   lat_deg = geo_result.lat * !RADEG

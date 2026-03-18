@@ -3,7 +3,7 @@
 ;   TEST_SUBSOLAR_LATITUDE
 ;
 ; PURPOSE:
-;   Unit test for the calculate_subsolar_latitude() function. Verifies correct
+;   Unit test for the sp_calculate_subsolar_latitude() function. Verifies correct
 ;   calculation of Mars sub-solar latitude from areocentric solar longitude.
 ;
 ; CATEGORY:
@@ -55,7 +55,7 @@ PRO test_subsolar_latitude
   print, ''
 
   ; Get Mars constants for expected obliquity
-  mars = mars_constants()
+  mars = sp_mars_constants()
   expected_obliquity_deg = mars.obliquity * !RADEG
 
   ; =========================================
@@ -64,7 +64,7 @@ PRO test_subsolar_latitude
   n_tests++
   test_name = 'Spring equinox (Ls=0 rad): subsolar_lat=0'
   Ls_test = 0.0d0
-  subsolar_lat = calculate_subsolar_latitude(Ls_test)
+  subsolar_lat = sp_calculate_subsolar_latitude(Ls_test)
 
   if (ABS(subsolar_lat) lt 1e-10) then begin
     print, 'TEST: ' + test_name + ' ... PASS'
@@ -80,7 +80,7 @@ PRO test_subsolar_latitude
   n_tests++
   test_name = 'Summer solstice (Ls=π/2): subsolar_lat=+obliquity'
   Ls_test = !DPI / 2.0d0
-  subsolar_lat = calculate_subsolar_latitude(Ls_test)
+  subsolar_lat = sp_calculate_subsolar_latitude(Ls_test)
   expected = mars.obliquity
 
   if (ABS(subsolar_lat - expected) lt 1e-10) then begin
@@ -97,7 +97,7 @@ PRO test_subsolar_latitude
   n_tests++
   test_name = 'Autumn equinox (Ls=π): subsolar_lat=0'
   Ls_test = !DPI
-  subsolar_lat = calculate_subsolar_latitude(Ls_test)
+  subsolar_lat = sp_calculate_subsolar_latitude(Ls_test)
 
   if (ABS(subsolar_lat) lt 1e-10) then begin
     print, 'TEST: ' + test_name + ' ... PASS'
@@ -113,7 +113,7 @@ PRO test_subsolar_latitude
   n_tests++
   test_name = 'Winter solstice (Ls=3π/2): subsolar_lat=-obliquity'
   Ls_test = 3.0d0 * !DPI / 2.0d0
-  subsolar_lat = calculate_subsolar_latitude(Ls_test)
+  subsolar_lat = sp_calculate_subsolar_latitude(Ls_test)
   expected = -mars.obliquity
 
   if (ABS(subsolar_lat - expected) lt 1e-10) then begin
@@ -132,7 +132,7 @@ PRO test_subsolar_latitude
   Ls_cardinal = [0.0d0, 90.0d0, 180.0d0, 270.0d0]
   expected_cardinal = [0.0d0, expected_obliquity_deg, 0.0d0, -expected_obliquity_deg]
 
-  subsolar_cardinal = calculate_subsolar_latitude(Ls_cardinal, /DEGREES)
+  subsolar_cardinal = sp_calculate_subsolar_latitude(Ls_cardinal, /DEGREES)
 
   max_error = MAX(ABS(subsolar_cardinal - expected_cardinal))
 
@@ -153,7 +153,7 @@ PRO test_subsolar_latitude
   n_tests++
   test_name = 'Intermediate value: Ls=30 degrees'
   Ls_test = 30.0d0
-  subsolar_lat = calculate_subsolar_latitude(Ls_test, /DEGREES)
+  subsolar_lat = sp_calculate_subsolar_latitude(Ls_test, /DEGREES)
   ; Expected: 25.19 * sin(30°) = 25.19 * 0.5 = 12.595°
   expected = expected_obliquity_deg * SIN(30.0d0 * !DTOR)
 
@@ -172,7 +172,7 @@ PRO test_subsolar_latitude
   n_tests++
   test_name = 'Intermediate value: Ls=45 degrees'
   Ls_test = 45.0d0
-  subsolar_lat = calculate_subsolar_latitude(Ls_test, /DEGREES)
+  subsolar_lat = sp_calculate_subsolar_latitude(Ls_test, /DEGREES)
   ; Expected: 25.19 * sin(45°) = 25.19 * sqrt(2)/2 ≈ 17.81°
   expected = expected_obliquity_deg * SIN(45.0d0 * !DTOR)
 
@@ -191,7 +191,7 @@ PRO test_subsolar_latitude
   n_tests++
   test_name = 'Intermediate value: Ls=135 degrees'
   Ls_test = 135.0d0
-  subsolar_lat = calculate_subsolar_latitude(Ls_test, /DEGREES)
+  subsolar_lat = sp_calculate_subsolar_latitude(Ls_test, /DEGREES)
   ; Expected: 25.19 * sin(135°) = 25.19 * sqrt(2)/2 ≈ 17.81°
   expected = expected_obliquity_deg * SIN(135.0d0 * !DTOR)
 
@@ -211,7 +211,7 @@ PRO test_subsolar_latitude
   test_name = 'Custom obliquity: 26 degrees at Ls=90'
   Ls_test = 90.0d0
   custom_obliquity = 26.0d0
-  subsolar_lat = calculate_subsolar_latitude(Ls_test, /DEGREES, OBLIQUITY=custom_obliquity)
+  subsolar_lat = sp_calculate_subsolar_latitude(Ls_test, /DEGREES, OBLIQUITY=custom_obliquity)
   expected = 26.0d0
 
   if (ABS(subsolar_lat - expected) lt 1e-5) then begin
@@ -228,7 +228,7 @@ PRO test_subsolar_latitude
   n_tests++
   test_name = 'Array input: multiple Ls values'
   Ls_array = [0.0d0, 30.0d0, 60.0d0, 90.0d0, 120.0d0, 180.0d0, 270.0d0]
-  subsolar_array = calculate_subsolar_latitude(Ls_array, /DEGREES)
+  subsolar_array = sp_calculate_subsolar_latitude(Ls_array, /DEGREES)
 
   ; Verify array size matches
   if (N_ELEMENTS(subsolar_array) eq N_ELEMENTS(Ls_array)) then begin
@@ -248,7 +248,7 @@ PRO test_subsolar_latitude
   test_name = 'Output range: within [-obliquity, +obliquity]'
   ; Test full seasonal cycle
   Ls_cycle = DINDGEN(361)
-  subsolar_cycle = calculate_subsolar_latitude(Ls_cycle, /DEGREES)
+  subsolar_cycle = sp_calculate_subsolar_latitude(Ls_cycle, /DEGREES)
 
   min_subsolar = MIN(subsolar_cycle)
   max_subsolar = MAX(subsolar_cycle)
@@ -273,7 +273,7 @@ PRO test_subsolar_latitude
   test_name = 'High precision: analytical vs computed'
   ; Test Ls = 60° where sin(60°) = sqrt(3)/2 exactly
   Ls_test = 60.0d0 * !DTOR
-  subsolar_lat = calculate_subsolar_latitude(Ls_test)
+  subsolar_lat = sp_calculate_subsolar_latitude(Ls_test)
   expected = mars.obliquity * SQRT(3.0d0) / 2.0d0
   error = ABS(subsolar_lat - expected)
 
@@ -294,8 +294,8 @@ PRO test_subsolar_latitude
   test_name = 'Negative Ls: Ls=-90 degrees = Ls=270'
   Ls_neg = -90.0d0
   Ls_pos = 270.0d0
-  subsolar_neg = calculate_subsolar_latitude(Ls_neg, /DEGREES)
-  subsolar_pos = calculate_subsolar_latitude(Ls_pos, /DEGREES)
+  subsolar_neg = sp_calculate_subsolar_latitude(Ls_neg, /DEGREES)
+  subsolar_pos = sp_calculate_subsolar_latitude(Ls_pos, /DEGREES)
 
   if (ABS(subsolar_neg - subsolar_pos) lt 1e-8) then begin
     print, 'TEST: ' + test_name + ' ... PASS'
@@ -313,8 +313,8 @@ PRO test_subsolar_latitude
   test_name = 'Ls > 360: Ls=450 degrees = Ls=90'
   Ls_over = 450.0d0
   Ls_equiv = 90.0d0
-  subsolar_over = calculate_subsolar_latitude(Ls_over, /DEGREES)
-  subsolar_equiv = calculate_subsolar_latitude(Ls_equiv, /DEGREES)
+  subsolar_over = sp_calculate_subsolar_latitude(Ls_over, /DEGREES)
+  subsolar_equiv = sp_calculate_subsolar_latitude(Ls_equiv, /DEGREES)
 
   if (ABS(subsolar_over - subsolar_equiv) lt 1e-8) then begin
     print, 'TEST: ' + test_name + ' ... PASS'

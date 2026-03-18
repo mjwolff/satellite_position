@@ -1,6 +1,6 @@
 ;+
 ; NAME:
-;   CALCULATE_GEODETIC_LATITUDE
+;   SP_CALCULATE_GEODETIC_LATITUDE
 ;
 ; PURPOSE:
 ;   Calculates geodetic latitude and altitude from Cartesian coordinates
@@ -10,7 +10,7 @@
 ;   Orbital Mechanics / Geodetic Conversions
 ;
 ; CALLING SEQUENCE:
-;   result = calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, r_eq, e2, $
+;   result = sp_calculate_geodetic_latitude(x_fixed, y_fixed, z_fixed, r_eq, e2, $
 ;                                         tol=tol, max_iter=max_iter)
 ;
 ; INPUTS:
@@ -42,8 +42,8 @@
 ;   4. Converge when |lat_new - lat| < tol
 ;
 ; EXAMPLE:
-;   IDL> mars = mars_constants()
-;   IDL> result = calculate_geodetic_latitude(10000.0d0, 0.0d0, 0.0d0, $
+;   IDL> mars = sp_mars_constants()
+;   IDL> result = sp_calculate_geodetic_latitude(10000.0d0, 0.0d0, 0.0d0, $
 ;                   mars.r_eq, mars.e2)
 ;   IDL> print, result.lat * !RADEG
 ;        0.0
@@ -57,7 +57,7 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-FUNCTION calculate_geodetic_latitude, x_fixed, y_fixed, z_fixed, r_eq, e2, $
+FUNCTION sp_calculate_geodetic_latitude, x_fixed, y_fixed, z_fixed, r_eq, e2, $
                                        tol=tol, max_iter=max_iter
 
   COMPILE_OPT IDL2, HIDDEN
