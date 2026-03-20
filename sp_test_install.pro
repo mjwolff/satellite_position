@@ -1,6 +1,6 @@
 ;+
 ; NAME:
-;   TEST_INSTALL
+;   SP_TEST_INSTALL
 ;
 ; PURPOSE:
 ;   Verify that the Mars Orbital Propagator is correctly installed and functional.
