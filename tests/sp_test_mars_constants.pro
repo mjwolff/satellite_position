@@ -39,6 +39,7 @@
 PRO sp_test_mars_constants
 
   COMPILE_OPT IDL2
+  COMMON sp_test_results, tc_n_tests, tc_n_passed
 
   ; Initialize test counter
   n_tests = 0
@@ -178,6 +179,9 @@ PRO sp_test_mars_constants
   print, 'Total tests: ', STRTRIM(n_tests, 2)
   print, 'Passed:      ', STRTRIM(n_passed, 2)
   print, 'Failed:      ', STRTRIM(n_tests - n_passed, 2)
+
+  tc_n_tests = n_tests
+  tc_n_passed = n_passed
 
   if (n_passed eq n_tests) then begin
     print, ''
