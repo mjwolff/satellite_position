@@ -45,3 +45,18 @@
   - `test_install.pro` → `sp_test_install.pro`
 - **`README.md`** — updated all test calling sequences and directory tree to reflect renamed files.
 
+
+### 01f8578 — 2026-03-20 16:40:14 +0100
+Add /RANGE_180 keyword to sp_calculate_subsolar_longitude; add test suite 7
+
+Files changed:
+  - CHANGELOG.md
+  - sp_run_all_tests.pro
+  - src/sp_calculate_subsolar_longitude.pro
+  - tests/sp_test_subsolar_longitude.pro
+
+### faa2741 — 2026-03-20 16:41:55 +0100
+Update TESTS.md: add suite 7 (Subsolar Longitude), renumber 7-8 to 8-9
+
+Files changed:
+  - TESTS.md
