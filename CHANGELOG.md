@@ -24,6 +24,10 @@
   - Test 8 converted stored degree anomalies back to radians via `!DTOR` (float32), introducing ~1e-8 rad error and exceeding the 1e-10 tolerance. Replaced `!DTOR` with `(!DPI/180.0d0)`. All 8 suites now pass 100%.
 
 ### Changed
+- **`sp_` namespace prefix applied to example scripts:**
+  - `examples/example_tgo.pro` → `examples/sp_example_tgo.pro`; `PRO` declaration updated
+  - `examples/run_example_tgo.pro` → `examples/sp_run_example_tgo.pro`; call updated to `sp_example_tgo`
+
 - **`sp_` namespace prefix applied to all files in `tests/`** — renames, `PRO`/`FUNCTION` declarations, internal `.compile` directives, and docstring calling sequences updated:
   - `test_anomaly_conversions.pro` → `sp_test_anomaly_conversions.pro`
   - `test_coordinate_transforms.pro` → `sp_test_coordinate_transforms.pro`
