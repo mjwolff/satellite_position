@@ -11,7 +11,7 @@
 ;   Installation Testing
 ;
 ; CALLING SEQUENCE:
-;   test_install
+;   sp_test_install
 ;
 ; INPUTS:
 ;   None
@@ -21,17 +21,17 @@
 ;
 ; EXAMPLE:
 ;   From command line:
-;     idl -e "test_install"
+;     idl -e "sp_test_install"
 ;
 ;   From IDL prompt:
 ;     IDL> cd, '/path/to/satellite_position'
-;     IDL> .run test_install
+;     IDL> .run sp_test_install
 ;
 ; MODIFICATION HISTORY:
 ;   2026-03-18: Initial implementation
 ;-
 
-PRO test_install
+PRO sp_test_install
   COMPILE_OPT IDL2
 
   ; Setup path

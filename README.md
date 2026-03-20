@@ -62,13 +62,13 @@ Run the installation test script to verify everything is working:
 
 ```bash
 cd satellite_position
-idl -e "test_install"
+idl -e "sp_test_install"
 ```
 
 Or from within IDL:
 ```idl
 IDL> cd, '/path/to/satellite_position'
-IDL> .run test_install
+IDL> .run sp_test_install
 ```
 
 The test script will:
@@ -501,7 +501,7 @@ print, 'Historical Mars (35° obliquity) at summer solstice: ', $
 ```
 satellite_position/
 ├── README.md                        # This file
-├── test_install.pro                 # Installation test script
+├── sp_test_install.pro                 # Installation test script
 ├── src/                             # Source code
 │   ├── sp_mars_constants.pro           # Mars physical constants
 │   ├── sp_solve_kepler.pro             # Kepler equation solver

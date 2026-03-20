@@ -1,4 +1,4 @@
-PRO run_all_tests
+PRO sp_run_all_tests
   COMPILE_OPT IDL2
 
   ; Setup path
