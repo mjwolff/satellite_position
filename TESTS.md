@@ -1,11 +1,11 @@
 # Test Suite Documentation
 
-This document describes the purpose and expected values for every test in the `satellite_position` test suite. The suite covers the full orbital mechanics pipeline from Kepler's equation through coordinate transforms to ground-track computation for Mars orbiters. Expected values are grounded in standard astrodynamics references (Vallado 2013, Prussing & Conway 1993) and Mars planetary constants from the NASA Mars Fact Sheet and IAU/IAG 2015. All 8 suites (101 tests total) must pass before merging changes.
+This document describes the purpose and expected values for every test in the `satellite_position` test suite. The suite covers the full orbital mechanics pipeline from Kepler's equation through coordinate transforms to ground-track computation for Mars orbiters. Expected values are grounded in standard astrodynamics references (Vallado 2013, Prussing & Conway 1993) and Mars planetary constants from the NASA Mars Fact Sheet and IAU/IAG 2015. All 9 suites (112 tests total) must pass before merging changes.
 
 ## Running the tests
 
 ```
-idl -e "sp_run_all_tests"      # all 8 suites + tabular summary
+idl -e "sp_run_all_tests"      # all 9 suites + tabular summary
 idl sp_run_all_tests.pro       # equivalent batch form
 idl -e "sp_test_kepler_solver" # individual suite
 ```
@@ -154,7 +154,33 @@ Reference: analytical formula valid for small obliquity — NASA Mars Fact Sheet
 
 ---
 
-## 7. Propagate Orbit, unit (`sp_test_propagate_orbit`)
+## 7. Subsolar Longitude (`sp_test_subsolar_longitude`)
+
+**Function under test:** `sp_calculate_subsolar_longitude(t, t_ref, ss_lon_ref, constants [, /RANGE_180])`
+
+**Description:** Verifies the westward drift formula and wrapping behaviour for both output conventions. Default output is [0, 360]; `/RANGE_180` selects [−180, 180].
+
+| # | Description | Expected value / basis |
+|---|-------------|------------------------|
+| 1 | Full sidereal rotation returns to ss_lon_ref (default [0, 360]) | Drift = −2π after one Mars day; wraps to 0 |
+| 2 | Full sidereal rotation returns to ss_lon_ref (/RANGE_180) | Same condition, signed convention |
+| 3 | 60 s step, default [0, 360] | 360 − ω_Mars·60·(180/π) ≈ 359.756° |
+| 4 | 60 s step, /RANGE_180 | −ω_Mars·60·(180/π) ≈ −0.244° |
+| 5 | Consistency: default and /RANGE_180 encode the same angle | (ss_lon_360) mod 360 = (ss_lon_180 + 360) mod 360 |
+| 6 | Half rotation from 90° ref → 270° (default) | ss_lon_ref + (−π) wraps to ref − 180° |
+| 7 | Wrap at 0/360 boundary stays in [0, 360) | Starting near 0°, westward shift crosses 0 |
+| 8 | Wrap at ±180 boundary stays in [−180, 180] | Starting near −179°, westward shift crosses −180° |
+| 9 | Full cycle range validation, default | All 1000 samples in [0°, 360°) |
+| 10 | Full cycle range validation, /RANGE_180 | All 1000 samples in [−180°, 180°] |
+| 11 | Array input | Output size = input size |
+
+**Tolerances:** < 1e-6° for drift and wrapping checks.
+
+Note: the sub-solar footprint drifts **westward** as Mars rotates eastward; the drift rate equals ω_Mars (7.088×10⁻⁵ rad/s). The [0, 360] default is consistent with the standard east-longitude convention; `/RANGE_180` is provided for callers that require a signed longitude.
+
+---
+
+## 8. Propagate Orbit, unit (`sp_test_propagate_orbit`)
 
 **Function under test:** `sp_propagate_orbit()`
 
@@ -175,7 +201,7 @@ Reference: analytical formula valid for small obliquity — NASA Mars Fact Sheet
 
 ---
 
-## 8. Orbit Propagation, integration (`sp_test_orbit_propagation`)
+## 9. Orbit Propagation, integration (`sp_test_orbit_propagation`)
 
 **Function under test:** `sp_propagate_orbit()` (end-to-end, 101-point trajectories)
 
