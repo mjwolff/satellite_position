@@ -9,7 +9,7 @@
 ;   Unit Testing / Orbital Mechanics
 ;
 ; CALLING SEQUENCE:
-;   test_propagate_orbit
+;   sp_test_propagate_orbit
 ;
 ; INPUTS:
 ;   None
@@ -21,7 +21,7 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-PRO test_propagate_orbit
+PRO sp_test_propagate_orbit
 
   COMPILE_OPT IDL2
 

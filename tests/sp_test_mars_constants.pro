@@ -10,7 +10,7 @@
 ;   Unit Testing / Orbital Mechanics
 ;
 ; CALLING SEQUENCE:
-;   test_mars_constants
+;   sp_test_mars_constants
 ;
 ; INPUTS:
 ;   None
@@ -26,7 +26,7 @@
 ;   4. Derived values (f, e2) are correctly calculated
 ;
 ; EXAMPLE:
-;   IDL> test_mars_constants
+;   IDL> sp_test_mars_constants
 ;   TEST: mars_constants returns a structure ... PASS
 ;   TEST: Field 'mu' exists ... PASS
 ;   ...
@@ -36,7 +36,7 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-PRO test_mars_constants
+PRO sp_test_mars_constants
 
   COMPILE_OPT IDL2
 

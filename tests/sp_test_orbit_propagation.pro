@@ -10,7 +10,7 @@
 ;   Integration Testing / Orbital Mechanics
 ;
 ; CALLING SEQUENCE:
-;   test_orbit_propagation
+;   sp_test_orbit_propagation
 ;
 ; INPUTS:
 ;   None
@@ -22,7 +22,7 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-PRO test_orbit_propagation
+PRO sp_test_orbit_propagation
 
   COMPILE_OPT IDL2
 

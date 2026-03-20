@@ -10,7 +10,7 @@
 ;   Unit Testing / Mars Climate
 ;
 ; CALLING SEQUENCE:
-;   test_subsolar_latitude
+;   sp_test_subsolar_latitude
 ;
 ; INPUTS:
 ;   None
@@ -29,7 +29,7 @@
 ;   7. Precision and accuracy
 ;
 ; EXAMPLE:
-;   IDL> test_subsolar_latitude
+;   IDL> sp_test_subsolar_latitude
 ;   =========================================
 ;   Running Unit Tests for calculate_subsolar_latitude
 ;   =========================================
@@ -40,7 +40,7 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-PRO test_subsolar_latitude
+PRO sp_test_subsolar_latitude
 
   COMPILE_OPT IDL2
 

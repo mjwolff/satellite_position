@@ -10,7 +10,7 @@
 ;   Unit Testing / Orbital Mechanics
 ;
 ; CALLING SEQUENCE:
-;   test_kepler_solver
+;   sp_test_kepler_solver
 ;
 ; INPUTS:
 ;   None
@@ -28,7 +28,7 @@
 ;   6. Edge cases and error conditions
 ;
 ; EXAMPLE:
-;   IDL> test_kepler_solver
+;   IDL> sp_test_kepler_solver
 ;   =========================================
 ;   Running Unit Tests for sp_solve_kepler()
 ;   =========================================
@@ -39,7 +39,7 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-PRO test_kepler_solver
+PRO sp_test_kepler_solver
 
   COMPILE_OPT IDL2
 

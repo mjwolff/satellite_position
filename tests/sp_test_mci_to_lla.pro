@@ -9,7 +9,7 @@
 ;   Unit Testing / Orbital Mechanics
 ;
 ; CALLING SEQUENCE:
-;   test_mci_to_lla
+;   sp_test_mci_to_lla
 ;
 ; INPUTS:
 ;   None
@@ -21,7 +21,7 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-PRO test_mci_to_lla
+PRO sp_test_mci_to_lla
 
   COMPILE_OPT IDL2
 

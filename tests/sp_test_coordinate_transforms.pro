@@ -9,7 +9,7 @@
 ;   Unit Testing / Orbital Mechanics
 ;
 ; CALLING SEQUENCE:
-;   test_coordinate_transforms
+;   sp_test_coordinate_transforms
 ;
 ; INPUTS:
 ;   None
@@ -21,7 +21,7 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-PRO test_coordinate_transforms
+PRO sp_test_coordinate_transforms
 
   COMPILE_OPT IDL2
 

@@ -11,7 +11,7 @@
 ;   Unit Testing / Orbital Mechanics
 ;
 ; CALLING SEQUENCE:
-;   test_anomaly_conversions
+;   sp_test_anomaly_conversions
 ;
 ; INPUTS:
 ;   None
@@ -29,7 +29,7 @@
 ;   6. Multiple eccentricity values
 ;
 ; EXAMPLE:
-;   IDL> test_anomaly_conversions
+;   IDL> sp_test_anomaly_conversions
 ;   =========================================
 ;   Running Unit Tests for anomaly_conversions
 ;   =========================================
@@ -40,7 +40,7 @@
 ;   2026-02-18: Initial implementation
 ;-
 
-PRO test_anomaly_conversions
+PRO sp_test_anomaly_conversions
 
   COMPILE_OPT IDL2
 

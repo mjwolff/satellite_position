@@ -194,31 +194,31 @@ Each module has its own unit test file. Make sure to set up your IDL path first 
 # From the satellite_position directory:
 
 # Test Mars constants
-idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "test_mars_constants"
+idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "sp_test_mars_constants"
 
 # Test Kepler solver
-idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "test_kepler_solver"
+idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "sp_test_kepler_solver"
 
 # Test anomaly conversions
-idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "test_anomaly_conversions"
+idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "sp_test_anomaly_conversions"
 
 # Test coordinate transforms
-idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "test_coordinate_transforms"
+idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "sp_test_coordinate_transforms"
 
 # Test MCI to LLA conversions
-idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "test_mci_to_lla"
+idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "sp_test_mci_to_lla"
 
 # Test orbital propagator
-idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "test_propagate_orbit"
+idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "sp_test_propagate_orbit"
 
 # Test sub-solar latitude calculations
-idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "test_subsolar_latitude"
+idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "sp_test_subsolar_latitude"
 ```
 
 ### Integration Tests
 
 ```bash
-idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "test_orbit_propagation"
+idl -e "!PATH = 'src:tests' + ':' + !PATH" -e "sp_test_orbit_propagation"
 ```
 
 Integration tests validate:
@@ -518,16 +518,16 @@ satellite_position/
 │   ├── sp_calculate_subsolar_latitude.pro  # Mars climate calculations
 │   └── sp_propagate_orbit.pro          # Main propagator
 ├── tests/                           # Test files
-│   ├── test_sp_mars_constants.pro      # Unit tests
-│   ├── test_kepler_solver.pro       # Unit tests
-│   ├── test_anomaly_conversions.pro # Unit tests
-│   ├── test_coordinate_transforms.pro  # Unit tests
-│   ├── test_sp_mci_to_lla.pro          # Unit tests
-│   ├── test_subsolar_latitude.pro   # Unit tests
-│   ├── test_sp_propagate_orbit.pro     # Unit tests
-│   ├── test_orbit_propagation.pro   # Integration tests
-│   ├── run_test_kepler.pro          # Test runner
-│   └── run_test_anomaly.pro         # Test runner
+│   ├── sp_test_mars_constants.pro      # Unit tests
+│   ├── sp_test_kepler_solver.pro       # Unit tests
+│   ├── sp_test_anomaly_conversions.pro # Unit tests
+│   ├── sp_test_coordinate_transforms.pro  # Unit tests
+│   ├── sp_test_mci_to_lla.pro          # Unit tests
+│   ├── sp_test_subsolar_latitude.pro   # Unit tests
+│   ├── sp_test_propagate_orbit.pro     # Unit tests
+│   ├── sp_test_orbit_propagation.pro   # Integration tests
+│   ├── sp_run_test_kepler.pro          # Test runner
+│   └── sp_run_test_anomaly.pro         # Test runner
 ├── examples/                        # Example usage
 │   ├── example_tgo.pro              # TGO mission example
 │   └── run_example_tgo.pro          # TGO example runner
