@@ -16,7 +16,8 @@
 ;   Mars Climate / Orbital Mechanics
 ;
 ; CALLING SEQUENCE:
-;   ss_lon = sp_calculate_subsolar_longitude(t, t_ref, ss_lon_ref, constants)
+;   ss_lon = sp_calculate_subsolar_longitude(t, t_ref, ss_lon_ref, constants
+;                                            [, /RANGE_180])
 ;
 ; INPUTS:
 ;   t          - Time(s) at which to evaluate sub-solar longitude
@@ -28,9 +29,14 @@
 ;   constants  - Mars constants structure from sp_mars_constants()
 ;                Uses the .omega_mars field (Mars rotation rate, rad/s)
 ;
+; KEYWORDS:
+;   range_180  - If set, return ss_lon in the range [-180, 180].
+;                By default, ss_lon is returned in the range [0, 360].
+;
 ; OUTPUTS:
-;   Sub-solar longitude in degrees, range [-180, 180]
-;   Same size as input t
+;   Sub-solar longitude in degrees, range [0, 360] by default,
+;   or [-180, 180] if /RANGE_180 is set.
+;   Same size as input t.
 ;
 ; ALGORITHM:
 ;   As Mars rotates eastward at rate omega_mars, the sub-solar footprint
@@ -39,14 +45,22 @@
 ;     delta_lon = -(t - t_ref) * omega_mars  [radians]
 ;     ss_lon(t) = ss_lon_ref + delta_lon     [wrapped to -180, 180]
 ;
+;   Unless /RANGE_180 is set, ss_lon is then converted to [0, 360]:
+;
+;     ss_lon = (ss_lon + 360) MOD 360
+;
 ; EXAMPLE:
 ;   IDL> mars = sp_mars_constants()
 ;   IDL> ; After one full Mars sidereal day (~88,642 s), longitude returns to start
 ;   IDL> ss_lon = sp_calculate_subsolar_longitude(88642.0d0, 0.0d0, 0.0d0, mars)
 ;   IDL> print, ss_lon        ; Should be ~0.0 (full rotation)
 ;
-;   IDL> ; After 60 seconds, longitude shifts ~-0.244 degrees
+;   IDL> ; After 60 seconds, footprint shifts ~0.244 degrees westward (0,360 default)
 ;   IDL> ss_lon = sp_calculate_subsolar_longitude(60.0d0, 0.0d0, 0.0d0, mars)
+;   IDL> print, ss_lon        ; Should be ~359.756
+;
+;   IDL> ; Same result expressed in [-180, 180] convention
+;   IDL> ss_lon = sp_calculate_subsolar_longitude(60.0d0, 0.0d0, 0.0d0, mars, /RANGE_180)
 ;   IDL> print, ss_lon        ; Should be ~-0.244
 ;
 ; NOTES:
@@ -59,9 +73,11 @@
 ;
 ; MODIFICATION HISTORY:
 ;   2026-03-18: Initial implementation
+;   2026-03-20: Add /RANGE_180 keyword; default output range changed to [0, 360]
 ;-
 
-FUNCTION sp_calculate_subsolar_longitude, t, t_ref, ss_lon_ref, constants
+FUNCTION sp_calculate_subsolar_longitude, t, t_ref, ss_lon_ref, constants, $
+    RANGE_180=range_180
 
   COMPILE_OPT IDL2, HIDDEN
 
@@ -73,6 +89,10 @@ FUNCTION sp_calculate_subsolar_longitude, t, t_ref, ss_lon_ref, constants
   ; so a single MOD can return negative values. Adding 360 before the
   ; second MOD ensures a positive intermediate result.
   ss_lon = ((ss_lon_ref + delta_lon + 180.0d0) MOD 360.0d0 + 360.0d0) MOD 360.0d0 - 180.0d0
+
+  ; Convert to [0, 360] unless caller requested [-180, 180]
+  IF ~KEYWORD_SET(range_180) THEN $
+    ss_lon = (ss_lon + 360.0d0) MOD 360.0d0
 
   RETURN, ss_lon
 

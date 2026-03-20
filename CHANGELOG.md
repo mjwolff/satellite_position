@@ -44,3 +44,4 @@
   - `run_all_tests.pro` → `sp_run_all_tests.pro`
   - `test_install.pro` → `sp_test_install.pro`
 - **`README.md`** — updated all test calling sequences and directory tree to reflect renamed files.
+

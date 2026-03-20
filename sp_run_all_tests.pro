@@ -6,10 +6,11 @@ PRO sp_run_all_tests
   !PATH = 'src:tests' + ':' + !PATH
 
   ; Storage for tabular summary
-  n_suites = 8
+  n_suites = 9
   suite_names  = ['Mars Constants', 'Kepler Solver', 'Anomaly Conversions', $
                   'Coordinate Transforms', 'MCI to LLA', 'Subsolar Latitude', $
-                  'Propagate Orbit', 'Orbit Propagation (Integration)']
+                  'Subsolar Longitude', 'Propagate Orbit', $
+                  'Orbit Propagation (Integration)']
   suite_passed = INTARR(n_suites)
   suite_total  = INTARR(n_suites)
 
@@ -50,14 +51,19 @@ PRO sp_run_all_tests
   suite_passed[5] = tc_n_passed  &  suite_total[5] = tc_n_tests
   print, ''
 
-  print, '--- Test 7: Propagate Orbit ---'
-  sp_test_propagate_orbit
+  print, '--- Test 7: Subsolar Longitude ---'
+  sp_test_subsolar_longitude
   suite_passed[6] = tc_n_passed  &  suite_total[6] = tc_n_tests
   print, ''
 
-  print, '--- Test 8: Orbit Propagation (Integration) ---'
-  sp_test_orbit_propagation
+  print, '--- Test 8: Propagate Orbit ---'
+  sp_test_propagate_orbit
   suite_passed[7] = tc_n_passed  &  suite_total[7] = tc_n_tests
+  print, ''
+
+  print, '--- Test 9: Orbit Propagation (Integration) ---'
+  sp_test_orbit_propagation
+  suite_passed[8] = tc_n_passed  &  suite_total[8] = tc_n_tests
   print, ''
 
   ; =========================================
