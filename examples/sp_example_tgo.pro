@@ -18,7 +18,7 @@
 ; - Wikipedia: https://en.wikipedia.org/wiki/Trace_Gas_Orbiter
 ; ============================================================
 
-PRO example_tgo
+PRO sp_example_tgo
 
   ; Initialize Mars constants
   ; Note: Ensure sp_mars_constants.pro and sp_propagate_orbit.pro are compiled before running

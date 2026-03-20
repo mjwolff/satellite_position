@@ -1,2 +1,2 @@
 ; Script to run the TGO example
-example_tgo
+sp_example_tgo
