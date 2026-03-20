@@ -70,7 +70,7 @@ PRO sp_test_mci_to_lla
   t_ref = 0.0d0
 
   r_fixed = sp_mci_to_mars_fixed(r_mci, t, t_ref, mars.omega_mars)
-  expected = [0.0d0, 10000.0d0, 0.0d0]
+  expected = [0.0d0, -10000.0d0, 0.0d0]
   error = MAX(ABS(r_fixed - expected))
 
   if (error lt 1.0d0) then begin  ; 1 km tolerance

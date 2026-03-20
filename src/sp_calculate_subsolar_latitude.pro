@@ -73,7 +73,7 @@ FUNCTION sp_calculate_subsolar_latitude, Ls, DEGREES=degrees, OBLIQUITY=obliquit
   endif else begin
     ; Convert custom obliquity to radians if needed
     if KEYWORD_SET(degrees) then begin
-      obliquity_rad = obliquity * !DTOR
+      obliquity_rad = obliquity * (!DPI/180.0d0)
     endif else begin
       obliquity_rad = obliquity
     endelse
@@ -87,7 +87,7 @@ FUNCTION sp_calculate_subsolar_latitude, Ls, DEGREES=degrees, OBLIQUITY=obliquit
 
   ; Convert Ls to radians if input is in degrees
   if KEYWORD_SET(degrees) then begin
-    Ls_rad = Ls * !DTOR
+    Ls_rad = Ls * (!DPI/180.0d0)
   endif else begin
     Ls_rad = Ls
   endelse
@@ -98,7 +98,7 @@ FUNCTION sp_calculate_subsolar_latitude, Ls, DEGREES=degrees, OBLIQUITY=obliquit
 
   ; Convert output to degrees if requested
   if KEYWORD_SET(degrees) then begin
-    RETURN, subsolar_lat_rad * !RADEG
+    RETURN, subsolar_lat_rad * (180.0d0/!DPI)
   endif else begin
     RETURN, subsolar_lat_rad
   endelse

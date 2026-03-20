@@ -54,7 +54,7 @@ FUNCTION sp_mci_to_lla, r_mci, t, constants
   lon = ATAN(r_fixed[1], r_fixed[0])
 
   ; Convert to degrees and normalize to [-180, 180]
-  lon_deg = lon * !RADEG
+  lon_deg = lon * (180.0d0/!DPI)
   if (lon_deg gt 180.0d0) then lon_deg = lon_deg - 360.0d0
   if (lon_deg lt -180.0d0) then lon_deg = lon_deg + 360.0d0
 
@@ -63,7 +63,7 @@ FUNCTION sp_mci_to_lla, r_mci, t, constants
                                                constants.r_eq, constants.e2)
 
   ; Convert latitude to degrees
-  lat_deg = geo_result.lat * !RADEG
+  lat_deg = geo_result.lat * (180.0d0/!DPI)
 
   ; Return result structure
   result = { $

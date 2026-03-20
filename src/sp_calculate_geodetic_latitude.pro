@@ -109,6 +109,15 @@ FUNCTION sp_calculate_geodetic_latitude, x_fixed, y_fixed, z_fixed, r_eq, e2, $
     delta = ABS(lat_new - lat)
     if (delta lt tol) then begin
       converged = 1b
+      ; Recompute h from lat_new so the returned (lat, h) pair is consistent
+      sin_lat_new = SIN(lat_new)
+      N_new = r_eq / SQRT(1.0d0 - e2 * sin_lat_new^2)
+      cos_lat_new = COS(lat_new)
+      if (ABS(cos_lat_new) gt 1e-10) then begin
+        h = p / cos_lat_new - N_new
+      endif else begin
+        h = ABS(z_fixed) / ABS(sin_lat_new) - N_new * (1.0d0 - e2)
+      endelse
       result = {lat: lat_new, h: h, n_iter: iter + 1, converged: converged}
       RETURN, result
     endif

@@ -44,8 +44,8 @@ FUNCTION sp_lla_to_mci, lon, lat, alt, t, constants
   COMPILE_OPT IDL2, HIDDEN
 
   ; Convert to radians
-  lon_rad = lon * !DTOR
-  lat_rad = lat * !DTOR
+  lon_rad = lon * (!DPI/180.0d0)
+  lat_rad = lat * (!DPI/180.0d0)
 
   ; Calculate radius of curvature in prime vertical
   sin_lat = SIN(lat_rad)

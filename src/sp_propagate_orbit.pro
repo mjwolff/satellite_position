@@ -125,9 +125,9 @@ FUNCTION sp_propagate_orbit, elements, t, t0, constants
     ; Build result structure
     result = { $
       t:     t_val, $
-      M:     M * !RADEG, $
-      Ecc:   Ecc * !RADEG, $
-      nu:    nu * !RADEG, $
+      M:     M * (180.0d0/!DPI), $
+      Ecc:   Ecc * (180.0d0/!DPI), $
+      nu:    nu * (180.0d0/!DPI), $
       r:     peri_result.r, $
       r_pqw: peri_result.r_pqw, $
       v_pqw: peri_result.v_pqw, $
@@ -169,9 +169,9 @@ FUNCTION sp_propagate_orbit, elements, t, t0, constants
 
       ; Store results
       results[idx].t = t_val
-      results[idx].M = M * !RADEG
-      results[idx].Ecc = Ecc * !RADEG
-      results[idx].nu = nu * !RADEG
+      results[idx].M = M * (180.0d0/!DPI)
+      results[idx].Ecc = Ecc * (180.0d0/!DPI)
+      results[idx].nu = nu * (180.0d0/!DPI)
       results[idx].r = peri_result.r
       results[idx].r_pqw = peri_result.r_pqw
       results[idx].v_pqw = peri_result.v_pqw

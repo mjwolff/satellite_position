@@ -71,7 +71,7 @@ FUNCTION sp_mars_constants
   ; Mars axial tilt (obliquity)
   ; Source: IAU 2015 / NASA Mars Fact Sheet
   ; Note: Mars obliquity varies on ~120,000 year timescale
-  obliquity = 25.19d0 * !DTOR  ; radians (current epoch)
+  obliquity = 25.19d0 * (!DPI/180.0d0)  ; radians (current epoch)
 
   ; Reference epoch: J2000.0 (January 1, 2000, 12:00:00 TT)
   ; This is the reference time for Mars rotation calculations

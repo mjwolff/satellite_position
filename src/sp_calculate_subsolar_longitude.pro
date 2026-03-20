@@ -66,7 +66,7 @@ FUNCTION sp_calculate_subsolar_longitude, t, t_ref, ss_lon_ref, constants
   COMPILE_OPT IDL2, HIDDEN
 
   ; Longitude shift: negative because Mars rotates east -> footprint moves west
-  delta_lon = -(t - t_ref) * constants.omega_mars * !RADEG
+  delta_lon = -(t - t_ref) * constants.omega_mars * (180.0d0/!DPI)
 
   ; Wrap to [-180, 180].
   ; Double-MOD required: IDL's MOD preserves the sign of the dividend,
