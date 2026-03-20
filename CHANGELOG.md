@@ -4,6 +4,7 @@
 
 ### Added
 - `CHANGELOG.md` — this file.
+- `TESTS.md` — test suite reference documenting all 8 suites (101 tests): purpose, expected values, tolerances, and astrodynamics references for each test case.
 
 ### Fixed
 - **Single-precision `!DTOR`/`!RADEG` system variables** (`src/sp_mci_to_lla.pro`, `src/sp_lla_to_mci.pro`, `src/sp_mars_constants.pro`, `src/sp_calculate_subsolar_latitude.pro`, `src/sp_propagate_orbit.pro`, `src/sp_calculate_subsolar_longitude.pro`)
