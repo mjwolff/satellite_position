@@ -56,7 +56,7 @@ PRO sp_test_subsolar_latitude
 
   ; Get Mars constants for expected obliquity
   mars = sp_mars_constants()
-  expected_obliquity_deg = mars.obliquity * !RADEG
+  expected_obliquity_deg = mars.obliquity * (180.0d0/!DPI)
 
   ; =========================================
   ; TEST 1: Cardinal point - Spring Equinox (Ls = 0°, radians)
@@ -155,7 +155,7 @@ PRO sp_test_subsolar_latitude
   Ls_test = 30.0d0
   subsolar_lat = sp_calculate_subsolar_latitude(Ls_test, /DEGREES)
   ; Expected: 25.19 * sin(30°) = 25.19 * 0.5 = 12.595°
-  expected = expected_obliquity_deg * SIN(30.0d0 * !DTOR)
+  expected = expected_obliquity_deg * SIN(30.0d0 * (!DPI/180.0d0))
 
   if (ABS(subsolar_lat - expected) lt 1e-8) then begin
     print, 'TEST: ' + test_name + ' ... PASS'
@@ -174,7 +174,7 @@ PRO sp_test_subsolar_latitude
   Ls_test = 45.0d0
   subsolar_lat = sp_calculate_subsolar_latitude(Ls_test, /DEGREES)
   ; Expected: 25.19 * sin(45°) = 25.19 * sqrt(2)/2 ≈ 17.81°
-  expected = expected_obliquity_deg * SIN(45.0d0 * !DTOR)
+  expected = expected_obliquity_deg * SIN(45.0d0 * (!DPI/180.0d0))
 
   if (ABS(subsolar_lat - expected) lt 1e-8) then begin
     print, 'TEST: ' + test_name + ' ... PASS'
@@ -193,7 +193,7 @@ PRO sp_test_subsolar_latitude
   Ls_test = 135.0d0
   subsolar_lat = sp_calculate_subsolar_latitude(Ls_test, /DEGREES)
   ; Expected: 25.19 * sin(135°) = 25.19 * sqrt(2)/2 ≈ 17.81°
-  expected = expected_obliquity_deg * SIN(135.0d0 * !DTOR)
+  expected = expected_obliquity_deg * SIN(135.0d0 * (!DPI/180.0d0))
 
   if (ABS(subsolar_lat - expected) lt 1e-8) then begin
     print, 'TEST: ' + test_name + ' ... PASS'

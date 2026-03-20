@@ -163,7 +163,7 @@ PRO sp_test_orbit_propagation
   elements = {a: a, e: e, i: 0.0d0, raan: 0.0d0, omega: 0.0d0, M0: 0.0d0}
   t0 = 0.0d0
   period = 2.0d0 * !DPI * SQRT(elements.a^3 / mars.mu)
-  t = DINDGEN(100) * period / 99.0d0
+  t = DINDGEN(101) * period / 100.0d0
 
   result = sp_propagate_orbit(elements, t, t0, mars)
 
@@ -270,8 +270,8 @@ PRO sp_test_orbit_propagation
     result_test = sp_propagate_orbit(elements_test, 0.0d0, 0.0d0, mars)
 
     ; Verify Kepler's equation: M = Ecc - e*sin(Ecc)
-    M_rad = result_test.M * !DTOR
-    Ecc_rad = result_test.Ecc * !DTOR
+    M_rad = result_test.M * (!DPI/180.0d0)
+    Ecc_rad = result_test.Ecc * (!DPI/180.0d0)
     M_computed = Ecc_rad - e_val * SIN(Ecc_rad)
     error = ABS(M_computed - M_rad)
     if (error gt max_error) then max_error = error

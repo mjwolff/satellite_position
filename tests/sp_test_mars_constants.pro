@@ -140,7 +140,7 @@ PRO sp_test_mars_constants
   ; TEST 8: Verify obliquity is positive and reasonable
   n_tests++
   test_name = 'obliquity is positive and in expected range'
-  expected_obliquity = 25.19d0 * !DTOR  ; radians
+  expected_obliquity = 25.19d0 * (!DPI/180.0d0)  ; radians
   if (mars.obliquity gt 0 AND ABS(mars.obliquity - expected_obliquity) lt 1e-10) then begin
     print, 'TEST: ' + test_name + ' ... PASS'
     n_passed++

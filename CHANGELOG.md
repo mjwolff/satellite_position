@@ -16,6 +16,13 @@
   - In IDL, `A[i,j]` means column `i`, row `j`. Both rotation functions were filling matrix columns when intending to fill rows, causing each function to apply the transpose of the intended rotation (i.e., the inverse transform). Fixed by swapping indices on all off-diagonal array assignments.
   - The bug was masked by the round-trip test since the two transposed transforms cancelled each other. Absolute rotation direction tests (e.g. pure RAAN rotation) exposed the error.
 
+- **Stale `!DTOR`/`!RADEG` in test expected values** (`tests/sp_test_mars_constants.pro`, `tests/sp_test_subsolar_latitude.pro`, `tests/sp_test_orbit_propagation.pro`)
+  - After replacing `!DTOR`/`!RADEG` with true double equivalents in source, test files still computed expected values using float32 `!DTOR`/`!RADEG`, causing mismatches. Replaced all functional `!DTOR` with `(!DPI/180.0d0)` and `!RADEG` with `(180.0d0/!DPI)` in expected-value calculations. Fixes suites 1 (16/16) and 6 (14/14).
+- **Apoapsis not sampled in eccentric orbit integration test** (`tests/sp_test_orbit_propagation.pro`)
+  - Test 5 used 100 samples over one period (`DINDGEN(100)*period/99`), placing apoapsis (M=π, t=period/2) at non-integer index 49.5. The maximum sampled altitude fell 1.68 km below the true apoapsis, exceeding the 0.1 km tolerance. Changed to 101 samples (`DINDGEN(101)*period/100`) so t[50]=period/2 is sampled exactly.
+- **`!DTOR` float32 loss in Kepler verification** (`tests/sp_test_orbit_propagation.pro`)
+  - Test 8 converted stored degree anomalies back to radians via `!DTOR` (float32), introducing ~1e-8 rad error and exceeding the 1e-10 tolerance. Replaced `!DTOR` with `(!DPI/180.0d0)`. All 8 suites now pass 100%.
+
 ### Changed
 - **`sp_` namespace prefix applied to all files in `tests/`** — renames, `PRO`/`FUNCTION` declarations, internal `.compile` directives, and docstring calling sequences updated:
   - `test_anomaly_conversions.pro` → `sp_test_anomaly_conversions.pro`
