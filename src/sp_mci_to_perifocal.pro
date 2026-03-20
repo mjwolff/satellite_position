@@ -74,19 +74,19 @@ FUNCTION sp_mci_to_perifocal, r_mci, v_mci, raan, omega, i
   R_T = DBLARR(3, 3)
 
   ; Transpose of the perifocal_to_mci matrix
-  ; First row
+  ; First row (of R^T = columns of R)
   R_T[0,0] = cos_raan * cos_omega - sin_raan * sin_omega * cos_i
-  R_T[0,1] = sin_raan * cos_omega + cos_raan * sin_omega * cos_i
-  R_T[0,2] = sin_omega * sin_i
+  R_T[1,0] = sin_raan * cos_omega + cos_raan * sin_omega * cos_i
+  R_T[2,0] = sin_omega * sin_i
 
   ; Second row
-  R_T[1,0] = -cos_raan * sin_omega - sin_raan * cos_omega * cos_i
+  R_T[0,1] = -cos_raan * sin_omega - sin_raan * cos_omega * cos_i
   R_T[1,1] = -sin_raan * sin_omega + cos_raan * cos_omega * cos_i
-  R_T[1,2] = cos_omega * sin_i
+  R_T[2,1] = cos_omega * sin_i
 
   ; Third row
-  R_T[2,0] = sin_raan * sin_i
-  R_T[2,1] = -cos_raan * sin_i
+  R_T[0,2] = sin_raan * sin_i
+  R_T[1,2] = -cos_raan * sin_i
   R_T[2,2] = cos_i
 
   ; Transform position and velocity vectors

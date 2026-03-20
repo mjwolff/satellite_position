@@ -93,17 +93,17 @@ FUNCTION sp_perifocal_to_mci, r_pqw, v_pqw, raan, omega, i
 
   ; First row
   R[0,0] = cos_raan * cos_omega - sin_raan * sin_omega * cos_i
-  R[0,1] = -cos_raan * sin_omega - sin_raan * cos_omega * cos_i
-  R[0,2] = sin_raan * sin_i
+  R[1,0] = -cos_raan * sin_omega - sin_raan * cos_omega * cos_i
+  R[2,0] = sin_raan * sin_i
 
   ; Second row
-  R[1,0] = sin_raan * cos_omega + cos_raan * sin_omega * cos_i
+  R[0,1] = sin_raan * cos_omega + cos_raan * sin_omega * cos_i
   R[1,1] = -sin_raan * sin_omega + cos_raan * cos_omega * cos_i
-  R[1,2] = -cos_raan * sin_i
+  R[2,1] = -cos_raan * sin_i
 
   ; Third row
-  R[2,0] = sin_omega * sin_i
-  R[2,1] = cos_omega * sin_i
+  R[0,2] = sin_omega * sin_i
+  R[1,2] = cos_omega * sin_i
   R[2,2] = cos_i
 
   ; Transform position and velocity vectors
